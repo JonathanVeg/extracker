@@ -1,0 +1,68 @@
+[
+  {
+    "inBtc": 0.00007345147200000001,
+    "myCoin": {
+      "address": "1EqYgBsx69zD6qSXwnwuxaozXHU1Pr9svF",
+      "available": 0.0027728,
+      "balance": 0.0027728,
+      "key": "my_BCH",
+      "name": "BCH",
+      "pending": 0
+    }
+  },
+  {
+    "inBtc": 0.000059317068544,
+    "myCoin": {
+      "address": "15vX2DQVcYw6r3s987wVm6ddnyPcFACRjk",
+      "available": 0.0027728,
+      "balance": 0.0027728,
+      "key": "my_BSV",
+      "name": "BSV",
+      "pending": 0
+    }
+  },
+  {
+    "inBtc": 0.27800646,
+    "myCoin": {
+      "address": "1GDa2bhgKaCwQrka2xY1P9cexKNb88HYFE",
+      "available": 1e-8,
+      "balance": 0.27800646,
+      "key": "my_BTC",
+      "name": "BTC",
+      "pending": 0
+    }
+  },
+  {
+    "inBtc": 0,
+    "myCoin": {
+      "address": null,
+      "available": 967.09180948,
+      "balance": 967.09180948,
+      "key": "my_BTXCRD",
+      "name": "BTXCRD",
+      "pending": 0
+    }
+  },
+  {
+    "inBtc": 0.23896255774006558,
+    "myCoin": {
+      "address": "DsUJTC7MZDWfnWyYnmm9P6ijsA44oRQVsSn",
+      "available": 1e-8,
+      "balance": 162.00412039,
+      "key": "my_DCR",
+      "name": "DCR",
+      "pending": 0
+    }
+  },
+  {
+    "inBtc": 0.00002196415156236906,
+    "myCoin": {
+      "address": null,
+      "available": 0.19369366,
+      "balance": 0.19369366,
+      "key": "my_USD",
+      "name": "USD",
+      "pending": 0
+    }
+  }
+]
