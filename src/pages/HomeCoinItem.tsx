@@ -19,7 +19,7 @@ const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
 
   const myCoin = myCoins.find(it => it.name === coin.name);
   return (
-    <CoinContainer onPress={onClick}>
+    <CoinContainer>
       <CoinName>
         <Text>{coin.name}</Text>
         <TouchableOpacity onPress={onToggleFavorite}>
@@ -30,7 +30,7 @@ const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
           />
         </TouchableOpacity>
       </CoinName>
-      <CoinData>
+      <CoinData onPress={onClick}>
         <Text>{`Last: ${coin.last.idealDecimalPlaces()}`}</Text>
         <Text>{`High: ${coin.high.idealDecimalPlaces()}`}</Text>
         <Text>{`Low: ${coin.low.idealDecimalPlaces()}`}</Text>
@@ -49,7 +49,7 @@ const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
           </>
         )}
       </CoinData>
-      <CoinPercent>
+      <CoinPercent onPress={onClick}>
         <Text
           style={{ color: coin.change > 0 ? colors.positive : colors.negative }}
         >
@@ -61,7 +61,8 @@ const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
 };
 
 export default HomeCoinItem;
-const CoinContainer = styled.TouchableOpacity`
+
+const CoinContainer = styled.View`
   flex-direction: row;
   min-height: 50px;
   padding: 8px;
@@ -74,12 +75,12 @@ const CoinName = styled.View`
   align-items: center;
 `;
 
-const CoinData = styled.View`
+const CoinData = styled.TouchableOpacity`
   flex: 60;
   justify-content: center;
 `;
 
-const CoinPercent = styled.View`
+const CoinPercent = styled.TouchableOpacity`
   flex: 20;
   align-items: flex-end;
   justify-content: center;

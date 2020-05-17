@@ -8,9 +8,9 @@ import {
   StyleSheet,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import { TextInput } from 'react-native-gesture-handler';
+import React, { useEffect, useState } from 'react';
 import Fiat from '../../controllers/fiats/Fiat';
 import Coin from '../../models/Coin';
 import MyCoin from '../../models/MyCoin';
@@ -19,6 +19,7 @@ import {
   loadMarketSummaries,
   hasKeysSaved,
 } from '../../controllers/Bittrex';
+import FiatsBlock from './FiatsBlock';
 import { sortArrayByKey } from '../../utils/utils';
 import listFiats from '../../controllers/fiats/FiatsHelper';
 import HamburgerIcon from '../../components/HamburgerIcon';
@@ -28,7 +29,11 @@ import { H1 } from '../../components/Hs';
 import BlackWhiteBlock from '../../components/BlackWhiteBlock';
 import StorageUtils from '../../utils/StorageUtils';
 
+let count = 0;
 export default function Home({ navigation }) {
+  count++;
+
+  console.log(count);
   const [hasKeys, setHasKeys] = useState(false);
 
   navigation.setOptions({
@@ -38,7 +43,7 @@ export default function Home({ navigation }) {
 
   const [showBalanceBlock, setShowBalanceBlock] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-
+  const [allCoinsInBtc, setAllCoinsInBtc] = useState({});
   const [, setLastRefresh] = useState(+new Date());
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [coins, setCoins] = useState<Coin[]>([]);
@@ -154,12 +159,14 @@ export default function Home({ navigation }) {
       setCoins(coins);
 
       setMarkets(data[1]);
+
+      calcAllCoinsInBtc(coins, data[1]);
     } finally {
       setRefreshing(false);
     }
   }
 
-  function calcAllCoinsInBtc() {
+  function calcAllCoinsInBtc(coins: Coin[], markets: string[]) {
     const allCoinsInBtc = { BTC: 1 };
 
     const fakeCoins = markets
@@ -185,12 +192,12 @@ export default function Home({ navigation }) {
         }
       });
 
+    setAllCoinsInBtc(allCoinsInBtc);
+
     return allCoinsInBtc;
   }
 
   function totalInMarket(): number {
-    const allCoinsInBtc = calcAllCoinsInBtc();
-
     let totalInMarket = 0;
 
     myCoins.map(it => {
@@ -225,25 +232,6 @@ export default function Home({ navigation }) {
     </TouchableOpacity>
   );
 
-  const FiatsBlock = () => {
-    return (
-      <View>
-        <H1>{market}</H1>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-          {fiats
-            .filter(it => it.data)
-            .map(it => (
-              <FiatBlock
-                fiat={it}
-                key={`total_${it.name}`}
-                amount={calcAllCoinsInBtc()[market]}
-              />
-            ))}
-        </View>
-      </View>
-    );
-  };
-
   const TotalBalanceBlock = () => {
     return (
       <View>
@@ -253,7 +241,7 @@ export default function Home({ navigation }) {
           {fiats
             .filter(it => it.data)
             .map(it => {
-              const marketInBtc = calcAllCoinsInBtc()[market];
+              const marketInBtc = allCoinsInBtc[market];
 
               return (
                 <FiatBlock
@@ -303,39 +291,77 @@ export default function Home({ navigation }) {
 
   const coinsToShow = getCoinsToShow();
 
-  return (
-    <Container>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <View style={{ flex: 1 }}>
-          {showBalanceBlock ? <TotalBalanceBlock /> : <FiatsBlock />}
-        </View>
-        {hasKeys && (
-          <TouchableOpacity
-            onPress={() => setShowBalanceBlock(!showBalanceBlock)}
-          >
-            <Icon name="chevron-right" size={30} />
-          </TouchableOpacity>
+  const TopBlock = () => (
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <View style={{ flex: 1 }}>
+        {showBalanceBlock ? (
+          <TotalBalanceBlock />
+        ) : (
+          <FiatsBlock
+            fiats={fiats}
+            market={market}
+            allCoinsInBtc={allCoinsInBtc}
+          />
         )}
       </View>
+      {hasKeys && (
+        <TouchableOpacity
+          onPress={() => setShowBalanceBlock(!showBalanceBlock)}
+        >
+          <Icon name="chevron-right" size={30} />
+        </TouchableOpacity>
+      )}
+    </View>
+  );
 
-      <Header>
-        <H1>COINS</H1>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => setShowSearch(!showSearch)}>
-            <FA
-              name={showSearch ? 'search-minus' : 'search-plus'}
-              size={20}
-              style={{ margin: 3 }}
-            />
-          </TouchableOpacity>
-        </View>
-      </Header>
+  const HeaderBlock = () => (
+    <Header>
+      <H1>COINS</H1>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <TouchableOpacity onPress={() => setShowSearch(!showSearch)}>
+          <FA
+            name={showSearch ? 'search-minus' : 'search-plus'}
+            size={20}
+            style={{ margin: 3 }}
+          />
+        </TouchableOpacity>
+      </View>
+    </Header>
+  );
+
+  const MarketSelectorBlock = () => (
+    <MarketSelectorBlockContainer>
+      {markets.map(it => (
+        <TouchableOpacity
+          key={`selectmarket${it}`}
+          style={{ flex: 1, padding: 8 }}
+          onPress={() => setMarket(it)}
+        >
+          <Text
+            style={{
+              textAlign: 'center',
+              fontWeight: market === it ? 'bold' : 'normal',
+            }}
+          >
+            {it}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </MarketSelectorBlockContainer>
+  );
+
+  return (
+    <Container>
+      <TopBlock />
+
+      <HeaderBlock />
+
       {showSearch && (
         <TextInput
           autoFocus
@@ -362,30 +388,7 @@ export default function Home({ navigation }) {
         </TouchableOpacity>
       )}
 
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        {markets.map(it => (
-          <TouchableOpacity
-            key={`selectmarket${it}`}
-            style={{ flex: 1, padding: 8 }}
-            onPress={() => setMarket(it)}
-          >
-            <Text
-              style={{
-                textAlign: 'center',
-                fontWeight: market === it ? 'bold' : 'normal',
-              }}
-            >
-              {it}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      <MarketSelectorBlock />
 
       <FlatList
         onRefresh={loadCoins}
@@ -417,5 +420,11 @@ const Container = styled.SafeAreaView`
 const Header = styled.View`
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+`;
+
+const MarketSelectorBlockContainer = styled.View`
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
 `;

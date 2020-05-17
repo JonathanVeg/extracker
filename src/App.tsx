@@ -82,15 +82,15 @@ const GlobalNavigator = () => (
   </Drawer.Navigator>
 );
 
-export default function App() {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <GlobalNavigator />
-        </NavigationContainer>
-      </SafeAreaProvider>
-    </>
-  );
-}
+const App = () => (
+  <>
+    <StatusBar barStyle="dark-content" backgroundColor="white" />
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <GlobalNavigator />
+      </NavigationContainer>
+    </SafeAreaProvider>
+  </>
+);
+
+export default App;
