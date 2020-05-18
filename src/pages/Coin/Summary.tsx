@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, RefreshControl } from 'react-native';
+import { ScrollView, RefreshControl, SectionList } from 'react-native';
 import Coin from '../../models/Coin';
 import { loadSummary, loadBalances } from '../../controllers/Bittrex';
 import LabelValueBlock from '../../components/LabelValueBlock';
@@ -9,7 +9,11 @@ import { Spacer } from '../../components/Spacer';
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 
-export default function CoinPageSummary(props) {
+interface CoinPageSummaryInterface {
+  coin: Coin | null;
+}
+
+export default function CoinPageSummary(props: CoinPageSummaryInterface) {
   const [refreshing, setRefreshing] = useState(false);
   const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
   const [myCoin, setMyCoin] = useState<MyCoin>(null);
@@ -46,102 +50,120 @@ export default function CoinPageSummary(props) {
     refresh();
   }, [props]);
 
-  const summary = (
-    <>
-      <H1 style={{ textAlign: 'center', width: '100%' }}>Summary</H1>
-      <Spacer margin={2} />
+  const Summary = () => {
+    let i = 0;
 
-      <LabelValueBlock
-        style={{ padding: 3, backgroundColor: colors.white }}
-        label="Last"
-        value={coin.last}
-        adjustDecimals
-      />
-      <LabelValueBlock
-        style={{ padding: 3, backgroundColor: colors.lighter }}
-        label="Bid"
-        value={coin.bid}
-        adjustDecimals
-      />
-      <LabelValueBlock
-        style={{ padding: 3, backgroundColor: colors.white }}
-        label="Ask"
-        value={coin.ask}
-        adjustDecimals
-      />
-      <LabelValueBlock
-        style={{ padding: 3, backgroundColor: colors.lighter }}
-        label="% Spread"
-        value={coin.spread.toFixed(2)}
-      />
-      <LabelValueBlock
-        style={{ padding: 3, backgroundColor: colors.white }}
-        label="24h highest"
-        value={coin.high}
-        adjustDecimals
-      />
-      <LabelValueBlock
-        style={{ padding: 3, backgroundColor: colors.lighter }}
-        label="24h lowest"
-        value={coin.low}
-        adjustDecimals
-      />
-      <LabelValueBlock
-        style={{ padding: 3, backgroundColor: colors.white }}
-        label="% change"
-        value={coin.change.toFixed(1)}
-      />
-      <LabelValueBlock
-        style={{ padding: 3, backgroundColor: colors.lighter }}
-        label={`24h ${coin.market} vol.`}
-        value={coin.baseVolume}
-        adjustDecimals
-      />
-      <LabelValueBlock
-        style={{ padding: 3, backgroundColor: colors.white }}
-        label={`24h ${coin.name} vol.`}
-        value={coin.volume}
-      />
-    </>
-  );
+    function color() {
+      i++;
+      return i % 2 === 0 ? colors.white : colors.lighter;
+    }
 
-  const myCoinBlock = () => (
-    <>
-      <H1 style={{ textAlign: 'center', width: '100%' }}>My Data</H1>
-      <Spacer margin={2} />
+    return (
+      <>
+        <H1 center>Summary</H1>
+        <Spacer margin={2} />
 
-      <LabelValueBlock
-        style={{ padding: 3, backgroundColor: colors.white }}
-        label="I have"
-        value={myCoin.balance}
-        adjustDecimals
-      />
-      <LabelValueBlock
-        style={{ padding: 3, backgroundColor: colors.lighter }}
-        label="Available"
-        value={myCoin.available}
-        adjustDecimals
-      />
-      <LabelValueBlock
-        style={{ padding: 3, backgroundColor: colors.white }}
-        label="Pending"
-        value={myCoin.pending}
-        adjustDecimals
-      />
-      <LabelValueBlock
-        style={{ padding: 3, backgroundColor: colors.lighter }}
-        label={`Eq. in ${coin.market}`}
-        value={myCoin.balance * coin.last}
-        adjustDecimals
-      />
-      <LabelValueBlock
-        style={{ padding: 3, backgroundColor: colors.white }}
-        label="Deposit address"
-        value={myCoin.address}
-        copiable
-      />
-    </>
-  );
+        <LabelValueBlock
+          style={{ padding: 3, backgroundColor: color() }}
+          label="Last"
+          value={coin.last}
+          adjustDecimals
+        />
+        <LabelValueBlock
+          style={{ padding: 3, backgroundColor: color() }}
+          label="Bid"
+          value={coin.bid}
+          adjustDecimals
+        />
+        <LabelValueBlock
+          style={{ padding: 3, backgroundColor: color() }}
+          label="Ask"
+          value={coin.ask}
+          adjustDecimals
+        />
+        <LabelValueBlock
+          style={{ padding: 3, backgroundColor: color() }}
+          label="% Spread"
+          value={coin.spread.toFixed(2)}
+        />
+        <LabelValueBlock
+          style={{ padding: 3, backgroundColor: color() }}
+          label="24h highest"
+          value={coin.high}
+          adjustDecimals
+        />
+        <LabelValueBlock
+          style={{ padding: 3, backgroundColor: color() }}
+          label="24h lowest"
+          value={coin.low}
+          adjustDecimals
+        />
+        <LabelValueBlock
+          style={{ padding: 3, backgroundColor: color() }}
+          label="% change"
+          value={coin.change.toFixed(1)}
+        />
+        <LabelValueBlock
+          style={{ padding: 3, backgroundColor: color() }}
+          label={`24h ${coin.market} vol.`}
+          value={coin.baseVolume}
+          adjustDecimals
+        />
+        <LabelValueBlock
+          style={{ padding: 3, backgroundColor: color() }}
+          label={`24h ${coin.name} vol.`}
+          value={coin.volume}
+        />
+      </>
+    );
+  };
+
+  const myCoinBlock = () => {
+    let i = 0;
+
+    function color() {
+      i++;
+      return i % 2 === 0 ? colors.white : colors.lighter;
+    }
+
+    return (
+      <>
+        <H1 center>My Data</H1>
+        <Spacer margin={2} />
+
+        <LabelValueBlock
+          style={{ padding: 3, backgroundColor: color() }}
+          label="I have"
+          value={myCoin.balance}
+          adjustDecimals
+        />
+        <LabelValueBlock
+          style={{ padding: 3, backgroundColor: color() }}
+          label="Available"
+          value={myCoin.available}
+          adjustDecimals
+        />
+        <LabelValueBlock
+          style={{ padding: 3, backgroundColor: color() }}
+          label="Pending"
+          value={myCoin.pending}
+          adjustDecimals
+        />
+        <LabelValueBlock
+          style={{ padding: 3, backgroundColor: color() }}
+          label={`Eq. in ${coin.market}`}
+          value={myCoin.balance * coin.last}
+          adjustDecimals
+        />
+        <LabelValueBlock
+          style={{ padding: 3, backgroundColor: color() }}
+          label="Deposit address"
+          value={myCoin.address}
+          copiable
+        />
+      </>
+    );
+  };
 
   return (
     <Container>
@@ -150,9 +172,11 @@ export default function CoinPageSummary(props) {
           <RefreshControl refreshing={refreshing} onRefresh={refresh} />
         }
       >
-        {summary}
+        <Summary />
         <Spacer />
         {myCoin && myCoinBlock()}
+
+        {/* <SectionList/> */}
       </ScrollView>
     </Container>
   );

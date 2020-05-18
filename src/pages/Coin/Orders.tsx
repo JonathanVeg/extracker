@@ -2,7 +2,6 @@ import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import Coin from '../../models/Coin';
 import { H1 } from '../../components/Hs';
 import { loadOrderBook, loadMyOrders } from '../../controllers/Bittrex';
@@ -11,14 +10,13 @@ import MyOrder from '../../models/MyOrder';
 import { colors } from '../../style/globals';
 
 export default function CoinPageOrders(props) {
-  const [type, setType] = useState(props.type || 'buy');
-  const [refreshing, setRefreshing] = useState(false);
-  const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
-  const [myOrders, setMyOrders] = useState<MyOrder[]>([]);
+  const { type } = props;
+  const coin = props.coin || new Coin('DCR', 'BTC');
 
+  const [refreshing, setRefreshing] = useState(false);
+  const [myOrders, setMyOrders] = useState<MyOrder[]>([]);
   const [showSumPrice, setShowSumPrice] = useState(true);
   const [showSumQuantity, setShowSumQuantity] = useState(true);
-
   const [orders, setOrders] = useState<Order[]>([]);
 
   async function loadOrders() {
@@ -63,17 +61,7 @@ export default function CoinPageOrders(props) {
         ? colors.sellBackground
         : colors.sellBackground2;
     return (
-      <View
-        style={{
-          flexDirection: 'row',
-          flex: 1,
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          backgroundColor,
-          paddingVertical: 3,
-          paddingRight: 2,
-        }}
-      >
+      <RowContainer backgroundColor={backgroundColor}>
         <Icon
           name="star"
           size={13}
@@ -92,21 +80,13 @@ export default function CoinPageOrders(props) {
         <Text style={{ flex: 1, textAlign: 'right', paddingRight: 2 }}>
           {(showSumPrice ? order.totalTotal : order.total).idealDecimalPlaces()}
         </Text>
-      </View>
+      </RowContainer>
     );
   };
 
   function Header() {
     return (
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingVertical: 3,
-          paddingRight: 2,
-        }}
-      >
+      <HeaderContainer>
         <Text
           style={{ fontWeight: 'bold' }}
           onPress={() => {
@@ -124,26 +104,13 @@ export default function CoinPageOrders(props) {
         >
           {showSumPrice ? 'Sum Price' : 'Total Price'}
         </Text>
-      </View>
+      </HeaderContainer>
     );
   }
 
   return (
     <Container>
       <H1>ORDERS</H1>
-
-      <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-        <TouchableOpacity onPress={() => setType('buy')}>
-          <Text style={{ fontWeight: type === 'buy' ? 'bold' : 'normal' }}>
-            BUY
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setType('sell')}>
-          <Text style={{ fontWeight: type === 'sell' ? 'bold' : 'normal' }}>
-            SELL
-          </Text>
-        </TouchableOpacity>
-      </View>
 
       <Header />
 
@@ -162,4 +129,20 @@ export default function CoinPageOrders(props) {
 const Container = styled.SafeAreaView`
   flex: 1;
   margin: 8px;
+`;
+
+const HeaderContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 0 3px 2px;
+`;
+
+const RowContainer = styled.View`
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: ${({ backgroundColor }) => backgroundColor};
+  padding: 3px 0 3px 2px;
 `;

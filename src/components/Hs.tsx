@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 export const H1 = styled.Text`
   font-size: 16px;
   font-weight: bold;
+  text-align: ${({ center }) => (center ? 'center' : 'auto')};
 `;
 
 export const H2 = styled.Text`
