@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { default as FA } from 'react-native-vector-icons/FontAwesome';
 import styled from 'styled-components/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -10,6 +10,8 @@ import CoinPageOrdersHistory from './OrdersHistory';
 import CoinPageMyOrdersHistory from '../Wallet/MyOrdersHistory';
 import CoinPageChart from './Chart';
 import { colors } from '../../style/globals';
+import { Container } from '../../components/Generics';
+import CoinPageCalculator from './Calculator';
 
 const CoinPage: React.FC = props => {
   const coin: Coin =
@@ -83,7 +85,7 @@ const CoinPage: React.FC = props => {
     if (currentPage.icon === 'exchange')
       return <CoinPageMyOrdersHistory coin={coin} />;
     // if (currentPage.icon === 'calculator')
-    return <CoinPageSummary coin={coin} />;
+    return <CoinPageCalculator coin={coin} />;
   };
 
   return (
@@ -97,11 +99,6 @@ const CoinPage: React.FC = props => {
 };
 
 export default CoinPage;
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  margin: 8px;
-`;
 
 const Content = styled.View`
   flex: 1;

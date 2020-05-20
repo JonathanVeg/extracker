@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import React from 'react';
 import { Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';

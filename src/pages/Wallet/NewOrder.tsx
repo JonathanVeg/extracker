@@ -20,6 +20,7 @@ import LabelValueBlock from '../../components/LabelValueBlock';
 
 import MyInput from '../../components/MyInput';
 import { colors } from '../../style/globals';
+import { Container } from '../../components/Generics';
 
 function usePrevious(value) {
   const ref = useRef();
@@ -54,7 +55,7 @@ export default function NewOrder({ route, navigation }) {
   const [sCoin, setSCoin] = useState(defaultCoin.name);
   const [sMarket, setSMarket] = useState(defaultCoin.market);
 
-  const [coins, setCoins] = useState<Coin[]>([]);
+  const [, setCoins] = useState<Coin[]>([]);
   const [markets, setMarkets] = useState<string[]>([]);
   const [coinsNames, setCoinsNames] = useState<object[]>([]);
 
@@ -390,11 +391,6 @@ export default function NewOrder({ route, navigation }) {
     </Container>
   );
 }
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  margin: 8px;
-`;
 
 const PercentButton = styled.TouchableOpacity`
   border-width: ${StyleSheet.hairlineWidth}px;

@@ -1,13 +1,14 @@
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { Text, FlatList } from 'react-native';
 import Coin from '../../models/Coin';
 import { H1 } from '../../components/Hs';
 import { loadOrderBook, loadMyOrders } from '../../controllers/Bittrex';
 import Order from '../../models/Order';
 import MyOrder from '../../models/MyOrder';
 import { colors } from '../../style/globals';
+import { Container } from '../../components/Generics';
 
 export default function CoinPageOrders(props) {
   const { type } = props;
@@ -125,11 +126,6 @@ export default function CoinPageOrders(props) {
     </Container>
   );
 }
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  margin: 8px;
-`;
 
 const HeaderContainer = styled.View`
   flex-direction: row;

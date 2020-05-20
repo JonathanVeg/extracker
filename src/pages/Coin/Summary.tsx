@@ -1,13 +1,13 @@
-import styled from 'styled-components/native';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, RefreshControl, SectionList } from 'react-native';
+import { ScrollView, RefreshControl } from 'react-native';
 import Coin from '../../models/Coin';
-import { loadSummary, loadBalances } from '../../controllers/Bittrex';
+import { loadSummary, loadBalance } from '../../controllers/Bittrex';
 import LabelValueBlock from '../../components/LabelValueBlock';
 import MyCoin from '../../models/MyCoin';
 import { Spacer } from '../../components/Spacer';
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
+import { Container } from '../../components/Generics';
 
 interface CoinPageSummaryInterface {
   coin: Coin | null;
@@ -16,12 +16,12 @@ interface CoinPageSummaryInterface {
 export default function CoinPageSummary(props: CoinPageSummaryInterface) {
   const [refreshing, setRefreshing] = useState(false);
   const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
-  const [myCoin, setMyCoin] = useState<MyCoin>(null);
+  const [myCoin, setMyCoin] = useState<MyCoin | null>(null);
 
   async function loadMyData() {
-    const data = await loadBalances();
+    const data = await loadBalance(coin.name);
 
-    setMyCoin(data.find(it => it.name === coin.name));
+    if (data.available !== null) setMyCoin(data);
   }
 
   async function load() {
@@ -181,8 +181,3 @@ export default function CoinPageSummary(props: CoinPageSummaryInterface) {
     </Container>
   );
 }
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  margin: 8px;
-`;

@@ -43,7 +43,7 @@ function prepareOptions(url: string, secret: string) {
   };
 }
 
-export async function loadBalances(): Promise<MyCoin[]> {
+export async function loadBalances(includeZeros = false): Promise<MyCoin[]> {
   try {
     const s = await StorageUtils.getKeys();
     const { key } = s;
@@ -59,7 +59,10 @@ export async function loadBalances(): Promise<MyCoin[]> {
 
     let coins = data.result;
 
-    coins = coins.filter(coin => coin.Balance > 0.00000001 || coin.Pending > 0);
+    if (!includeZeros)
+      coins = coins.filter(
+        coin => coin.Balance > 0.00000001 || coin.Pending > 0,
+      );
 
     return coins.map(
       coin =>
@@ -73,6 +76,36 @@ export async function loadBalances(): Promise<MyCoin[]> {
     );
   } catch (err) {
     return [];
+  }
+}
+
+export async function loadBalance(currency: string): Promise<MyCoin | null> {
+  try {
+    const s = await StorageUtils.getKeys();
+    const { key } = s;
+    const { secret } = s;
+
+    const url = `https://bittrex.com/api/v1.1/account/getbalance?currency=${currency}&apikey=${key}&nonce=${nonce()}`;
+
+    const response = await axios.get(url, prepareOptions(url, secret));
+
+    const data = await response.data;
+
+    if (!data.success) return null;
+
+    const coin = data.result;
+
+    console.log(coin);
+
+    return new MyCoin(
+      coin.Currency,
+      coin.Balance,
+      coin.Available,
+      coin.Pending,
+      coin.CryptoAddress,
+    );
+  } catch (err) {
+    return null;
   }
 }
 
@@ -371,4 +404,35 @@ export async function loadMarketSummaries(): Promise<[Coin[], string[]]> {
   await AsyncStorage.setItem('@extracker:markets', JSON.stringify(listMarkets));
 
   return [listCoins, listMarkets];
+}
+
+export async function calcAllCoinsInBtc() {
+  const d = await loadMarketSummaries();
+  const coins: Coin[] = d[0];
+  const markets: string[] = d[1];
+
+  const allCoinsInBtc = { BTC: 1 };
+
+  const fakeCoins = markets
+    .filter(it => it !== 'BTC')
+    .map(it => new Coin(it, 'BTC'));
+
+  [...coins, ...fakeCoins]
+    .filter(it => it.name !== 'BTC')
+    .map(it => {
+      let pair = coins.find(
+        it2 => it2.name === it.name && it2.market === 'BTC',
+      );
+
+      if (pair) {
+        allCoinsInBtc[it.name] = pair.last;
+      } else {
+        pair = coins.find(it2 => it2.name === 'BTC' && it2.market === it.name);
+        if (pair) {
+          allCoinsInBtc[it.name] = 1 / pair.last;
+        }
+      }
+    });
+
+  return allCoinsInBtc;
 }

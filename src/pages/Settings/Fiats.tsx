@@ -1,7 +1,7 @@
 import ModalSelector from 'react-native-modal-selector';
 import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet, Alert, View } from 'react-native';
 import styled from 'styled-components/native';
+import { Text, StyleSheet, Alert, View } from 'react-native';
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import StorageUtils from '../../utils/StorageUtils';
@@ -43,7 +43,6 @@ export default function Fiats() {
             style={{ marginHorizontal: 8, flex: 1 }}
             onChange={fiat => {
               const cf2 = [...fiats];
-
               cf2[i] = fiat;
 
               setFiats(cf2);
@@ -61,9 +60,11 @@ export default function Fiats() {
 
 const Button = styled.TouchableOpacity`
   border-width: ${StyleSheet.hairlineWidth}px;
+  width: 50%;
   margin: 8px;
   padding: 8px;
   justify-content: center;
   align-items: center;
+  align-self: center;
   border-color: ${colors.darker};
 `;

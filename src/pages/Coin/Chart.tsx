@@ -1,6 +1,5 @@
 import ModalSelector from 'react-native-modal-selector';
 import { CandleStickChart } from 'react-native-charts-wrapper';
-import styled from 'styled-components/native';
 import React, { useEffect, useState } from 'react';
 import { View, Text, processColor } from 'react-native';
 import { colors } from '../../style/globals';
@@ -10,6 +9,7 @@ import {
   loadCandleChartData,
 } from '../../controllers/Bittrex';
 import StorageUtils from '../../utils/StorageUtils';
+import { Container } from '../../components/Generics';
 
 export default function CoinPageChart({ coin: pCoin }) {
   const coin: Coin = pCoin || new Coin('DCR', 'BTC');
@@ -162,8 +162,3 @@ export default function CoinPageChart({ coin: pCoin }) {
     </Container>
   );
 }
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  margin: 8px;
-`;

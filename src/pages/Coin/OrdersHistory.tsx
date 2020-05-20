@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { View, FlatList, Text } from 'react-native';
-import styled from 'styled-components/native';
 import Coin from '../../models/Coin';
 import OrderHistory from '../../models/OrderHistory';
 import { loadMarketHistory } from '../../controllers/Bittrex';
 
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
+import { Container } from '../../components/Generics';
 
 export default function CoinPageOrdersHistory(props) {
+  const coin: Coin = props.coin || new Coin('DCR', 'BTC');
   const [refreshing, setRefreshing] = useState(false);
-  const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
 
   const [orders, setOrders] = useState<OrderHistory[]>([]);
 
@@ -93,8 +93,3 @@ export default function CoinPageOrdersHistory(props) {
     </Container>
   );
 }
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  margin: 8px;
-`;

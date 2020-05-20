@@ -6,7 +6,13 @@ import { colors } from '../../style/globals';
 import MyInput from '../../components/MyInput';
 import StorageUtils from '../../utils/StorageUtils';
 
-export default function Keys({ onSave }) {
+interface KeysProps {
+  onSave(): void | null;
+}
+
+export default function Keys(props: KeysProps) {
+  const { onSave } = props;
+
   const [alreadyHaveKey, setAlreadyHaveKey] = useState(false);
   const [key, setKey] = useState('');
   const [secret, setSecret] = useState('');
@@ -73,9 +79,11 @@ export default function Keys({ onSave }) {
 
 const Button = styled.TouchableOpacity`
   border-width: ${StyleSheet.hairlineWidth}px;
+  width: 50%;
   margin: 8px;
   padding: 8px;
   justify-content: center;
   align-items: center;
+  align-self: center;
   border-color: ${colors.darker};
 `;

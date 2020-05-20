@@ -14,6 +14,7 @@ import WalletPage from './pages/Wallet';
 import { colors } from './style/globals';
 import './utils/prototypes';
 import CoinPageMyOrdersHistory from './pages/Wallet/MyOrdersHistory';
+import CoinPageCalculator from './pages/Coin/Calculator';
 
 // const CoinPageNavigator = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -39,6 +40,7 @@ const WalletPageStack = () => (
     <Stack.Screen name="Coins" component={CoinPage} />
     <Stack.Screen name="NewOrder" component={NewOrder} />
     <Stack.Screen name="Orders" component={CoinPageMyOrdersHistory} />
+    <Stack.Screen name="Calculator" component={CoinPageCalculator} />
   </Stack.Navigator>
 );
 

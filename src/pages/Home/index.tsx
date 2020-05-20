@@ -28,12 +28,9 @@ import FiatBlock from '../../components/FiatBlock';
 import { H1 } from '../../components/Hs';
 import BlackWhiteBlock from '../../components/BlackWhiteBlock';
 import StorageUtils from '../../utils/StorageUtils';
+import { Container } from '../../components/Generics';
 
-let count = 0;
 export default function Home({ navigation }) {
-  count++;
-
-  console.log(count);
   const [hasKeys, setHasKeys] = useState(false);
 
   navigation.setOptions({
@@ -411,11 +408,6 @@ export default function Home({ navigation }) {
     </Container>
   );
 }
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  margin: 8px;
-`;
 
 const Header = styled.View`
   flex-direction: row;

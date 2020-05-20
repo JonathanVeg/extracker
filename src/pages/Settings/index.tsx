@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components/native';
+import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
+import styled from 'styled-components/native';
+import { StyleSheet } from 'react-native';
 import Keys from './Keys';
 import Fiats from './Fiats';
-import lf from '../../controllers/fiats/ListFiats';
 import HamburgerIcon from '../../components/HamburgerIcon';
+import { Container } from '../../components/Generics';
 
 const SettingsPage = ({ navigation }) => {
   navigation.setOptions({
@@ -16,6 +17,7 @@ const SettingsPage = ({ navigation }) => {
     <Container>
       <ScrollView>
         <Keys />
+        <DivisionLine />
         <Fiats />
       </ScrollView>
     </Container>
@@ -24,7 +26,11 @@ const SettingsPage = ({ navigation }) => {
 
 export default SettingsPage;
 
-const Container = styled.SafeAreaView`
-  flex: 1;
-  margin: 8px;
+const DivisionLine = styled.View`
+  align-self: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  width: 80%;
+  border-bottom-color: black;
+  border-bottom-width: ${StyleSheet.hairlineWidth}px;
 `;

@@ -1,68 +1,570 @@
 [
   {
-    "inBtc": 0.00007345147200000001,
-    "myCoin": {
-      "address": "1EqYgBsx69zD6qSXwnwuxaozXHU1Pr9svF",
-      "available": 0.0027728,
-      "balance": 0.0027728,
-      "key": "my_BCH",
-      "name": "BCH",
-      "pending": 0
-    }
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_1ST",
+    "name": "1ST",
+    "pending": 0
   },
   {
-    "inBtc": 0.000059317068544,
-    "myCoin": {
-      "address": "15vX2DQVcYw6r3s987wVm6ddnyPcFACRjk",
-      "available": 0.0027728,
-      "balance": 0.0027728,
-      "key": "my_BSV",
-      "name": "BSV",
-      "pending": 0
-    }
+    "address": "DdzFFzCqrhsgf83QyexxDNHtNV8ebfwbPeF46doAJGXXZDN8SbSD5QsngXZSvTo4Cdq5ejQaGAAMHSUh8dskCYKHUAnVzMb2kVzx1bv6",
+    "available": 0,
+    "balance": 0,
+    "key": "my_ADA",
+    "name": "ADA",
+    "pending": 0
   },
   {
-    "inBtc": 0.27800646,
-    "myCoin": {
-      "address": "1GDa2bhgKaCwQrka2xY1P9cexKNb88HYFE",
-      "available": 1e-8,
-      "balance": 0.27800646,
-      "key": "my_BTC",
-      "name": "BTC",
-      "pending": 0
-    }
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_ADT",
+    "name": "ADT",
+    "pending": 0
   },
   {
-    "inBtc": 0,
-    "myCoin": {
-      "address": null,
-      "available": 967.09180948,
-      "balance": 967.09180948,
-      "key": "my_BTXCRD",
-      "name": "BTXCRD",
-      "pending": 0
-    }
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_ADX",
+    "name": "ADX",
+    "pending": 0
   },
   {
-    "inBtc": 0.23896255774006558,
-    "myCoin": {
-      "address": "DsUJTC7MZDWfnWyYnmm9P6ijsA44oRQVsSn",
-      "available": 1e-8,
-      "balance": 162.00412039,
-      "key": "my_DCR",
-      "name": "DCR",
-      "pending": 0
-    }
+    "address": "de2f4a59446347dbaa834c1df10b882c52b85c2d9cb842ddb792b7aac0f76095",
+    "available": 0,
+    "balance": 0,
+    "key": "my_AEON",
+    "name": "AEON",
+    "pending": 0
   },
   {
-    "inBtc": 0.00002196415156236906,
-    "myCoin": {
-      "address": null,
-      "available": 0.19369366,
-      "balance": 0.19369366,
-      "key": "my_USD",
-      "name": "USD",
-      "pending": 0
-    }
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_ANT",
+    "name": "ANT",
+    "pending": 0
+  },
+  {
+    "address": "AejHDL8rFSZYPdkRWnte44BR4cto8RSdkt",
+    "available": 0,
+    "balance": 0,
+    "key": "my_ARK",
+    "name": "ARK",
+    "pending": 0
+  },
+  {
+    "address": "1EqYgBsx69zD6qSXwnwuxaozXHU1Pr9svF",
+    "available": 0.0027728,
+    "balance": 0.0027728,
+    "key": "my_BCH",
+    "name": "BCH",
+    "pending": 0
+  },
+  {
+    "address": "BpqVEbD8DvHHFYk6BfYPjLJDhoCxekhWtG",
+    "available": 0,
+    "balance": 0,
+    "key": "my_BLOCK",
+    "name": "BLOCK",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_BLT",
+    "name": "BLT",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_BOXX",
+    "name": "BOXX",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_BRZ",
+    "name": "BRZ",
+    "pending": 0
+  },
+  {
+    "address": "15vX2DQVcYw6r3s987wVm6ddnyPcFACRjk",
+    "available": 0.0027728,
+    "balance": 0.0027728,
+    "key": "my_BSV",
+    "name": "BSV",
+    "pending": 0
+  },
+  {
+    "address": "1GDa2bhgKaCwQrka2xY1P9cexKNb88HYFE",
+    "available": 1e-8,
+    "balance": 0.27800646,
+    "key": "my_BTC",
+    "name": "BTC",
+    "pending": 0
+  },
+  {
+    "address": "555ddb1c0c854b25b73",
+    "available": 0,
+    "balance": 0,
+    "key": "my_BTS",
+    "name": "BTS",
+    "pending": 0
+  },
+  {
+    "address": null,
+    "available": 967.09180948,
+    "balance": 967.09180948,
+    "key": "my_BTXCRD",
+    "name": "BTXCRD",
+    "pending": 0
+  },
+  {
+    "address": "02fb2422326f4101ab2f8dcedc394e53e1a38812883146ad9f347f8dbdbb1807",
+    "available": 0,
+    "balance": 0,
+    "key": "my_BURST",
+    "name": "BURST",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_CMCT",
+    "name": "CMCT",
+    "pending": 0
+  },
+  {
+    "address": "BG5poyWgUXwpJRsHm9UkJErraFLZLTjEUT",
+    "available": 0,
+    "balance": 0,
+    "key": "my_CURE",
+    "name": "CURE",
+    "pending": 0
+  },
+  {
+    "address": "XsLBgVawGuizcWu6QgpxQesGDwDbe25x35",
+    "available": 0,
+    "balance": 0,
+    "key": "my_DASH",
+    "name": "DASH",
+    "pending": 0
+  },
+  {
+    "address": "DsUJTC7MZDWfnWyYnmm9P6ijsA44oRQVsSn",
+    "available": 0,
+    "balance": 162.00412039,
+    "key": "my_DCR",
+    "name": "DCR",
+    "pending": 0
+  },
+  {
+    "address": "D8srrgt79Sy7ku3xgK9nFmwURkfKPqyeUk",
+    "available": 0,
+    "balance": 0,
+    "key": "my_DGB",
+    "name": "DGB",
+    "pending": 0
+  },
+  {
+    "address": "D9CLDhtA8HZAwfBLrfZAHVxQsxso9WHNad",
+    "available": 0,
+    "balance": 0,
+    "key": "my_DOGE",
+    "name": "DOGE",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_EDR",
+    "name": "EDR",
+    "pending": 0
+  },
+  {
+    "address": "EN8pPsW5PKKob3WbGjTKjXZoR6mFVe6go9",
+    "available": 0,
+    "balance": 0,
+    "key": "my_EMC2",
+    "name": "EMC2",
+    "pending": 0
+  },
+  {
+    "address": "0x88cf0417b3bfdb7d3f198ec8a8c12477a494a3bb",
+    "available": 0,
+    "balance": 0,
+    "key": "my_ETC",
+    "name": "ETC",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_ETH",
+    "name": "ETH",
+    "pending": 0
+  },
+  {
+    "address": "FA3CVMd3WkJFBxqLamKtcywNa8STgtrPjEKnPJy5qCkA1hAHuCtG",
+    "available": 0,
+    "balance": 0,
+    "key": "my_FCT",
+    "name": "FCT",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_GNO",
+    "name": "GNO",
+    "pending": 0
+  },
+  {
+    "address": "Fgwpq748Afv2Dv28w1QKsqKURjigvgjM6j",
+    "available": 1e-8,
+    "balance": 1e-8,
+    "key": "my_GRS",
+    "name": "GRS",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_LAMB",
+    "name": "LAMB",
+    "pending": 0
+  },
+  {
+    "address": "LQKxspbkozyHkWCRuwMcjVpkaPoLEbjAoe",
+    "available": 0,
+    "balance": 0,
+    "key": "my_LTC",
+    "name": "LTC",
+    "pending": 0
+  },
+  {
+    "address": "1M9DsznT8vjGZ6L2SLorsqVrh9C4yAtU8G",
+    "available": 0,
+    "balance": 0,
+    "key": "my_MAID",
+    "name": "MAID",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_MCO",
+    "name": "MCO",
+    "pending": 0
+  },
+  {
+    "address": "P98CmnxVuFU4ksMKHr654zFbpdABqHMRdJ",
+    "available": 0,
+    "balance": 0,
+    "key": "my_MEME",
+    "name": "MEME",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_MLN",
+    "name": "MLN",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_MTL",
+    "name": "MTL",
+    "pending": 0
+  },
+  {
+    "address": "AeKWGuwDAeWjHkedE3yK7VtBZp1WTkfiGy",
+    "available": 0,
+    "balance": 0,
+    "key": "my_NEO",
+    "name": "NEO",
+    "pending": 0
+  },
+  {
+    "address": "GNJQTJT3zbm5ympu98VwQxqo6unfxSL3fd",
+    "available": 0,
+    "balance": 0,
+    "key": "my_NLG",
+    "name": "NLG",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_NMR",
+    "name": "NMR",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_NPXS",
+    "name": "NPXS",
+    "pending": 0
+  },
+  {
+    "address": "2RSUW36DoDBzxMFFXoTCLpGgf4VrEggtUCmnvwysNwGfVcLzjE1",
+    "available": 0,
+    "balance": 0,
+    "key": "my_NXS",
+    "name": "NXS",
+    "pending": 0
+  },
+  {
+    "address": "fc8f173c6dc94726a3f58daa632bc016e702b792372643bfa016f860070b0d31",
+    "available": 0,
+    "balance": 0,
+    "key": "my_NXT",
+    "name": "NXT",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_ORBS",
+    "name": "ORBS",
+    "pending": 0
+  },
+  {
+    "address": "Pp84352puVuN7UK7x3eh5jqjzkYVkW4pSq",
+    "available": 0,
+    "balance": 0,
+    "key": "my_PART",
+    "name": "PART",
+    "pending": 0
+  },
+  {
+    "address": "DKwmFeqEVh2DP4jz4q96WLhuGidkHV9jSF",
+    "available": 0,
+    "balance": 0,
+    "key": "my_PIVX",
+    "name": "PIVX",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_PMA",
+    "name": "PMA",
+    "pending": 0
+  },
+  {
+    "address": "PQ6eH8TJ6bxypW3pJcQU3shoGMBVsj9gF4",
+    "available": 1e-8,
+    "balance": 1e-8,
+    "key": "my_POT",
+    "name": "POT",
+    "pending": 0
+  },
+  {
+    "address": "RnZHTbv4Ld7o7SptR1oMUyeAt7gw7nFK81",
+    "available": 0,
+    "balance": 0,
+    "key": "my_RDD",
+    "name": "RDD",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_RLC",
+    "name": "RLC",
+    "pending": 0
+  },
+  {
+    "address": "RW2JYbJQfUAJiLczVs5hDzWgJyuLF37skV",
+    "available": 0,
+    "balance": 0,
+    "key": "my_RVN",
+    "name": "RVN",
+    "pending": 0
+  },
+  {
+    "address": "bfabc6482eafff5473e1b5edda72fb94665553d053bf088aa2f9d77bc61eb18de72d9ca9cd0b",
+    "available": 0,
+    "balance": 0,
+    "key": "my_SC",
+    "name": "SC",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_SOLVE",
+    "name": "SOLVE",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_SRN",
+    "name": "SRN",
+    "pending": 0
+  },
+  {
+    "address": "1fb676fc3ef34a219c4",
+    "available": 0,
+    "balance": 0,
+    "key": "my_STEEM",
+    "name": "STEEM",
+    "pending": 0
+  },
+  {
+    "address": "SjC1A4CDYF1rBpubo6oLdkhNxMrBWpHFjt",
+    "available": 0,
+    "balance": 0,
+    "key": "my_STRAT",
+    "name": "STRAT",
+    "pending": 0
+  },
+  {
+    "address": "SZH2joQMe4TMHUUY7KPApCxT9oj6eaM9Rz",
+    "available": 0,
+    "balance": 0,
+    "key": "my_SYS",
+    "name": "SYS",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_TUSD",
+    "name": "TUSD",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_UKG",
+    "name": "UKG",
+    "pending": 0
+  },
+  {
+    "address": null,
+    "available": 0.19369366,
+    "balance": 0.19369366,
+    "key": "my_USD",
+    "name": "USD",
+    "pending": 0
+  },
+  {
+    "address": "VvmGvt6JZEUguk9NtezqCRPoAT3756XUbY",
+    "available": 0,
+    "balance": 0,
+    "key": "my_VIA",
+    "name": "VIA",
+    "pending": 0
+  },
+  {
+    "address": "Voq8BXeHn8MLpeYWKsUSMd9pfrCTexTJTV",
+    "available": 0,
+    "balance": 0,
+    "key": "my_VTC",
+    "name": "VTC",
+    "pending": 0
+  },
+  {
+    "address": "3PFBvyFJDC1uh7UfXACunonjLV5occQ6ftH",
+    "available": 0,
+    "balance": 0,
+    "key": "my_WAVES",
+    "name": "WAVES",
+    "pending": 0
+  },
+  {
+    "address": "f1e95cc278e34c3f987",
+    "available": 0,
+    "balance": 0,
+    "key": "my_XEM",
+    "name": "XEM",
+    "pending": 0
+  },
+  {
+    "address": "713131710888465a9df",
+    "available": 1e-8,
+    "balance": 1e-8,
+    "key": "my_XLM",
+    "name": "XLM",
+    "pending": 0
+  },
+  {
+    "address": "MBNneAy9AWxehkkTRw4Bi2ywsYMkWxacJA",
+    "available": 0,
+    "balance": 0,
+    "key": "my_XMY",
+    "name": "XMY",
+    "pending": 0
+  },
+  {
+    "address": "0xd6cab66bba8d079bed664cc729ccdc6a259bed8f",
+    "available": 0,
+    "balance": 0,
+    "key": "my_XNK",
+    "name": "XNK",
+    "pending": 0
+  },
+  {
+    "address": "1146699106",
+    "available": 0,
+    "balance": 0,
+    "key": "my_XRP",
+    "name": "XRP",
+    "pending": 0
+  },
+  {
+    "address": "DKwWEP3GjUMzWnwrmXxuquU6P1msXDCCz7",
+    "available": 0,
+    "balance": 0,
+    "key": "my_XVG",
+    "name": "XVG",
+    "pending": 0
+  },
+  {
+    "address": "t1L1mFLtfEbfDSghwRAbWGUryf2iDyiYRW9",
+    "available": 0,
+    "balance": 0,
+    "key": "my_ZEC",
+    "name": "ZEC",
+    "pending": 0
+  },
+  {
+    "address": "zndfeHmTYmwue2oW9gVc9MPnZzaueckiQup",
+    "available": 0,
+    "balance": 0,
+    "key": "my_ZEN",
+    "name": "ZEN",
+    "pending": 0
   }
 ]

@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
-import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Coin from '../../models/Coin';
 import { loadMyOrders, loadClosedOrders } from '../../controllers/Bittrex';
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import MyOrder from '../../models/MyOrder';
+import { Container } from '../../components/Generics';
 
 export default function CoinPageMyOrdersHistory(props) {
+  const coin: Coin = props.coin || new Coin('DCR', 'BTC');
+
   const [showOpened, setShowOpened] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-
-  const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
-
   const [orders, setOrders] = useState<MyOrder[]>([]);
 
   async function loadOrders() {
@@ -64,8 +63,7 @@ export default function CoinPageMyOrdersHistory(props) {
       >
         <Text style={{ flex: 0.8, textAlign: 'left' }}>
           {order.type === 'BUY' ? '+ ' : '- '}
-          {order.coin}
-/{order.market}
+          {order.coin}/{order.market}
         </Text>
 
         <Text style={{ flex: 1, textAlign: 'left' }}>
@@ -179,8 +177,3 @@ export default function CoinPageMyOrdersHistory(props) {
     </Container>
   );
 }
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  margin: 8px;
-`;
