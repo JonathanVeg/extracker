@@ -13,14 +13,14 @@ import { Spacer } from '../../components/Spacer';
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import { Container } from '../../components/Generics';
-import { FiatContext } from '../../context/FiatContext';
+import { useFiats } from '../../context/FiatContext';
 
 interface CoinPageSummaryInterface {
   coin: Coin | null;
 }
 
 export default function CoinPageSummary(props: CoinPageSummaryInterface) {
-  const { fiats } = useContext(FiatContext);
+  const { fiats } = useFiats();
   const [allCoinsInBtc, setAllCoinsInBtc] = useState({});
 
   const [refreshing, setRefreshing] = useState(false);

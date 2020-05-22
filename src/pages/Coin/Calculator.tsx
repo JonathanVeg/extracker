@@ -7,12 +7,10 @@ import FiatBlock from '../../components/FiatBlock';
 import { Row } from '../../components/Generics';
 import { colors } from '../../style/globals';
 import { loadSummary, calcAllCoinsInBtc } from '../../controllers/Bittrex';
-import { FiatContext } from '../../context/FiatContext';
+import { useFiats } from '../../context/FiatContext';
 
 export default function CoinPageCalculator(props) {
-  const { fiats } = useContext(FiatContext);
-
-  const [, setLastRefreshing] = useState(+new Date());
+  const { fiats } = useFiats();
   const [allCoinsInBtc, setAllCoinsInBtc] = useState({});
 
   const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
@@ -33,14 +31,6 @@ export default function CoinPageCalculator(props) {
   useEffect(() => {
     loadData();
   }, []);
-
-  const updateRefreshing = () => setLastRefreshing(+new Date());
-
-  useEffect(() => {
-    fiats.map(it => {
-      it.load().then(updateRefreshing);
-    });
-  }, [fiats]);
 
   async function loadFiats() {
     const valInFiats = [];

@@ -10,14 +10,10 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import styled from 'styled-components/native';
 import { TextInput } from 'react-native-gesture-handler';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Coin from '../../models/Coin';
 import MyCoin from '../../models/MyCoin';
-import {
-  loadBalances,
-  loadMarketSummaries,
-  hasKeysSaved,
-} from '../../controllers/Bittrex';
+import { loadBalances, loadMarketSummaries } from '../../controllers/Bittrex';
 import FiatsBlock from './FiatsBlock';
 import { sortArrayByKey } from '../../utils/utils';
 import HamburgerIcon from '../../components/HamburgerIcon';
@@ -27,17 +23,17 @@ import { H1 } from '../../components/Hs';
 import BlackWhiteBlock from '../../components/BlackWhiteBlock';
 import StorageUtils from '../../utils/StorageUtils';
 import { Container } from '../../components/Generics';
-import { FiatContext } from '../../context/FiatContext';
+import { useFiats } from '../../context/FiatContext';
+import { useKeys } from '../../context/KeysContext';
 
 export default function Home({ navigation }) {
-  const [hasKeys, setHasKeys] = useState(false);
-
   navigation.setOptions({
     title: 'Trextracker',
     headerLeft: () => <HamburgerIcon navigationProps={navigation} />,
   });
 
-  const { fiats } = useContext(FiatContext);
+  const { fiats } = useFiats();
+  const { hasKeys } = useKeys();
 
   const [showBalanceBlock, setShowBalanceBlock] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
@@ -51,11 +47,9 @@ export default function Home({ navigation }) {
   const [search, setSearch] = useState('');
 
   async function refresh() {
-    const has = await hasKeysSaved();
-
     let hideSmall = false;
 
-    if (has) {
+    if (hasKeys) {
       const hide = (await StorageUtils.getItem('hideSmall')) === 'true';
 
       hideSmall = hide;
@@ -65,9 +59,7 @@ export default function Home({ navigation }) {
 
     loadCoins();
 
-    if (has) {
-      setHasKeys(true);
-
+    if (hasKeys) {
       loadMyCoins();
     }
   }

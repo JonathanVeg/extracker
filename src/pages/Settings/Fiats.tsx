@@ -2,7 +2,7 @@ import ModalSelector from 'react-native-modal-selector';
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components/native';
 import { Text, StyleSheet, Alert, View } from 'react-native';
-import { FiatContext } from '../../context/FiatContext';
+import { useFiats } from '../../context/FiatContext';
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import StorageUtils from '../../utils/StorageUtils';
@@ -12,7 +12,7 @@ import listFiats from '../../controllers/fiats/FiatsHelper';
 
 export default function Fiats() {
   const [fiats, setFiats] = useState<Fiat[]>([]);
-  const { reloadFiats } = useContext(FiatContext);
+  const { reloadFiats } = useFiats();
 
   async function loadFiats() {
     const fiats = await listFiats();

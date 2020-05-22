@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import { default as FA } from 'react-native-vector-icons/FontAwesome';
 import { FlatList, StyleSheet, View, Text } from 'react-native';
@@ -8,15 +8,12 @@ import HamburgerIcon from '../../components/HamburgerIcon';
 import LabelValueBlock from '../../components/LabelValueBlock';
 import MyCoin from '../../models/MyCoin';
 import { H1 } from '../../components/Hs';
-import {
-  hasKeysSaved,
-  loadBalances,
-  loadMarketSummaries,
-} from '../../controllers/Bittrex';
+import { loadBalances, loadMarketSummaries } from '../../controllers/Bittrex';
 import { Spacer } from '../../components/Spacer';
 import { sortArrayByKey } from '../../utils/utils';
 import Keys from '../Settings/Keys';
-import { FiatContext } from '../../context/FiatContext';
+import { useFiats } from '../../context/FiatContext';
+import { useKeys } from '../../context/KeysContext';
 
 interface WalletListItem {
   myCoin: MyCoin;
@@ -24,7 +21,7 @@ interface WalletListItem {
 }
 
 export default function WalletPage({ navigation }) {
-  const [hasKeys, setHasKeys] = useState(false);
+  const { hasKeys } = useKeys();
 
   const headerLeft = () => <HamburgerIcon navigationProps={navigation} />;
   const headerRight = () => (
@@ -43,7 +40,7 @@ export default function WalletPage({ navigation }) {
 
   navigation.setOptions({ title: 'Wallets', headerLeft, headerRight });
 
-  const { fiats } = useContext(FiatContext);
+  const { fiats } = useFiats();
   const [listItems, setListItems] = useState<WalletListItem[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [myCoins, setMyCoins] = useState<MyCoin[]>([]);
@@ -83,17 +80,14 @@ export default function WalletPage({ navigation }) {
 
   useEffect(() => {
     refresh();
-  }, []);
+  }, [hasKeys]);
 
   useEffect(() => {
     calcAllCoinsInBtc();
   }, [coins, markets]);
 
   const refresh = async () => {
-    const has = await hasKeysSaved();
-
-    if (has) {
-      setHasKeys(true);
+    if (hasKeys) {
       load();
       loadCoins();
     }
@@ -152,7 +146,7 @@ export default function WalletPage({ navigation }) {
         <H1 style={{ textAlign: 'center' }}>
           You need to have saved keys to use this page properly
         </H1>
-        <Keys onSave={refresh} />
+        <Keys />
       </Container>
     );
 

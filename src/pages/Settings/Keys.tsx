@@ -5,42 +5,28 @@ import { H1, H2, H3 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import MyInput from '../../components/MyInput';
 import StorageUtils from '../../utils/StorageUtils';
+import { useKeys } from '../../context/KeysContext';
 
-interface KeysProps {
-  onSave(): void | null;
-}
+export default function Keys() {
+  const { hasKeys, key, secret, reloadKeys } = useKeys();
 
-export default function Keys(props: KeysProps) {
-  const { onSave } = props;
-
-  const [alreadyHaveKey, setAlreadyHaveKey] = useState(false);
-  const [key, setKey] = useState('');
-  const [secret, setSecret] = useState('');
-
-  async function readKeys() {
-    const data = await StorageUtils.getKeys();
-
-    const hasKeys = !!data.key && !!data.secret;
-
-    if (hasKeys) {
-      setKey(`${data.key.substring(0, 3)}...${data.key.slice(-3)}`);
-      setSecret(`${data.secret.substring(0, 3)}...${data.secret.slice(-3)}`);
-    }
-
-    setAlreadyHaveKey(hasKeys);
-  }
+  const [newKey, setNewKey] = useState('');
+  const [newSecret, setNewSecret] = useState('');
 
   useEffect(() => {
-    readKeys();
+    if (hasKeys) {
+      setNewKey(`${key.substring(0, 3)}...${key.slice(-3)}`);
+      setNewSecret(`${secret.substring(0, 3)}...${secret.slice(-3)}`);
+    }
   }, []);
 
   async function saveKeys() {
     try {
-      await StorageUtils.saveKeys(key, secret);
+      await StorageUtils.saveKeys(newKey, newSecret);
 
       Alert.alert('Success', 'Keys saved');
 
-      if (onSave) onSave();
+      reloadKeys();
     } catch (err) {
       Alert.alert('Error', 'Error while saving keys');
     }
@@ -49,14 +35,14 @@ export default function Keys(props: KeysProps) {
   return (
     <>
       <H1>Account Keys</H1>
-      {alreadyHaveKey && <H3>(you will override saved data)</H3>}
+      {hasKeys && <H3>(you will override saved data)</H3>}
 
       <H2>Key</H2>
       <MyInput
         spellCheck={false}
-        value={key}
+        value={newKey}
         onChangeText={text => {
-          setKey(text);
+          setNewKey(text);
         }}
       />
 
@@ -64,9 +50,9 @@ export default function Keys(props: KeysProps) {
 
       <MyInput
         spellCheck={false}
-        value={secret}
+        value={newSecret}
         onChangeText={text => {
-          setSecret(text);
+          setNewSecret(text);
         }}
       />
 

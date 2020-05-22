@@ -11,14 +11,6 @@ import OrderHistory from '../models/OrderHistory';
 import ChartData from '../models/ChartData';
 import StorageUtils from '../utils/StorageUtils';
 
-export async function hasKeysSaved(): Promise<boolean> {
-  const s = await StorageUtils.getKeys();
-  const { key } = s;
-  const { secret } = s;
-
-  return !!key && !!secret;
-}
-
 export function sign(url: string, secret: string) {
   const sha512 = require('js-sha512');
 
