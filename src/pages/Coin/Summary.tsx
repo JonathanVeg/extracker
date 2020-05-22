@@ -1,19 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { ScrollView, RefreshControl } from 'react-native';
+import listFiats from '../../controllers/fiats/FiatsHelper';
+import {
+  loadSummary,
+  calcAllCoinsInBtc,
+  loadBalance,
+} from '../../controllers/Bittrex';
 import Coin from '../../models/Coin';
-import { loadSummary, loadBalance } from '../../controllers/Bittrex';
 import LabelValueBlock from '../../components/LabelValueBlock';
 import MyCoin from '../../models/MyCoin';
 import { Spacer } from '../../components/Spacer';
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import { Container } from '../../components/Generics';
+import { FiatContext } from '../../context/FiatContext';
 
 interface CoinPageSummaryInterface {
   coin: Coin | null;
 }
 
 export default function CoinPageSummary(props: CoinPageSummaryInterface) {
+  const { fiats } = useContext(FiatContext);
+  const [allCoinsInBtc, setAllCoinsInBtc] = useState({});
+
   const [refreshing, setRefreshing] = useState(false);
   const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
   const [myCoin, setMyCoin] = useState<MyCoin | null>(null);
@@ -41,9 +50,12 @@ export default function CoinPageSummary(props: CoinPageSummaryInterface) {
     }
   }
 
-  function refresh() {
+  async function refresh() {
     load();
     loadMyData();
+
+    const acib = await calcAllCoinsInBtc();
+    setAllCoinsInBtc(acib);
   }
 
   useEffect(() => {
@@ -114,6 +126,18 @@ export default function CoinPageSummary(props: CoinPageSummaryInterface) {
           label={`24h ${coin.name} vol.`}
           value={coin.volume}
         />
+        {fiats.map(fiat => (
+          <LabelValueBlock
+            key={`coinsummaryfiat${fiat.name}`}
+            style={{ padding: 3, backgroundColor: color() }}
+            label={fiat.name}
+            value={(
+              (fiat?.data?.last || 0) *
+              coin.last *
+              (allCoinsInBtc[coin.market] || 0)
+            ).idealDecimalPlaces()}
+          />
+        ))}
       </>
     );
   };
@@ -155,6 +179,19 @@ export default function CoinPageSummary(props: CoinPageSummaryInterface) {
           value={myCoin.balance * coin.last}
           adjustDecimals
         />
+        {fiats.map(fiat => (
+          <LabelValueBlock
+            key={`coinsummaryfiat${fiat.name}`}
+            style={{ padding: 3, backgroundColor: color() }}
+            label={`Eq. in ${fiat.name}`}
+            value={(
+              (fiat?.data?.last || 0) *
+              myCoin.balance *
+              coin.last *
+              (allCoinsInBtc[coin.market] || 0)
+            ).idealDecimalPlaces()}
+          />
+        ))}
         <LabelValueBlock
           style={{ padding: 3, backgroundColor: color() }}
           label="Deposit address"

@@ -95,8 +95,6 @@ export async function loadBalance(currency: string): Promise<MyCoin | null> {
 
     const coin = data.result;
 
-    console.log(coin);
-
     return new MyCoin(
       coin.Currency,
       coin.Balance,

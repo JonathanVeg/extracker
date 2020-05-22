@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { H1, H2 } from '../../components/Hs';
 import Coin from '../../models/Coin';
 import MyInput from '../../components/MyInput';
 import FiatBlock from '../../components/FiatBlock';
-import listFiats from '../../controllers/fiats/FiatsHelper';
-import Fiat from '../../controllers/fiats/Fiat';
 import { Row } from '../../components/Generics';
 import { colors } from '../../style/globals';
 import { loadSummary, calcAllCoinsInBtc } from '../../controllers/Bittrex';
+import { FiatContext } from '../../context/FiatContext';
 
 export default function CoinPageCalculator(props) {
-  const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
-  const [fiats, setFiats] = useState<Fiat[]>([]);
+  const { fiats } = useContext(FiatContext);
+
   const [, setLastRefreshing] = useState(+new Date());
   const [allCoinsInBtc, setAllCoinsInBtc] = useState({});
+
+  const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
 
   const [valInCoin, setValInCoin] = useState('1');
   const [valInMarket, setValInMarket] = useState('1');
@@ -42,9 +43,6 @@ export default function CoinPageCalculator(props) {
   }, [fiats]);
 
   async function loadFiats() {
-    const fiats = await listFiats();
-    setFiats(fiats);
-
     const valInFiats = [];
 
     fiats.map(_ => valInFiats.push('1'));

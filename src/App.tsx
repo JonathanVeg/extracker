@@ -15,6 +15,7 @@ import { colors } from './style/globals';
 import './utils/prototypes';
 import CoinPageMyOrdersHistory from './pages/Wallet/MyOrdersHistory';
 import CoinPageCalculator from './pages/Coin/Calculator';
+import { FiatProvider } from './context/FiatContext';
 
 // const CoinPageNavigator = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -87,11 +88,13 @@ const GlobalNavigator = () => (
 const App = () => (
   <>
     <StatusBar barStyle="dark-content" backgroundColor="white" />
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <GlobalNavigator />
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <FiatProvider>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <GlobalNavigator />
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </FiatProvider>
   </>
 );
 

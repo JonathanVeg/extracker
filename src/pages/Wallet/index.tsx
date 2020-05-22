@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components/native';
 import { default as FA } from 'react-native-vector-icons/FontAwesome';
 import { FlatList, StyleSheet, View, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Coin from '../../models/Coin';
-import Fiat from '../../controllers/fiats/Fiat';
 import HamburgerIcon from '../../components/HamburgerIcon';
 import LabelValueBlock from '../../components/LabelValueBlock';
-import listFiats from '../../controllers/fiats/FiatsHelper';
 import MyCoin from '../../models/MyCoin';
 import { H1 } from '../../components/Hs';
 import {
@@ -18,6 +16,7 @@ import {
 import { Spacer } from '../../components/Spacer';
 import { sortArrayByKey } from '../../utils/utils';
 import Keys from '../Settings/Keys';
+import { FiatContext } from '../../context/FiatContext';
 
 interface WalletListItem {
   myCoin: MyCoin;
@@ -44,12 +43,10 @@ export default function WalletPage({ navigation }) {
 
   navigation.setOptions({ title: 'Wallets', headerLeft, headerRight });
 
+  const { fiats } = useContext(FiatContext);
   const [listItems, setListItems] = useState<WalletListItem[]>([]);
-
-  const [, setLastRefresh] = useState(+new Date());
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [myCoins, setMyCoins] = useState<MyCoin[]>([]);
-  const [fiats, setFiats] = useState<Fiat[]>([]);
   const [coins, setCoins] = useState<Coin[]>([]);
   const [markets, setMarkets] = useState<string[]>([]);
   const [allCoinsInBtc, setAllCoinsInBtc] = useState<object>({});
@@ -92,26 +89,15 @@ export default function WalletPage({ navigation }) {
     calcAllCoinsInBtc();
   }, [coins, markets]);
 
-  useEffect(() => {
-    fiats.map(it => it.load().then(() => setLastRefresh(+new Date())));
-  }, [fiats]);
-
   const refresh = async () => {
     const has = await hasKeysSaved();
 
     if (has) {
       setHasKeys(true);
       load();
-      loadFiats();
       loadCoins();
     }
   };
-
-  async function loadFiats() {
-    const lf = await listFiats();
-
-    setFiats(lf);
-  }
 
   async function loadCoins() {
     const data = await loadMarketSummaries();

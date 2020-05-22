@@ -10,8 +10,7 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import styled from 'styled-components/native';
 import { TextInput } from 'react-native-gesture-handler';
-import React, { useEffect, useState } from 'react';
-import Fiat from '../../controllers/fiats/Fiat';
+import React, { useContext, useEffect, useState } from 'react';
 import Coin from '../../models/Coin';
 import MyCoin from '../../models/MyCoin';
 import {
@@ -21,7 +20,6 @@ import {
 } from '../../controllers/Bittrex';
 import FiatsBlock from './FiatsBlock';
 import { sortArrayByKey } from '../../utils/utils';
-import listFiats from '../../controllers/fiats/FiatsHelper';
 import HamburgerIcon from '../../components/HamburgerIcon';
 import HomeCoinItem from '../HomeCoinItem';
 import FiatBlock from '../../components/FiatBlock';
@@ -29,6 +27,7 @@ import { H1 } from '../../components/Hs';
 import BlackWhiteBlock from '../../components/BlackWhiteBlock';
 import StorageUtils from '../../utils/StorageUtils';
 import { Container } from '../../components/Generics';
+import { FiatContext } from '../../context/FiatContext';
 
 export default function Home({ navigation }) {
   const [hasKeys, setHasKeys] = useState(false);
@@ -38,10 +37,11 @@ export default function Home({ navigation }) {
     headerLeft: () => <HamburgerIcon navigationProps={navigation} />,
   });
 
+  const { fiats } = useContext(FiatContext);
+
   const [showBalanceBlock, setShowBalanceBlock] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [allCoinsInBtc, setAllCoinsInBtc] = useState({});
-  const [, setLastRefresh] = useState(+new Date());
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [coins, setCoins] = useState<Coin[]>([]);
   const [markets, setMarkets] = useState<string[]>(['BTC']);
@@ -49,7 +49,6 @@ export default function Home({ navigation }) {
   const [hideSmall, setHideSmall] = useState<boolean>(false);
   const [myCoins, setMyCoins] = useState<MyCoin[]>([]);
   const [search, setSearch] = useState('');
-  const [fiats, setFiats] = useState<Fiat[]>([]);
 
   async function refresh() {
     const has = await hasKeysSaved();
@@ -65,7 +64,6 @@ export default function Home({ navigation }) {
     setHideSmall(hideSmall);
 
     loadCoins();
-    loadFiats();
 
     if (has) {
       setHasKeys(true);
@@ -77,15 +75,6 @@ export default function Home({ navigation }) {
   useEffect(() => {
     refresh();
   }, []);
-
-  useEffect(() => {
-    fiats.map(it => it.load().then(() => setLastRefresh(+new Date())));
-  }, [fiats]);
-
-  async function loadFiats() {
-    const fiats = await listFiats();
-    setFiats(fiats);
-  }
 
   async function loadFavorites(): Promise<string[]> {
     try {
@@ -212,21 +201,6 @@ export default function Home({ navigation }) {
 
   const itemSeparator = () => (
     <View style={{ width: '100%', height: 2, backgroundColor: 'lightgray' }} />
-  );
-
-  const renderMarketItem = ({ item }) => (
-    <TouchableOpacity onPress={() => setMarket(item)} style={{ flex: 1 }}>
-      <View style={{ padding: 5, backgroundColor: 'blue' }}>
-        <Text
-          style={{
-            justifyContent: 'space-between',
-            fontWeight: market === item ? 'bold' : 'normal',
-          }}
-        >
-          {item}
-        </Text>
-      </View>
-    </TouchableOpacity>
   );
 
   const TotalBalanceBlock = () => {
