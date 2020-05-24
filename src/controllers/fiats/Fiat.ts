@@ -58,11 +58,7 @@ export default class Fiat {
         highData = highData[it];
       });
 
-      this.data = new FiatData(
-        parseFloat(priceData) || 0,
-        parseFloat(highData) || 0,
-        parseFloat(lowData) || 0,
-      );
+      this.data = new FiatData(parseFloat(priceData) || 0, parseFloat(highData) || 0, parseFloat(lowData) || 0);
     } catch (err) {
       console.error(err);
     }

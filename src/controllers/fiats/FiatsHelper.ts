@@ -14,9 +14,7 @@ export default async function listFiats() {
 
       const options = ListFiats;
 
-      return options.filter(
-        it => it.label.toLowerCase() === fiat.toLowerCase(),
-      )[0];
+      return options.filter(it => it.label.toLowerCase() === fiat.toLowerCase())[0];
     });
   } catch (e) {
     console.error(e);

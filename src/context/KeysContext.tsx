@@ -28,9 +28,7 @@ const KeysProvider = ({ children }) => {
   }, []);
 
   return (
-    <KeysContext.Provider
-      value={{ key, secret, hasKeys: !!key && !!secret, reloadKeys }}
-    >
+    <KeysContext.Provider value={{ key, secret, hasKeys: !!key && !!secret, reloadKeys }}>
       {children}
     </KeysContext.Provider>
   );

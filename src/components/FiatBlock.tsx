@@ -24,9 +24,7 @@ export default function FiatBlock({ fiat, amount = 1 }) {
       >
         {`${fiat.label}`}
       </Text>
-      <Text style={{ padding: 3 }}>
-        {fiat.data ? `${(fiat.data.last * amount).toFixed(3)} ` : '...'}
-      </Text>
+      <Text style={{ padding: 3 }}>{fiat.data ? `${(fiat.data.last * amount).toFixed(3)} ` : '...'}</Text>
     </View>
   );
 }

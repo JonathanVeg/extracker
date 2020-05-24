@@ -6,15 +6,7 @@ import styled from 'styled-components/native';
 import { isAndroid } from '../utils/platform';
 
 export default function Header(props) {
-  const {
-    children,
-    navigation,
-    textColor,
-    backgroundColor,
-    rightContent,
-    middleContent,
-    containerStyle = {},
-  } = props;
+  const { children, navigation, textColor, backgroundColor, rightContent, middleContent, containerStyle = {} } = props;
   return (
     <View
       style={[
@@ -29,12 +21,7 @@ export default function Header(props) {
       ]}
     >
       <BackButton activeOpacity={0.8} onPress={() => navigation.goBack()}>
-        <Icon
-          name="arrow-back"
-          size={25}
-          color={textColor}
-          style={{ marginLeft: 7 }}
-        />
+        <Icon name="arrow-back" size={25} color={textColor} style={{ marginLeft: 7 }} />
       </BackButton>
 
       <View style={{ maxWidth: '60%', alignSelf: 'center', flex: 1 }}>

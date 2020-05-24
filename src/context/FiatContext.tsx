@@ -28,11 +28,7 @@ const FiatProvider = ({ children }) => {
     setFiats(fiats);
   }
 
-  return (
-    <FiatContext.Provider value={{ fiats, reloadFiats }}>
-      {children}
-    </FiatContext.Provider>
-  );
+  return <FiatContext.Provider value={{ fiats, reloadFiats }}>{children}</FiatContext.Provider>;
 };
 
 function useFiats(): IFiatContext {
