@@ -19,9 +19,7 @@ export default function CoinPageMyOrdersHistory(props) {
     try {
       setRefreshing(true);
 
-      const orders = await (showOpened
-        ? loadMyOrders(coin)
-        : loadClosedOrders(coin));
+      const orders = await (showOpened ? loadMyOrders(coin) : loadClosedOrders(coin));
 
       setOrders(orders);
     } finally {
@@ -56,8 +54,7 @@ export default function CoinPageMyOrdersHistory(props) {
         style={{
           flexDirection: 'row',
           padding: 5,
-          backgroundColor:
-            order.type === 'BUY' ? colors.buyBackground : colors.sellBackground,
+          backgroundColor: order.type === 'BUY' ? colors.buyBackground : colors.sellBackground,
           paddingHorizontal: 5,
         }}
       >
@@ -70,9 +67,7 @@ export default function CoinPageMyOrdersHistory(props) {
           {order.type === 'BUY' ? '+ ' : '- '}
           {order.quantity.idealDecimalPlaces()}
         </Text>
-        <Text style={{ flex: 1, textAlign: 'right' }}>
-          {order.price.idealDecimalPlaces()}
-        </Text>
+        <Text style={{ flex: 1, textAlign: 'right' }}>{order.price.idealDecimalPlaces()}</Text>
 
         {showOpened && (
           <TouchableOpacity
@@ -114,9 +109,7 @@ export default function CoinPageMyOrdersHistory(props) {
         <Text style={{ flex: 1, textAlign: 'left' }}>Quantity</Text>
         <Text style={{ flex: 1, textAlign: 'right' }}>Unity Price</Text>
 
-        {showOpened && (
-          <Text style={{ flex: 0.5, textAlign: 'right' }}>Cancel</Text>
-        )}
+        {showOpened && <Text style={{ flex: 0.5, textAlign: 'right' }}>Cancel</Text>}
       </View>
     );
   }
@@ -139,9 +132,7 @@ export default function CoinPageMyOrdersHistory(props) {
   return (
     <Container>
       <View style={{ flex: 1 }}>
-        <H1 style={{ textAlign: 'center', marginBottom: 7 }}>
-          {showOpened ? `Opened Orders` : `Closed Orders`}
-        </H1>
+        <H1 style={{ textAlign: 'center', marginBottom: 7 }}>{showOpened ? `Opened Orders` : `Closed Orders`}</H1>
 
         {orders.length > 0 ? <Header /> : <NoOrders />}
 
@@ -160,18 +151,14 @@ export default function CoinPageMyOrdersHistory(props) {
             setShowOpened(true);
           }}
         >
-          <Text style={{ fontWeight: showOpened ? 'bold' : 'normal' }}>
-            OPENED
-          </Text>
+          <Text style={{ fontWeight: showOpened ? 'bold' : 'normal' }}>OPENED</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             setShowOpened(false);
           }}
         >
-          <Text style={{ fontWeight: !showOpened ? 'bold' : 'normal' }}>
-            CLOSED
-          </Text>
+          <Text style={{ fontWeight: !showOpened ? 'bold' : 'normal' }}>CLOSED</Text>
         </TouchableOpacity>
       </View>
     </Container>

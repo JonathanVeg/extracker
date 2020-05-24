@@ -63,21 +63,11 @@ export default function CoinPageOrders(props) {
         : colors.sellBackground2;
     return (
       <RowContainer backgroundColor={backgroundColor}>
-        <Icon
-          name="star"
-          size={13}
-          style={{ margin: 2 }}
-          color={iHave ? 'black' : 'transparent'}
-        />
+        <Icon name="star" size={13} style={{ margin: 2 }} color={iHave ? 'black' : 'transparent'} />
         <Text style={{ flex: 1, textAlign: 'left' }}>
-          {(showSumQuantity
-            ? order.quantityTotal
-            : order.quantity
-          ).idealDecimalPlaces()}
+          {(showSumQuantity ? order.quantityTotal : order.quantity).idealDecimalPlaces()}
         </Text>
-        <Text style={{ flex: 1, textAlign: 'right' }}>
-          {order.rate.idealDecimalPlaces()}
-        </Text>
+        <Text style={{ flex: 1, textAlign: 'right' }}>{order.rate.idealDecimalPlaces()}</Text>
         <Text style={{ flex: 1, textAlign: 'right', paddingRight: 2 }}>
           {(showSumPrice ? order.totalTotal : order.total).idealDecimalPlaces()}
         </Text>

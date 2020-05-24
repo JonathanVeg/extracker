@@ -20,11 +20,7 @@ export default function FiatsBlock(props: FiatsBlockProps) {
         {fiats
           .filter(it => it.data)
           .map(it => (
-            <FiatBlock
-              fiat={it}
-              key={`total_${it.name}`}
-              amount={allCoinsInBtc[market]}
-            />
+            <FiatBlock fiat={it} key={`total_${it.name}`} amount={allCoinsInBtc[market]} />
           ))}
       </View>
     </View>

@@ -62,9 +62,7 @@ const AboutPage = ({ navigation }) => {
       <Space />
       <Disclaimer>
         <DivisionLine />
-        <SmallText>
-          Disclaimer: this app is not official app developed by Bittrex!
-        </SmallText>
+        <SmallText>Disclaimer: this app is not official app developed by Bittrex!</SmallText>
       </Disclaimer>
     </Container>
   );

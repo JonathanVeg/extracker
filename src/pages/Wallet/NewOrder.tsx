@@ -8,11 +8,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
 import { sortArrayByKey } from '../../utils/utils';
 import Coin from '../../models/Coin';
-import {
-  loadBalances,
-  loadSummary,
-  execOrder,
-} from '../../controllers/Bittrex';
+import { loadBalances, loadSummary, execOrder } from '../../controllers/Bittrex';
 import MyCoin from '../../models/MyCoin';
 import { H1 } from '../../components/Hs';
 import { Spacer } from '../../components/Spacer';
@@ -71,9 +67,7 @@ export default function NewOrder({ route, navigation }) {
 
       if (coinsFromStorage) setCoins(JSON.parse(coinsFromStorage));
 
-      const marketsFromStorage = await AsyncStorage.getItem(
-        '@extracker:markets',
-      );
+      const marketsFromStorage = await AsyncStorage.getItem('@extracker:markets');
 
       if (marketsFromStorage) setMarkets(JSON.parse(marketsFromStorage));
 
@@ -95,16 +89,11 @@ export default function NewOrder({ route, navigation }) {
   }, []);
 
   useEffect(() => {
-    if (lastCoin?.name !== coin.name || lastCoin?.market !== coin.market)
-      refresh();
+    if (lastCoin?.name !== coin.name || lastCoin?.market !== coin.market) refresh();
   }, [coin]);
 
   useEffect(() => {
-    if (
-      !!sCoin &&
-      !!sMarket &&
-      (coin.name !== sCoin || coin.market !== sMarket)
-    ) {
+    if (!!sCoin && !!sMarket && (coin.name !== sCoin || coin.market !== sMarket)) {
       setCoin(new Coin(sCoin, sMarket));
     }
   }, [sCoin, sMarket]);
@@ -112,18 +101,12 @@ export default function NewOrder({ route, navigation }) {
   useEffect(() => {
     const r =
       type === 'SELL'
-        ? `You will ${type} ${quantity.toFixed(8)} ${
-            coin.name
-          } for ${price.toFixed(8)} ${coin.market} each. The total will be ${(
-            quantity *
-            price *
-            1.0025
-          ).toFixed(8)} ${coin.market}`
-        : `You will ${type} ${quantity.toFixed(8)} ${
-            coin.name
-          } for ${price.toFixed(8)} ${coin.market} each. The total will be ${(
-            quantity * price
-          ).toFixed(8)} ${coin.market}`;
+        ? `You will ${type} ${quantity.toFixed(8)} ${coin.name} for ${price.toFixed(8)} ${
+            coin.market
+          } each. The total will be ${(quantity * price * 1.0025).toFixed(8)} ${coin.market}`
+        : `You will ${type} ${quantity.toFixed(8)} ${coin.name} for ${price.toFixed(8)} ${
+            coin.market
+          } each. The total will be ${(quantity * price).toFixed(8)} ${coin.market}`;
 
     setResume(r);
   }, [quantity, price, type, coin.market, coin.name]);
@@ -148,13 +131,7 @@ export default function NewOrder({ route, navigation }) {
 
   async function callExecOrder() {
     try {
-      const ret = await execOrder(
-        type,
-        coin.market,
-        coin.name,
-        quantity,
-        price,
-      );
+      const ret = await execOrder(type, coin.market, coin.name, quantity, price);
 
       Alert.alert(ret.success ? 'Success' : 'Error', 'Order created!');
     } catch {
@@ -177,10 +154,7 @@ export default function NewOrder({ route, navigation }) {
 
       await loadSummary(coin);
 
-      const clone = Object.assign(
-        Object.create(Object.getPrototypeOf(coin)),
-        coin,
-      );
+      const clone = Object.assign(Object.create(Object.getPrototypeOf(coin)), coin);
 
       setCoin(clone);
     } finally {
@@ -220,11 +194,7 @@ export default function NewOrder({ route, navigation }) {
 
   const myCoinBlock = () => (
     <TouchableOpacity onPress={() => setQuantity(myCoin.available)}>
-      <LabelValueBlock
-        label={`${coin.name} Available`}
-        value={myCoin ? myCoin.available : 0}
-        adjustDecimals
-      />
+      <LabelValueBlock label={`${coin.name} Available`} value={myCoin ? myCoin.available : 0} adjustDecimals />
     </TouchableOpacity>
   );
 
@@ -232,19 +202,13 @@ export default function NewOrder({ route, navigation }) {
     <TouchableOpacity
       onPress={() => {
         try {
-          setQuantity(
-            parseFloat(((myMarket.available / price) * 0.9975).toFixed(8)),
-          );
+          setQuantity(parseFloat(((myMarket.available / price) * 0.9975).toFixed(8)));
         } catch {
           setQuantity(0);
         }
       }}
     >
-      <LabelValueBlock
-        label={`${coin.market} Available`}
-        value={myMarket ? myMarket.available : 0}
-        adjustDecimals
-      />
+      <LabelValueBlock label={`${coin.market} Available`} value={myMarket ? myMarket.available : 0} adjustDecimals />
     </TouchableOpacity>
   );
 
@@ -396,16 +360,14 @@ const PercentButton = styled.TouchableOpacity`
   border-width: ${StyleSheet.hairlineWidth}px;
   padding: 8px;
   margin: 3px;
-  border-color: ${props =>
-    props.more ? colors.buyBackground : colors.sellBackground};
+  border-color: ${props => (props.more ? colors.buyBackground : colors.sellBackground)};
 `;
 
 const ExecOrderButton = styled.TouchableOpacity`
   border-width: ${StyleSheet.hairlineWidth}px;
   margin: 8px;
   padding: 8px;
-  border-color: ${props =>
-    props.type === 'SELL' ? colors.sellBackground : colors.buyBackground};
+  border-color: ${props => (props.type === 'SELL' ? colors.sellBackground : colors.buyBackground)};
 `;
 
 const pickerStyle = {

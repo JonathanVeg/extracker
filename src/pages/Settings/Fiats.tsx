@@ -1,5 +1,5 @@
 import ModalSelector from 'react-native-modal-selector';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { Text, StyleSheet, Alert, View } from 'react-native';
 import { useFiats } from '../../context/FiatContext';
@@ -24,10 +24,7 @@ export default function Fiats() {
   }, []);
 
   async function saveFiats() {
-    await StorageUtils.setItem(
-      '@extracker:fiats',
-      fiats.map(it => it.label).join(','),
-    );
+    await StorageUtils.setItem('@extracker:fiats', fiats.map(it => it.label).join(','));
 
     reloadFiats();
 

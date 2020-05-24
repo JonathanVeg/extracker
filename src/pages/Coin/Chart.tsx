@@ -4,10 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, processColor } from 'react-native';
 import { colors } from '../../style/globals';
 import Coin from '../../models/Coin';
-import {
-  candleChartData,
-  loadCandleChartData,
-} from '../../controllers/Bittrex';
+import { candleChartData, loadCandleChartData } from '../../controllers/Bittrex';
 import StorageUtils from '../../utils/StorageUtils';
 import { Container } from '../../components/Generics';
 
@@ -19,11 +16,7 @@ export default function CoinPageChart({ coin: pCoin }) {
   const [values, setValues] = useState([]);
 
   async function load() {
-    const data = await loadCandleChartData(
-      coin,
-      candle.value,
-      parseFloat(zoom.value),
-    );
+    const data = await loadCandleChartData(coin, candle.value, parseFloat(zoom.value));
 
     setValues(prepareChartData(data));
   }
@@ -64,11 +57,9 @@ export default function CoinPageChart({ coin: pCoin }) {
         shadowL: data.low,
         open: data.open,
         close: data.close,
-        marker: `H: ${data.high.toFixed(8)}.\nL: ${data.low.toFixed(
+        marker: `H: ${data.high.toFixed(8)}.\nL: ${data.low.toFixed(8)}.\nO: ${data.open.toFixed(
           8,
-        )}.\nO: ${data.open.toFixed(8)}.\nC: ${data.close.toFixed(
-          8,
-        )}.\nV: ${data.baseVolume.toFixed(8)} ${coin.market}.`,
+        )}.\nC: ${data.close.toFixed(8)}.\nV: ${data.baseVolume.toFixed(8)} ${coin.market}.`,
       });
     });
 
@@ -138,9 +129,7 @@ export default function CoinPageChart({ coin: pCoin }) {
       </View>
 
       <View style={{ flexDirection: 'column', marginVertical: 8, flex: 1 }}>
-        <Text style={{ alignSelf: 'stretch', textAlign: 'center' }}>
-          Candle
-        </Text>
+        <Text style={{ alignSelf: 'stretch', textAlign: 'center' }}>Candle</Text>
         <ModalSelector
           key={Math.random()}
           data={candleChartData().candle}

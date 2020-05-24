@@ -41,8 +41,7 @@ export default function CoinPageOrdersHistory(props) {
         style={{
           flexDirection: 'row',
           paddingVertical: 4,
-          backgroundColor:
-            order.type === 'BUY' ? colors.buyBackground : colors.sellBackground,
+          backgroundColor: order.type === 'BUY' ? colors.buyBackground : colors.sellBackground,
           paddingHorizontal: 5,
         }}
       >
@@ -50,12 +49,8 @@ export default function CoinPageOrdersHistory(props) {
           {order.type === 'BUY' ? '+ ' : '- '}
           {order.quantity.idealDecimalPlaces()}
         </Text>
-        <Text style={{ flex: 1, textAlign: 'right' }}>
-          {order.rate.idealDecimalPlaces()}
-        </Text>
-        <Text style={{ flex: 1, textAlign: 'right' }}>
-          {order.total.idealDecimalPlaces()}
-        </Text>
+        <Text style={{ flex: 1, textAlign: 'right' }}>{order.rate.idealDecimalPlaces()}</Text>
+        <Text style={{ flex: 1, textAlign: 'right' }}>{order.total.idealDecimalPlaces()}</Text>
       </View>
     );
   }
@@ -63,15 +58,9 @@ export default function CoinPageOrdersHistory(props) {
   function Header() {
     return (
       <View style={{ flexDirection: 'row' }}>
-        <Text style={{ flex: 1, textAlign: 'left', fontWeight: 'bold' }}>
-          Amount
-        </Text>
-        <Text style={{ flex: 1, textAlign: 'right', fontWeight: 'bold' }}>
-          Unit Price
-        </Text>
-        <Text style={{ flex: 1, textAlign: 'right', fontWeight: 'bold' }}>
-          Total
-        </Text>
+        <Text style={{ flex: 1, textAlign: 'left', fontWeight: 'bold' }}>Amount</Text>
+        <Text style={{ flex: 1, textAlign: 'right', fontWeight: 'bold' }}>Unit Price</Text>
+        <Text style={{ flex: 1, textAlign: 'right', fontWeight: 'bold' }}>Total</Text>
       </View>
     );
   }

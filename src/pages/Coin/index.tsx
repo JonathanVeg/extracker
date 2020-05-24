@@ -14,8 +14,7 @@ import { Container } from '../../components/Generics';
 import CoinPageCalculator from './Calculator';
 
 const CoinPage: React.FC = props => {
-  const coin: Coin =
-    (props?.route?.params || {}).coin || new Coin('DCR', 'BTC');
+  const coin: Coin = (props?.route?.params || {}).coin || new Coin('DCR', 'BTC');
 
   const { navigation } = props;
 
@@ -58,16 +57,8 @@ const CoinPage: React.FC = props => {
       }}
     >
       {footerItems.map(it => (
-        <TouchableOpacity
-          style={{ padding: 8 }}
-          key={`coinitem${it.icon}`}
-          onPress={() => setCurrentPage(it)}
-        >
-          <FA
-            name={it.icon}
-            size={25}
-            color={currentPage.icon === it.icon ? colors.darker : colors.light}
-          />
+        <TouchableOpacity style={{ padding: 8 }} key={`coinitem${it.icon}`} onPress={() => setCurrentPage(it)}>
+          <FA name={it.icon} size={25} color={currentPage.icon === it.icon ? colors.darker : colors.light} />
         </TouchableOpacity>
       ))}
     </View>
@@ -75,15 +66,11 @@ const CoinPage: React.FC = props => {
 
   const CurrentPage = () => {
     if (currentPage.icon === 'list') return <CoinPageSummary coin={coin} />;
-    if (currentPage.icon === 'plus')
-      return <CoinPageOrders coin={coin} type="buy" />;
-    if (currentPage.icon === 'minus')
-      return <CoinPageOrders coin={coin} type="sell" />;
-    if (currentPage.icon === 'history')
-      return <CoinPageOrdersHistory coin={coin} />;
+    if (currentPage.icon === 'plus') return <CoinPageOrders coin={coin} type="buy" />;
+    if (currentPage.icon === 'minus') return <CoinPageOrders coin={coin} type="sell" />;
+    if (currentPage.icon === 'history') return <CoinPageOrdersHistory coin={coin} />;
     if (currentPage.icon === 'line-chart') return <CoinPageChart coin={coin} />;
-    if (currentPage.icon === 'exchange')
-      return <CoinPageMyOrdersHistory coin={coin} />;
+    if (currentPage.icon === 'exchange') return <CoinPageMyOrdersHistory coin={coin} />;
     // if (currentPage.icon === 'calculator')
     return <CoinPageCalculator coin={coin} />;
   };

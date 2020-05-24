@@ -23,6 +23,7 @@
   },
   "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
   "rules": {
+    "@typescript-eslint/interface-name-prefix": "off",
     "no-shadow": "off",
     "no-nested-ternary": "off",
     "react-hooks/exhaustive-deps": "off",

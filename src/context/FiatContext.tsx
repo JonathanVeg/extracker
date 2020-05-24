@@ -3,13 +3,13 @@ import React, { createContext, useEffect, useState, useContext } from 'react';
 import Fiat from '../controllers/fiats/Fiat';
 import listFiats from '../controllers/fiats/FiatsHelper';
 
-interface FiatContextI {
+interface IFiatContext {
   fiats: Fiat[];
   reloadFiats(): void | null;
 }
 
 const initialValue = { fiats: [], reloadFiats: null };
-const FiatContext = createContext<FiatContextI>(initialValue);
+const FiatContext = createContext<IFiatContext>(initialValue);
 
 const FiatProvider = ({ children }) => {
   const [fiats, setFiats] = useState<Fiat[]>([]);
@@ -35,7 +35,7 @@ const FiatProvider = ({ children }) => {
   );
 };
 
-function useFiats(): FiatContextI {
+function useFiats(): IFiatContext {
   const context = useContext(FiatContext);
 
   if (!context) throw new Error('useFiats must be used within a FiatProvider');

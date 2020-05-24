@@ -1,11 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { ScrollView, RefreshControl } from 'react-native';
 import listFiats from '../../controllers/fiats/FiatsHelper';
-import {
-  loadSummary,
-  calcAllCoinsInBtc,
-  loadBalance,
-} from '../../controllers/Bittrex';
+import { loadSummary, calcAllCoinsInBtc, loadBalance } from '../../controllers/Bittrex';
 import Coin from '../../models/Coin';
 import LabelValueBlock from '../../components/LabelValueBlock';
 import MyCoin from '../../models/MyCoin';
@@ -39,10 +35,7 @@ export default function CoinPageSummary(props: CoinPageSummaryInterface) {
 
       await loadSummary(coin);
 
-      const clone = Object.assign(
-        Object.create(Object.getPrototypeOf(coin)),
-        coin,
-      );
+      const clone = Object.assign(Object.create(Object.getPrototypeOf(coin)), coin);
 
       setCoin(clone);
     } finally {
@@ -81,18 +74,8 @@ export default function CoinPageSummary(props: CoinPageSummaryInterface) {
           value={coin.last}
           adjustDecimals
         />
-        <LabelValueBlock
-          style={{ padding: 3, backgroundColor: color() }}
-          label="Bid"
-          value={coin.bid}
-          adjustDecimals
-        />
-        <LabelValueBlock
-          style={{ padding: 3, backgroundColor: color() }}
-          label="Ask"
-          value={coin.ask}
-          adjustDecimals
-        />
+        <LabelValueBlock style={{ padding: 3, backgroundColor: color() }} label="Bid" value={coin.bid} adjustDecimals />
+        <LabelValueBlock style={{ padding: 3, backgroundColor: color() }} label="Ask" value={coin.ask} adjustDecimals />
         <LabelValueBlock
           style={{ padding: 3, backgroundColor: color() }}
           label="% Spread"
@@ -131,11 +114,7 @@ export default function CoinPageSummary(props: CoinPageSummaryInterface) {
             key={`coinsummaryfiat${fiat.name}`}
             style={{ padding: 3, backgroundColor: color() }}
             label={fiat.name}
-            value={(
-              (fiat?.data?.last || 0) *
-              coin.last *
-              (allCoinsInBtc[coin.market] || 0)
-            ).idealDecimalPlaces()}
+            value={((fiat?.data?.last || 0) * coin.last * (allCoinsInBtc[coin.market] || 0)).idealDecimalPlaces()}
           />
         ))}
       </>
@@ -204,11 +183,7 @@ export default function CoinPageSummary(props: CoinPageSummaryInterface) {
 
   return (
     <Container>
-      <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={refresh} />
-        }
-      >
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}>
         <Summary />
         <Spacer />
         {myCoin && myCoinBlock()}

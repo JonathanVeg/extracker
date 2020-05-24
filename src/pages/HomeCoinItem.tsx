@@ -23,11 +23,7 @@ const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
       <CoinName>
         <Text>{coin.name}</Text>
         <TouchableOpacity onPress={onToggleFavorite}>
-          <Icon
-            name={coin.favorite ? 'heart' : 'hearto'}
-            size={32}
-            color="#000"
-          />
+          <Icon name={coin.favorite ? 'heart' : 'hearto'} size={32} color="#000" />
         </TouchableOpacity>
       </CoinName>
       <CoinData onPress={onClick}>
@@ -35,24 +31,16 @@ const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
         <Text>{`High: ${coin.high.idealDecimalPlaces()}`}</Text>
         <Text>{`Low: ${coin.low.idealDecimalPlaces()}`}</Text>
         <Text>{`Vol: ${coin.volume.idealDecimalPlaces()}`}</Text>
-        <Text>
-          {`Vol (${market}): ${coin.baseVolume.idealDecimalPlaces()}`}
-        </Text>
+        <Text>{`Vol (${market}): ${coin.baseVolume.idealDecimalPlaces()}`}</Text>
         {myCoin && (
           <>
             <Text>{`I Have: ${myCoin.balance}`}</Text>
-            <Text>
-              {`I Have (${market}): ${(
-                myCoin.balance * coin.last
-              ).idealDecimalPlaces()}`}
-            </Text>
+            <Text>{`I Have (${market}): ${(myCoin.balance * coin.last).idealDecimalPlaces()}`}</Text>
           </>
         )}
       </CoinData>
       <CoinPercent onPress={onClick}>
-        <Text
-          style={{ color: coin.change > 0 ? colors.positive : colors.negative }}
-        >
+        <Text style={{ color: coin.change > 0 ? colors.positive : colors.negative }}>
           {`${coin.change.toFixed(1)}%`}
         </Text>
       </CoinPercent>

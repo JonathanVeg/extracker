@@ -52,23 +52,17 @@ export default function WalletPage({ navigation }) {
   function calcAllCoinsInBtc() {
     const acib = { BTC: 1 };
 
-    const fakeCoins = markets
-      .filter(it => it !== 'BTC')
-      .map(it => new Coin(it, 'BTC'));
+    const fakeCoins = markets.filter(it => it !== 'BTC').map(it => new Coin(it, 'BTC'));
 
     [...coins, ...fakeCoins]
       .filter(it => it.name !== 'BTC')
       .map(it => {
-        let pair = coins.find(
-          it2 => it2.name === it.name && it2.market === 'BTC',
-        );
+        let pair = coins.find(it2 => it2.name === it.name && it2.market === 'BTC');
 
         if (pair) {
           acib[it.name] = pair.last;
         } else {
-          pair = coins.find(
-            it2 => it2.name === 'BTC' && it2.market === it.name,
-          );
+          pair = coins.find(it2 => it2.name === 'BTC' && it2.market === it.name);
           if (pair) {
             acib[it.name] = 1 / pair.last;
           }
@@ -113,12 +107,7 @@ export default function WalletPage({ navigation }) {
   }
 
   useEffect(() => {
-    setTotalInBtc(
-      myCoins.reduce(
-        (last, it) => last + it.balance * (allCoinsInBtc[it.name] || 0),
-        0.0,
-      ),
-    );
+    setTotalInBtc(myCoins.reduce((last, it) => last + it.balance * (allCoinsInBtc[it.name] || 0), 0.0));
 
     const arr = myCoins.map(it => ({
       myCoin: it,
@@ -143,9 +132,7 @@ export default function WalletPage({ navigation }) {
   if (!hasKeys)
     return (
       <Container>
-        <H1 style={{ textAlign: 'center' }}>
-          You need to have saved keys to use this page properly
-        </H1>
+        <H1 style={{ textAlign: 'center' }}>You need to have saved keys to use this page properly</H1>
         <Keys />
       </Container>
     );
@@ -155,24 +142,15 @@ export default function WalletPage({ navigation }) {
       <BlockContainer>
         <H1 style={{ textAlign: 'center' }}>Summary</H1>
         <Spacer />
-        <LabelValueBlock
-          label="Qnt. coins with balance"
-          value={myCoins.length}
-        />
+        <LabelValueBlock label="Qnt. coins with balance" value={myCoins.length} />
         <Spacer />
-        <LabelValueBlock
-          key="ihaveeqinbtc"
-          label="Eq. in BTC"
-          value={totalInBtc.idealDecimalPlaces()}
-        />
+        <LabelValueBlock key="ihaveeqinbtc" label="Eq. in BTC" value={totalInBtc.idealDecimalPlaces()} />
         <Spacer />
         {fiats.map(fiat => (
           <View key={`ihaveeqin${fiat.label}`}>
             <LabelValueBlock
               label={`Eq. in ${fiat.label}`}
-              value={(
-                totalInBtc * (fiat?.data?.last || 0)
-              ).idealDecimalPlaces()}
+              value={(totalInBtc * (fiat?.data?.last || 0)).idealDecimalPlaces()}
             />
             <Spacer />
           </View>
@@ -197,22 +175,11 @@ export default function WalletPage({ navigation }) {
             return (
               <TouchableOpacity onPress={() => handleClickInCoin(myCoin)}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <H1 style={{ flex: 1, textAlign: 'center' }}>
-                    {myCoin.name}
-                  </H1>
+                  <H1 style={{ flex: 1, textAlign: 'center' }}>{myCoin.name}</H1>
                   <View style={{ flex: 3 }}>
-                    <LabelValueBlock
-                      label="I have"
-                      value={myCoin.balance.idealDecimalPlaces()}
-                    />
-                    <LabelValueBlock
-                      label="I have (in BTC)"
-                      value={item.inBtc.idealDecimalPlaces()}
-                    />
-                    <LabelValueBlock
-                      label="Available"
-                      value={myCoin.available.idealDecimalPlaces()}
-                    />
+                    <LabelValueBlock label="I have" value={myCoin.balance.idealDecimalPlaces()} />
+                    <LabelValueBlock label="I have (in BTC)" value={item.inBtc.idealDecimalPlaces()} />
+                    <LabelValueBlock label="Available" value={myCoin.available.idealDecimalPlaces()} />
                   </View>
                 </View>
               </TouchableOpacity>

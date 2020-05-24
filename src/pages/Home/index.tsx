@@ -1,12 +1,6 @@
 import { default as Icon } from 'react-native-vector-icons/MaterialIcons';
 import { default as FA } from 'react-native-vector-icons/FontAwesome';
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import styled from 'styled-components/native';
 import { TextInput } from 'react-native-gesture-handler';
@@ -34,7 +28,6 @@ export default function Home({ navigation }) {
 
   const { fiats } = useFiats();
   const { hasKeys } = useKeys();
-
   const [showBalanceBlock, setShowBalanceBlock] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [allCoinsInBtc, setAllCoinsInBtc] = useState({});
@@ -83,9 +76,7 @@ export default function Home({ navigation }) {
       const cc = [...coins];
       c.toggleFavorite();
 
-      const favs = Array.from(
-        new Set(cc.filter(it => it.favorite).map(it => it.name)),
-      );
+      const favs = Array.from(new Set(cc.filter(it => it.favorite).map(it => it.name)));
 
       await AsyncStorage.setItem('@extracker:favs', JSON.stringify(favs));
 
@@ -147,23 +138,17 @@ export default function Home({ navigation }) {
   function calcAllCoinsInBtc(coins: Coin[], markets: string[]) {
     const allCoinsInBtc = { BTC: 1 };
 
-    const fakeCoins = markets
-      .filter(it => it !== 'BTC')
-      .map(it => new Coin(it, 'BTC'));
+    const fakeCoins = markets.filter(it => it !== 'BTC').map(it => new Coin(it, 'BTC'));
 
     [...coins, ...fakeCoins]
       .filter(it => it.name !== 'BTC')
       .map(it => {
-        let pair = coins.find(
-          it2 => it2.name === it.name && it2.market === 'BTC',
-        );
+        let pair = coins.find(it2 => it2.name === it.name && it2.market === 'BTC');
 
         if (pair) {
           allCoinsInBtc[it.name] = pair.last;
         } else {
-          pair = coins.find(
-            it2 => it2.name === 'BTC' && it2.market === it.name,
-          );
+          pair = coins.find(it2 => it2.name === 'BTC' && it2.market === it.name);
           if (pair) {
             allCoinsInBtc[it.name] = 1 / pair.last;
           }
@@ -181,8 +166,7 @@ export default function Home({ navigation }) {
     myCoins.map(it => {
       if (it.name === market) totalInMarket += it.balance;
       else if (allCoinsInBtc[it.name] && allCoinsInBtc[market]) {
-        const part =
-          (allCoinsInBtc[it.name] * it.balance) / allCoinsInBtc[market];
+        const part = (allCoinsInBtc[it.name] * it.balance) / allCoinsInBtc[market];
 
         totalInMarket += part;
       }
@@ -191,9 +175,7 @@ export default function Home({ navigation }) {
     return totalInMarket;
   }
 
-  const itemSeparator = () => (
-    <View style={{ width: '100%', height: 2, backgroundColor: 'lightgray' }} />
-  );
+  const itemSeparator = () => <View style={{ width: '100%', height: 2, backgroundColor: 'lightgray' }} />;
 
   const TotalBalanceBlock = () => {
     return (
@@ -206,13 +188,7 @@ export default function Home({ navigation }) {
             .map(it => {
               const marketInBtc = allCoinsInBtc[market];
 
-              return (
-                <FiatBlock
-                  fiat={it}
-                  amount={totalInMarket() * marketInBtc}
-                  key={`mytotal_${it.name}`}
-                />
-              );
+              return <FiatBlock fiat={it} amount={totalInMarket() * marketInBtc} key={`mytotal_${it.name}`} />;
             })}
         </View>
       </View>
@@ -220,33 +196,19 @@ export default function Home({ navigation }) {
   };
 
   const getCoinsToShow = () => {
-    let coinsToShow = coins.filter(
-      it =>
-        it.name.indexOf(search.trim().toUpperCase()) !== -1 &&
-        it.market === market,
-    );
+    let coinsToShow = coins.filter(it => it.name.indexOf(search.trim().toUpperCase()) !== -1 && it.market === market);
 
     coinsToShow = sortArrayByKey(coinsToShow, 'baseVolume', true);
 
     if (hideSmall) {
-      coinsToShow = coinsToShow.filter(it =>
-        myCoins.find(i => i.name === it.name),
-      );
+      coinsToShow = coinsToShow.filter(it => myCoins.find(i => i.name === it.name));
     }
 
     coinsToShow = [
-      ...coinsToShow
-        .filter(it => myCoins.find(myIt => myIt.name === it.name))
-        .filter(it => it.favorite),
-      ...coinsToShow
-        .filter(it => myCoins.find(myIt => myIt.name === it.name))
-        .filter(it => !it.favorite),
-      ...coinsToShow
-        .filter(it => !myCoins.find(myIt => myIt.name === it.name))
-        .filter(it => it.favorite),
-      ...coinsToShow
-        .filter(it => !myCoins.find(myIt => myIt.name === it.name))
-        .filter(it => !it.favorite),
+      ...coinsToShow.filter(it => myCoins.find(myIt => myIt.name === it.name)).filter(it => it.favorite),
+      ...coinsToShow.filter(it => myCoins.find(myIt => myIt.name === it.name)).filter(it => !it.favorite),
+      ...coinsToShow.filter(it => !myCoins.find(myIt => myIt.name === it.name)).filter(it => it.favorite),
+      ...coinsToShow.filter(it => !myCoins.find(myIt => myIt.name === it.name)).filter(it => !it.favorite),
     ];
 
     return coinsToShow;
@@ -266,17 +228,11 @@ export default function Home({ navigation }) {
         {showBalanceBlock ? (
           <TotalBalanceBlock />
         ) : (
-          <FiatsBlock
-            fiats={fiats}
-            market={market}
-            allCoinsInBtc={allCoinsInBtc}
-          />
+          <FiatsBlock fiats={fiats} market={market} allCoinsInBtc={allCoinsInBtc} />
         )}
       </View>
       {hasKeys && (
-        <TouchableOpacity
-          onPress={() => setShowBalanceBlock(!showBalanceBlock)}
-        >
+        <TouchableOpacity onPress={() => setShowBalanceBlock(!showBalanceBlock)}>
           <Icon name="chevron-right" size={30} />
         </TouchableOpacity>
       )}
@@ -288,11 +244,7 @@ export default function Home({ navigation }) {
       <H1>COINS</H1>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TouchableOpacity onPress={() => setShowSearch(!showSearch)}>
-          <FA
-            name={showSearch ? 'search-minus' : 'search-plus'}
-            size={20}
-            style={{ margin: 3 }}
-          />
+          <FA name={showSearch ? 'search-minus' : 'search-plus'} size={20} style={{ margin: 3 }} />
         </TouchableOpacity>
       </View>
     </Header>
@@ -301,11 +253,7 @@ export default function Home({ navigation }) {
   const MarketSelectorBlock = () => (
     <MarketSelectorBlockContainer>
       {markets.map(it => (
-        <TouchableOpacity
-          key={`selectmarket${it}`}
-          style={{ flex: 1, padding: 8 }}
-          onPress={() => setMarket(it)}
-        >
+        <TouchableOpacity key={`selectmarket${it}`} style={{ flex: 1, padding: 8 }} onPress={() => setMarket(it)}>
           <Text
             style={{
               textAlign: 'center',
@@ -345,9 +293,7 @@ export default function Home({ navigation }) {
             StorageUtils.setItem('hideSmall', `${!hideSmall}`);
           }}
         >
-          <Text style={{ fontWeight: hideSmall ? 'bold' : 'normal' }}>
-            Hide small balances
-          </Text>
+          <Text>{hideSmall ? 'Show small balances' : 'Hide small balances'}</Text>
         </TouchableOpacity>
       )}
 
@@ -363,8 +309,8 @@ export default function Home({ navigation }) {
         ItemSeparatorComponent={itemSeparator}
         renderItem={({ item }) => (
           <HomeCoinItem
-            coin={item}
             market={market}
+            coin={item}
             myCoins={myCoins}
             onToggleFavorite={() => toggleFavorite(item)}
             onClick={() => navigation.navigate('Coins', { coin: item })}

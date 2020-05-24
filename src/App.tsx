@@ -17,6 +17,7 @@ import CoinPageMyOrdersHistory from './pages/Wallet/MyOrdersHistory';
 import CoinPageCalculator from './pages/Coin/Calculator';
 import { FiatProvider } from './context/FiatContext';
 import { KeysProvider } from './context/KeysContext';
+import { ToastProvider } from './context/ToastContext';
 
 // const CoinPageNavigator = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -89,15 +90,17 @@ const GlobalNavigator = () => (
 const App = () => (
   <>
     <StatusBar barStyle="dark-content" backgroundColor="white" />
-    <KeysProvider>
-      <FiatProvider>
-        <SafeAreaProvider>
-          <NavigationContainer>
-            <GlobalNavigator />
-          </NavigationContainer>
-        </SafeAreaProvider>
-      </FiatProvider>
-    </KeysProvider>
+    <ToastProvider>
+      <KeysProvider>
+        <FiatProvider>
+          <SafeAreaProvider>
+            <NavigationContainer>
+              <GlobalNavigator />
+            </NavigationContainer>
+          </SafeAreaProvider>
+        </FiatProvider>
+      </KeysProvider>
+    </ToastProvider>
   </>
 );
 

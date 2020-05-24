@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { H1, H2 } from '../../components/Hs';
 import Coin from '../../models/Coin';
@@ -99,9 +99,7 @@ export default function CoinPageCalculator(props) {
         />
 
         <Row>
-          <MarketBlock
-            amount={allCoinsInBtc[coin.name] * parseFloat(valInCoin) || 0}
-          />
+          <MarketBlock amount={allCoinsInBtc[coin.name] * parseFloat(valInCoin) || 0} />
           {fiats.map(fiat => (
             <FiatBlock
               key={`calcfiat2${fiat.name}`}
@@ -121,9 +119,7 @@ export default function CoinPageCalculator(props) {
           }}
         />
         <Row>
-          <CoinBlock
-            amount={parseFloat(valInMarket) / allCoinsInBtc[coin.name] || 0}
-          />
+          <CoinBlock amount={parseFloat(valInMarket) / allCoinsInBtc[coin.name] || 0} />
         </Row>
       </View>
 
@@ -141,9 +137,7 @@ export default function CoinPageCalculator(props) {
           <Row>
             <CoinBlock
               amount={
-                (valInFiats.length >= index - 1
-                  ? parseFloat(valInFiats[index])
-                  : 0) /
+                (valInFiats.length >= index - 1 ? parseFloat(valInFiats[index]) : 0) /
                   (fiat.data.last * allCoinsInBtc[coin.name]) || 0
               }
             />
