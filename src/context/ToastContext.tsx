@@ -72,12 +72,14 @@ const Container = styled.View`
   position: absolute;
   left: 0;
   right: 0;
-  margin-top: ${windowHeight - 100}px;
+  margin-top: ${windowHeight - 200}px;
   justify-content: center;
   z-index: 999;
 `;
 const ToastText = styled.Text`
   align-self: center;
+  text-align: center;
   padding: 10px;
+  margin: 0 10px;
   background-color: #ff000010;
 `;

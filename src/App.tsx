@@ -1,10 +1,12 @@
-import React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import React, { ReactElement } from 'react';
+import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { StatusBar } from 'react-native';
+import { SafeAreaProvider, useSafeArea } from 'react-native-safe-area-context';
+import { StatusBar, Text, View, StyleSheet, Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import styled from 'styled-components/native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import AboutPage from './pages/About';
 import CoinPage from './pages/Coin';
 import Home from './pages/Home';
@@ -18,6 +20,7 @@ import CoinPageCalculator from './pages/Coin/Calculator';
 import { FiatProvider } from './context/FiatContext';
 import { KeysProvider } from './context/KeysContext';
 import { ToastProvider } from './context/ToastContext';
+import { H1 } from './components/Hs';
 
 // const CoinPageNavigator = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -59,31 +62,69 @@ const AboutPageStack = () => (
   </Stack.Navigator>
 );
 
+function CustomDrawerContent({ drawerPosition, navigation, ...rest }): ReactElement {
+  const insets = useSafeArea();
+
+  // navigation.openDrawer();
+
+  return (
+    <View
+      style={{
+        paddingTop: insets.top + 4,
+        paddingLeft: drawerPosition === 'left' ? insets.left : 0,
+        paddingRight: drawerPosition === 'right' ? insets.right : 0,
+        paddingBottom: insets.bottom,
+        flex: 1,
+      }}
+    >
+      <View style={{ flex: 1 }}>
+        <H1 center>TREXTRACKER</H1>
+
+        <DrawerItem
+          icon={() => <Icon name="home" size={20} />}
+          label="Home"
+          onPress={() => {
+            navigation.navigate('Home');
+          }}
+        />
+        <DrawerItem
+          icon={() => <Icon name="wallet" size={20} />}
+          label="Wallets"
+          onPress={() => {
+            navigation.navigate('Wallets');
+          }}
+        />
+        <DrawerItem
+          icon={() => <Icon name="settings" size={20} />}
+          label="Settings"
+          onPress={() => {
+            navigation.navigate('Settings');
+          }}
+        />
+        <DrawerItem
+          icon={() => <Icon name="information" size={20} />}
+          label="About"
+          onPress={() => {
+            navigation.navigate('About');
+          }}
+        />
+      </View>
+      <DivisionLine />
+      <View>
+        <TouchableOpacity onPress={() => Linking.openURL('https://twitter.com/JonathanVeg2')}>
+          <Text style={{ alignSelf: 'center', color: colors.darker }}>Made by @JonathanVeg</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
 const GlobalNavigator = () => (
-  <Drawer.Navigator initialRouteName="Home">
-    <Drawer.Screen
-      name="Home"
-      component={HomeStack}
-      options={{ drawerIcon: () => <Icon name="home" size={20} /> }}
-    />
-
-    <Drawer.Screen
-      name="Wallets"
-      component={WalletPageStack}
-      options={{ drawerIcon: () => <Icon name="wallet" size={20} /> }}
-    />
-
-    <Drawer.Screen
-      name="Settings"
-      component={SettingsPageStack}
-      options={{ drawerIcon: () => <Icon name="settings" size={20} /> }}
-    />
-
-    <Drawer.Screen
-      name="About"
-      component={AboutPageStack}
-      options={{ drawerIcon: () => <Icon name="information" size={20} /> }}
-    />
+  <Drawer.Navigator initialRouteName="Home" drawerContent={(props): ReactElement => <CustomDrawerContent {...props} />}>
+    <Drawer.Screen name="Home" component={HomeStack} />
+    <Drawer.Screen name="Wallets" component={WalletPageStack} />
+    <Drawer.Screen name="Settings" component={SettingsPageStack} />
+    <Drawer.Screen name="About" component={AboutPageStack} />
   </Drawer.Navigator>
 );
 
@@ -105,3 +146,12 @@ const App = () => (
 );
 
 export default App;
+
+const DivisionLine = styled.View`
+  margin-bottom: 10px;
+  margin-top: 10px;
+  width: 80%;
+  align-self: center;
+  border-bottom-color: black;
+  border-bottom-width: ${StyleSheet.hairlineWidth}px;
+`;

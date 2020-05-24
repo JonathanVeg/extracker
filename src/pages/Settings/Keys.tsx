@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { Text, StyleSheet, Alert } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import { H1, H2, H3 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import MyInput from '../../components/MyInput';
 import StorageUtils from '../../utils/StorageUtils';
 import { useKeys } from '../../context/KeysContext';
+import { useToast } from '../../context/ToastContext';
 
 export default function Keys() {
   const { hasKeys, key, secret, reloadKeys } = useKeys();
@@ -13,22 +14,24 @@ export default function Keys() {
   const [newKey, setNewKey] = useState('');
   const [newSecret, setNewSecret] = useState('');
 
+  const { showToast } = useToast();
+
   useEffect(() => {
-    if (hasKeys) {
-      setNewKey(`${key.substring(0, 3)}...${key.slice(-3)}`);
-      setNewSecret(`${secret.substring(0, 3)}...${secret.slice(-3)}`);
-    }
+    if (!hasKeys) return;
+
+    setNewKey(`${key.substring(0, 3)}...${key.slice(-3)}`);
+    setNewSecret(`${secret.substring(0, 3)}...${secret.slice(-3)}`);
   }, []);
 
   async function saveKeys() {
     try {
       await StorageUtils.saveKeys(newKey, newSecret);
 
-      Alert.alert('Success', 'Keys saved');
+      showToast('Keys saved');
 
       reloadKeys();
     } catch (err) {
-      Alert.alert('Error', 'Error while saving keys');
+      showToast('Error while saving keys');
     }
   }
 

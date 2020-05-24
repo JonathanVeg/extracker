@@ -9,10 +9,13 @@ import StorageUtils from '../../utils/StorageUtils';
 import Fiat from '../../controllers/fiats/Fiat';
 import allFiats from '../../controllers/fiats/ListFiats';
 import listFiats from '../../controllers/fiats/FiatsHelper';
+import { useToast } from '../../context/ToastContext';
 
 export default function Fiats() {
   const [fiats, setFiats] = useState<Fiat[]>([]);
   const { reloadFiats } = useFiats();
+
+  const { showToast } = useToast();
 
   async function loadFiats() {
     const fiats = await listFiats();
@@ -28,7 +31,7 @@ export default function Fiats() {
 
     reloadFiats();
 
-    Alert.alert('Saved', 'New fiats saved.');
+    showToast('New fiats saved');
   }
 
   return (
