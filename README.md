@@ -7,3 +7,6 @@ After ready, I'll proceed to replace [Polotracker](https://play.google.com/store
 ### Technology
 
 App made with react-native, cross platform that will generate the same app for Android and iOS
+
+
+This README will be update with more information about the project and how you can contribute with it :)
