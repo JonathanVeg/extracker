@@ -9,7 +9,7 @@ import { Spacer } from '../../components/Spacer';
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import { Container } from '../../components/Generics';
-import { useFiats } from '../../context/FiatContext';
+import { useFiats } from '../../hooks/FiatContext';
 
 interface CoinPageSummaryInterface {
   coin: Coin | null;

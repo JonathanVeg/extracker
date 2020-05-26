@@ -5,8 +5,8 @@ import { H1, H2, H3 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import MyInput from '../../components/MyInput';
 import StorageUtils from '../../utils/StorageUtils';
-import { useKeys } from '../../context/KeysContext';
-import { useToast } from '../../context/ToastContext';
+import { useKeys } from '../../hooks/KeysContext';
+import { useToast } from '../../hooks/ToastContext';
 
 export default function Keys() {
   const { hasKeys, key, secret, reloadKeys } = useKeys();
@@ -27,11 +27,11 @@ export default function Keys() {
     try {
       await StorageUtils.saveKeys(newKey, newSecret);
 
-      showToast('Keys saved');
+      showToast({ text: 'Keys saved', type: 'success' });
 
       reloadKeys();
     } catch (err) {
-      showToast('Error while saving keys');
+      showToast({ text: 'Error while saving keys', type: 'error' });
     }
   }
 

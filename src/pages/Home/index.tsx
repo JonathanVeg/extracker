@@ -1,24 +1,24 @@
+import AsyncStorage from '@react-native-community/async-storage';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components/native';
 import { default as Icon } from 'react-native-vector-icons/MaterialIcons';
 import { default as FA } from 'react-native-vector-icons/FontAwesome';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import styled from 'styled-components/native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import React, { useEffect, useState } from 'react';
+import BlackWhiteBlock from '../../components/BlackWhiteBlock';
 import Coin from '../../models/Coin';
-import MyCoin from '../../models/MyCoin';
-import { loadBalances, loadMarketSummaries } from '../../controllers/Bittrex';
+import FiatBlock from '../../components/FiatBlock';
 import FiatsBlock from './FiatsBlock';
-import { sortArrayByKey } from '../../utils/utils';
 import HamburgerIcon from '../../components/HamburgerIcon';
 import HomeCoinItem from '../HomeCoinItem';
-import FiatBlock from '../../components/FiatBlock';
-import { H1 } from '../../components/Hs';
-import BlackWhiteBlock from '../../components/BlackWhiteBlock';
+import MyCoin from '../../models/MyCoin';
 import StorageUtils from '../../utils/StorageUtils';
 import { Container } from '../../components/Generics';
-import { useFiats } from '../../context/FiatContext';
-import { useKeys } from '../../context/KeysContext';
+import { H1 } from '../../components/Hs';
+import { loadBalances, loadMarketSummaries } from '../../controllers/Bittrex';
+import { sortArrayByKey } from '../../utils/utils';
+import { useFiats } from '../../hooks/FiatContext';
+import { useKeys } from '../../hooks/KeysContext';
 
 export default function Home({ navigation }) {
   navigation.setOptions({
@@ -267,35 +267,41 @@ export default function Home({ navigation }) {
     </MarketSelectorBlockContainer>
   );
 
+  const SearchBlock = () =>
+    showSearch && (
+      <TextInput
+        autoFocus
+        style={{
+          borderWidth: StyleSheet.hairlineWidth,
+          borderColor: 'black',
+          padding: 3,
+        }}
+        placeholder="Search..."
+        onChangeText={setSearch}
+      />
+    );
+
+  const HideSmallBlock = () =>
+    hasKeys && (
+      <TouchableOpacity
+        onPress={() => {
+          setHideSmall(!hideSmall);
+          StorageUtils.setItem('hideSmall', `${!hideSmall}`);
+        }}
+      >
+        <Text>{hideSmall ? 'Show small balances' : 'Hide small balances'}</Text>
+      </TouchableOpacity>
+    );
+
   return (
     <Container>
       <TopBlock />
 
       <HeaderBlock />
 
-      {showSearch && (
-        <TextInput
-          autoFocus
-          style={{
-            borderWidth: StyleSheet.hairlineWidth,
-            borderColor: 'black',
-            padding: 3,
-          }}
-          placeholder="Search..."
-          onChangeText={setSearch}
-        />
-      )}
+      <SearchBlock />
 
-      {hasKeys && (
-        <TouchableOpacity
-          onPress={() => {
-            setHideSmall(!hideSmall);
-            StorageUtils.setItem('hideSmall', `${!hideSmall}`);
-          }}
-        >
-          <Text>{hideSmall ? 'Show small balances' : 'Hide small balances'}</Text>
-        </TouchableOpacity>
-      )}
+      <HideSmallBlock />
 
       <MarketSelectorBlock />
 

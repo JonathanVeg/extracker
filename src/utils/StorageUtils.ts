@@ -13,11 +13,8 @@ class StorageUtils {
     return deleted;
   }
 
-  static async saveKeys(key, secret): Promise<false | Keychain.Result> {
-    const r = await Keychain.setGenericPassword(
-      '@extracker:keys',
-      `${key} ${secret}`,
-    );
+  static async saveKeys(key: string, secret: string): Promise<false | Keychain.Result> {
+    const r = await Keychain.setGenericPassword('@extracker:keys', `${key} ${secret}`);
 
     return r;
   }

@@ -7,7 +7,7 @@ import FiatBlock from '../../components/FiatBlock';
 import { Row } from '../../components/Generics';
 import { colors } from '../../style/globals';
 import { loadSummary, calcAllCoinsInBtc } from '../../controllers/Bittrex';
-import { useFiats } from '../../context/FiatContext';
+import { useFiats } from '../../hooks/FiatContext';
 
 export default function CoinPageCalculator(props) {
   const { fiats } = useFiats();

@@ -2,14 +2,14 @@ import ModalSelector from 'react-native-modal-selector';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { Text, StyleSheet, Alert, View } from 'react-native';
-import { useFiats } from '../../context/FiatContext';
+import { useFiats } from '../../hooks/FiatContext';
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import StorageUtils from '../../utils/StorageUtils';
 import Fiat from '../../controllers/fiats/Fiat';
 import allFiats from '../../controllers/fiats/ListFiats';
 import listFiats from '../../controllers/fiats/FiatsHelper';
-import { useToast } from '../../context/ToastContext';
+import { useToast } from '../../hooks/ToastContext';
 
 export default function Fiats() {
   const [fiats, setFiats] = useState<Fiat[]>([]);
@@ -31,7 +31,7 @@ export default function Fiats() {
 
     reloadFiats();
 
-    showToast('New fiats saved');
+    showToast({ text: 'New fiats saved', type: 'success' });
   }
 
   return (

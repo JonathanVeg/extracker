@@ -12,8 +12,8 @@ import { loadBalances, loadMarketSummaries } from '../../controllers/Bittrex';
 import { Spacer } from '../../components/Spacer';
 import { sortArrayByKey } from '../../utils/utils';
 import Keys from '../Settings/Keys';
-import { useFiats } from '../../context/FiatContext';
-import { useKeys } from '../../context/KeysContext';
+import { useFiats } from '../../hooks/FiatContext';
+import { useKeys } from '../../hooks/KeysContext';
 
 interface WalletListItem {
   myCoin: MyCoin;

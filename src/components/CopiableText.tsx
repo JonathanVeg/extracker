@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
-import { useToast } from '../context/ToastContext';
+import { useToast } from '../hooks/ToastContext';
 
 export default function CopiableText({ text, children, style }) {
   const { showToast } = useToast();
@@ -11,7 +11,7 @@ export default function CopiableText({ text, children, style }) {
 
     const message = `Value ${text || children} copied to clipboard`;
 
-    showToast(message);
+    showToast({ text: message, type: 'info' });
   }
 
   return (
