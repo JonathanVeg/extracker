@@ -57,23 +57,21 @@ export default function NewOrder({ route, navigation }) {
 
   // order data
   const [type, setType] = useState('BUY');
-  const [quantity, setQuantity] = useState(0);
-  const [price, setPrice] = useState(0);
+  const [quantity, setQuantity] = useState('0');
+  const [price, setPrice] = useState('0');
   const [resume, setResume] = useState('');
 
   useEffect(() => {
     async function loadDataFromLocalStorage() {
       const coinsFromStorage = await AsyncStorage.getItem('@extracker:coins');
-
-      if (coinsFromStorage) setCoins(JSON.parse(coinsFromStorage));
+      const coins = JSON.parse(coinsFromStorage);
+      if (coinsFromStorage) setCoins(coins);
 
       const marketsFromStorage = await AsyncStorage.getItem('@extracker:markets');
-
       if (marketsFromStorage) setMarkets(JSON.parse(marketsFromStorage));
 
       const coinsNames = [];
-
-      JSON.parse(coinsFromStorage).map((coin: Coin) => {
+      coins.map((coin: Coin) => {
         if (!coinsNames.includes(coin.name)) coinsNames.push(coin.name);
       });
 
@@ -101,12 +99,18 @@ export default function NewOrder({ route, navigation }) {
   useEffect(() => {
     const r =
       type === 'SELL'
-        ? `You will ${type} ${quantity.toFixed(8)} ${coin.name} for ${price.toFixed(8)} ${
-            coin.market
-          } each. The total will be ${(quantity * price * 1.0025).toFixed(8)} ${coin.market}`
-        : `You will ${type} ${quantity.toFixed(8)} ${coin.name} for ${price.toFixed(8)} ${
-            coin.market
-          } each. The total will be ${(quantity * price).toFixed(8)} ${coin.market}`;
+        ? `You will ${type} ${parseFloat(quantity || '0').toFixed(8)} ${coin.name} for ${parseFloat(
+            price || '0',
+          ).toFixed(8)} ${coin.market} each. The total will be ${(
+            parseFloat(quantity) *
+            parseFloat(price) *
+            1.0025
+          ).toFixed(8)} ${coin.market}`
+        : `You will ${type} ${parseFloat(quantity || '0').toFixed(8)} ${coin.name} for ${parseFloat(
+            price || '0',
+          ).toFixed(8)} ${coin.market} each. The total will be ${(parseFloat(quantity) * parseFloat(price)).toFixed(
+            8,
+          )} ${coin.market}`;
 
     setResume(r);
   }, [quantity, price, type, coin.market, coin.name]);
@@ -132,8 +136,7 @@ export default function NewOrder({ route, navigation }) {
   async function callExecOrder() {
     try {
       const ret = await execOrder(type, coin.market, coin.name, quantity, price);
-
-      Alert.alert(ret.success ? 'Success' : 'Error', 'Order created!');
+      Alert.alert(ret.success ? 'Success' : 'Error', ret.message);
     } catch {
       Alert.alert('ERROR', 'Error while creating order');
     } finally {
@@ -193,7 +196,7 @@ export default function NewOrder({ route, navigation }) {
   );
 
   const myCoinBlock = () => (
-    <TouchableOpacity onPress={() => setQuantity(myCoin.available)}>
+    <TouchableOpacity onPress={() => setQuantity(myCoin.available.toString())}>
       <LabelValueBlock label={`${coin.name} Available`} value={myCoin ? myCoin.available : 0} adjustDecimals />
     </TouchableOpacity>
   );
@@ -202,9 +205,9 @@ export default function NewOrder({ route, navigation }) {
     <TouchableOpacity
       onPress={() => {
         try {
-          setQuantity(parseFloat(((myMarket.available / price) * 0.9975).toFixed(8)));
+          setQuantity(((myMarket.available / price) * 0.9975).toFixed(8));
         } catch {
-          setQuantity(0);
+          setQuantity('0');
         }
       }}
     >
@@ -360,14 +363,14 @@ const PercentButton = styled.TouchableOpacity`
   border-width: ${StyleSheet.hairlineWidth}px;
   padding: 8px;
   margin: 3px;
-  border-color: ${props => (props.more ? colors.buyBackground : colors.sellBackground)};
+  border-color: ${({ more }) => (more ? colors.buyBackground : colors.sellBackground)};
 `;
 
 const ExecOrderButton = styled.TouchableOpacity`
   border-width: ${StyleSheet.hairlineWidth}px;
   margin: 8px;
   padding: 8px;
-  border-color: ${props => (props.type === 'SELL' ? colors.sellBackground : colors.buyBackground)};
+  border-color: ${({ type }) => (type === 'SELL' ? colors.sellBackground : colors.buyBackground)};
 `;
 
 const pickerStyle = {
