@@ -1,13 +1,12 @@
-import styled from 'styled-components/native';
+import React from 'react';
+import { TextInput } from 'react-native';
 import { colors } from '../style/globals';
 
-const MyInput = styled.TextInput`
-  margin: 8px;
-  height: 25px;
-  border-width: 1px;
-  align-self: stretch;
-  color: ${colors.darker};
-  padding: 3px;
-`;
+const MyInput = () => (
+  <TextInput
+    spellCheck={false}
+    style={{ margin: 8, height: 25, borderWidth: 1, alignSelf: 'stretch', color: colors.darker, padding: 3 }}
+  />
+);
 
 export default MyInput;
