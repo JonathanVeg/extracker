@@ -1,6 +1,7 @@
+import ReactNativeBiometrics from 'react-native-biometrics';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, Switch, View } from 'react-native';
 import { H1, H2, H3 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import MyInput from '../../components/MyInput';
@@ -14,14 +15,24 @@ export default function Keys() {
   const [newKey, setNewKey] = useState('');
   const [newSecret, setNewSecret] = useState('');
 
+  const [requireBiometricPrompt, setRequireBiometricPrompt] = useState(false);
+  const [isSensorAvailable, setIsSensorAvailable] = useState(false);
+
   const { showToast } = useToast();
 
   useEffect(() => {
-    if (!hasKeys) return;
+    readIfSensorIsAvailable();
 
+    if (!hasKeys) return;
     setNewKey(`${key.substring(0, 3)}...${key.slice(-3)}`);
     setNewSecret(`${secret.substring(0, 3)}...${secret.slice(-3)}`);
   }, []);
+
+  async function toggleBiometricPrompt(checked) {
+    setRequireBiometricPrompt(checked);
+
+    StorageUtils.setItem('requireBiometrics', checked ? 'true' : '');
+  }
 
   async function saveKeys() {
     try {
@@ -33,6 +44,14 @@ export default function Keys() {
     } catch (err) {
       showToast({ text: 'Error while saving keys', type: 'error' });
     }
+  }
+
+  async function readIfSensorIsAvailable() {
+    const { available } = await ReactNativeBiometrics.isSensorAvailable();
+    setIsSensorAvailable(available);
+
+    const requireBiometricPrompt = await StorageUtils.getItem('requireBiometrics');
+    setRequireBiometricPrompt(!!requireBiometricPrompt);
   }
 
   return (
@@ -62,6 +81,13 @@ export default function Keys() {
       <Button onPress={saveKeys}>
         <Text>SALVAR</Text>
       </Button>
+
+      {isSensorAvailable && (
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+          <Switch value={requireBiometricPrompt} onValueChange={toggleBiometricPrompt} />
+          <Text style={{ marginStart: 10 }}>Require biometric prompt</Text>
+        </View>
+      )}
     </>
   );
 }

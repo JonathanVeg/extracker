@@ -62,7 +62,7 @@ function Toast({ toastData }) {
   return (
     <Container>
       <TouchableWithoutFeedback onPress={cancelToast}>
-        <ToastText type={data.type}>{data.text}</ToastText>
+        <ToastText type={data.type}>{`${data.text}`}</ToastText>
       </TouchableWithoutFeedback>
     </Container>
   );

@@ -277,6 +277,7 @@ export default function Home({ navigation }) {
           padding: 3,
         }}
         placeholder="Search..."
+        value={search}
         onChangeText={setSearch}
       />
     );
