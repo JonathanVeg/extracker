@@ -5,6 +5,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import Coin from '../models/Coin';
 import { colors } from '../style/globals';
 import MyCoin from '../models/MyCoin';
+import { useFiats } from '../hooks/FiatContext';
 
 interface HomeCoinItemProps {
   onToggleFavorite: void;
@@ -16,8 +17,10 @@ interface HomeCoinItemProps {
 
 const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
   const { onClick, coin, market, myCoins, onToggleFavorite } = props;
-
   const myCoin = myCoins.find(it => it.name === coin.name);
+
+  const { fiats } = useFiats();
+
   return (
     <CoinContainer>
       <CoinName>
@@ -32,6 +35,12 @@ const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
         <Text>{`Low: ${coin.low.idealDecimalPlaces()}`}</Text>
         <Text>{`Vol: ${coin.volume.idealDecimalPlaces()}`}</Text>
         <Text>{`Vol (${market}): ${coin.baseVolume.idealDecimalPlaces()}`}</Text>
+        {coin.market === 'BTC' &&
+          fiats.map(fiat => (
+            <Text key={`fiat${coin.name}${fiat.label}`}>
+              {`${fiat.label}: ${(coin.last * fiat.data.last).idealDecimalPlaces()}`}
+            </Text>
+          ))}
         {myCoin && (
           <>
             <Text>{`I Have: ${myCoin.balance}`}</Text>

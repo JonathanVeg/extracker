@@ -51,21 +51,9 @@ export async function loadBalances(includeZeros = false): Promise<MyCoin[]> {
 
     let coins = data.result;
 
-    if (!includeZeros)
-      coins = coins.filter(
-        coin => coin.Balance > 0.00000001 || coin.Pending > 0,
-      );
+    if (!includeZeros) coins = coins.filter(coin => coin.Balance > 0.00000001 || coin.Pending > 0);
 
-    return coins.map(
-      coin =>
-        new MyCoin(
-          coin.Currency,
-          coin.Balance,
-          coin.Available,
-          coin.Pending,
-          coin.CryptoAddress,
-        ),
-    );
+    return coins.map(coin => new MyCoin(coin.Currency, coin.Balance, coin.Available, coin.Pending, coin.CryptoAddress));
   } catch (err) {
     return [];
   }
@@ -87,13 +75,7 @@ export async function loadBalance(currency: string): Promise<MyCoin | null> {
 
     const coin = data.result;
 
-    return new MyCoin(
-      coin.Currency,
-      coin.Balance,
-      coin.Available,
-      coin.Pending,
-      coin.CryptoAddress,
-    );
+    return new MyCoin(coin.Currency, coin.Balance, coin.Available, coin.Pending, coin.CryptoAddress);
   } catch (err) {
     return null;
   }
@@ -130,8 +112,7 @@ export async function loadClosedOrders(coin: Coin = null): Promise<MyOrder[]> {
     if (coin) {
       orders = orders.filter(
         it =>
-          (it.coin === coin.name && it.market === coin.market) ||
-          (it.coin === coin.market && it.market === coin.name),
+          (it.coin === coin.name && it.market === coin.market) || (it.coin === coin.market && it.market === coin.name),
       );
     }
 
@@ -177,8 +158,7 @@ export async function loadMyOrders(coin: Coin = null): Promise<MyOrder[]> {
     if (coin) {
       orders = orders.filter(
         it =>
-          (it.coin === coin.name && it.market === coin.market) ||
-          (it.coin === coin.market && it.market === coin.name),
+          (it.coin === coin.name && it.market === coin.market) || (it.coin === coin.market && it.market === coin.name),
       );
     }
 
@@ -204,13 +184,7 @@ export async function loadOrderBook(coin: Coin, type): Promise<Order[]> {
     quantity += it.Quantity;
     total += it.Rate * it.Quantity;
 
-    return new Order(
-      it.Quantity,
-      it.Rate,
-      it.Rate * it.Quantity,
-      total,
-      quantity,
-    );
+    return new Order(it.Quantity, it.Rate, it.Rate * it.Quantity, total, quantity);
   });
 }
 
@@ -228,8 +202,7 @@ export async function loadSummary(coin: Coin): Promise<Coin> {
   coin.baseVolume = item.BaseVolume;
   coin.bid = item.Bid;
 
-  coin.spread =
-    item.Bid && item.Bid !== 0 ? (item.Ask / item.Bid - 1) * 100 : 0;
+  coin.spread = item.Bid && item.Bid !== 0 ? (item.Ask / item.Bid - 1) * 100 : 0;
   coin.high = item.High;
   coin.last = item.Last;
   coin.low = item.Low;
@@ -248,16 +221,7 @@ export async function loadMarketHistory(coin: Coin) {
 
   json = json.result;
 
-  return json.map(
-    it =>
-      new OrderHistory(
-        it.Quantity,
-        it.Price,
-        it.Price * it.Quantity,
-        it.OrderType,
-        it.TimeStamp,
-      ),
-  );
+  return json.map(it => new OrderHistory(it.Quantity, it.Price, it.Price * it.Quantity, it.OrderType, it.TimeStamp));
 }
 
 export async function cancelOrder(order: MyOrder) {
@@ -265,9 +229,7 @@ export async function cancelOrder(order: MyOrder) {
   const { key } = s;
   const { secret } = s;
 
-  const url = `https://bittrex.com/api/v1.1/market/cancel?apikey=${key}&nonce=${nonce()}&uuid=${
-    order.id
-  }`;
+  const url = `https://bittrex.com/api/v1.1/market/cancel?apikey=${key}&nonce=${nonce()}&uuid=${order.id}`;
 
   await axios.get(url, prepareOptions(url, secret));
 }
@@ -315,11 +277,7 @@ export function candleChartData() {
   return { zoom: zoomItems, candle: candleItems };
 }
 
-export async function loadCandleChartData(
-  coin: Coin,
-  chartCandle = 'ThirtyMin',
-  chartZoom = 0,
-): Promise<ChartData[]> {
+export async function loadCandleChartData(coin: Coin, chartCandle = 'ThirtyMin', chartZoom = 0): Promise<ChartData[]> {
   const tickInterval = chartCandle;
 
   const url = `https://bittrex.com/Api/v2.0/pub/market/GetTicks?marketName=${coin.market}-${coin.name}&tickInterval=${tickInterval}`;
@@ -403,16 +361,12 @@ export async function calcAllCoinsInBtc() {
 
   const allCoinsInBtc = { BTC: 1 };
 
-  const fakeCoins = markets
-    .filter(it => it !== 'BTC')
-    .map(it => new Coin(it, 'BTC'));
+  const fakeCoins = markets.filter(it => it !== 'BTC').map(it => new Coin(it, 'BTC'));
 
   [...coins, ...fakeCoins]
     .filter(it => it.name !== 'BTC')
     .map(it => {
-      let pair = coins.find(
-        it2 => it2.name === it.name && it2.market === 'BTC',
-      );
+      let pair = coins.find(it2 => it2.name === it.name && it2.market === 'BTC');
 
       if (pair) {
         allCoinsInBtc[it.name] = pair.last;
