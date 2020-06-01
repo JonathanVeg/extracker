@@ -30,7 +30,6 @@ export default function Keys() {
 
   async function toggleBiometricPrompt(checked) {
     setRequireBiometricPrompt(checked);
-
     StorageUtils.setItem('requireBiometrics', checked ? 'true' : '');
   }
 

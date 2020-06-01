@@ -1,10 +1,9 @@
-import ReactNativeBiometrics from 'react-native-biometrics';
-import React, { ReactElement, useState, useEffect } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider, useSafeArea } from 'react-native-safe-area-context';
-import { StatusBar, Text, View, StyleSheet, Linking, SafeAreaView, TouchableOpacity, Platform } from 'react-native';
+import { StatusBar, Text, View, StyleSheet, Linking, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styled from 'styled-components/native';
 import AboutPage from './pages/About';
@@ -19,7 +18,7 @@ import CoinPageMyOrdersHistory from './pages/Wallet/MyOrdersHistory';
 import CoinPageCalculator from './pages/Coin/Calculator';
 import { H1 } from './components/Hs';
 import AppProvider from './hooks';
-import StorageUtils from './utils/StorageUtils';
+import SecurityPage from './pages/Security';
 
 // const CoinPageNavigator = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -129,47 +128,8 @@ const GlobalNavigator = () => (
 
 const App = () => {
   const [read, setRead] = useState(false);
-  const [error, setError] = useState('');
 
-  useEffect(() => {
-    runSecurityFlow();
-  }, []);
-
-  async function runSecurityFlow() {
-    const requireBiometricPrompt = await StorageUtils.getItem('requireBiometrics');
-    if (requireBiometricPrompt) readBiometrics();
-    else setRead(true);
-  }
-
-  async function readBiometrics() {
-    const { available } = await ReactNativeBiometrics.isSensorAvailable();
-
-    if (!available) {
-      setRead(true);
-      return;
-    }
-
-    ReactNativeBiometrics.simplePrompt({ promptMessage: 'Confirm fingerprint' })
-      .then(resultObject => {
-        const { error, success } = resultObject;
-        setRead(success);
-        setError(error);
-      })
-      .catch(() => {
-        setRead(false);
-      });
-  }
-
-  if (!read)
-    return (
-      <SafeAreaView style={{ flex: 1, justifyContent: 'center', height: '100%', alignItems: 'center' }}>
-        <Text>READING BIOMETRIC</Text>
-        <Text>{error}</Text>
-        <TouchableOpacity onPress={readBiometrics}>
-          <Text>Try Again</Text>
-        </TouchableOpacity>
-      </SafeAreaView>
-    );
+  if (!read) return <SecurityPage setRead={setRead} />;
 
   return (
     <>
