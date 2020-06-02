@@ -1,6 +1,6 @@
 export function giveMeSpaceInLog(n = 10) {
   let l = '';
-  for (let i = 0; i < n; i++) l += '\n';
+  for (let i = 0; i < n; i++) l += '.\n';
 
   console.log(l);
 }

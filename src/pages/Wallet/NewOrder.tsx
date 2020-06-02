@@ -177,27 +177,42 @@ export default function NewOrder({ route, navigation }) {
         {refreshing ? '(loading...)' : ''}
       </H1>
       <Spacer margin={2} />
-      <TouchableOpacity onPress={() => setPrice(coin.last)}>
-        <LabelValueBlock label="Last" value={coin.last} adjustDecimals />
+      <TouchableOpacity onPress={() => setPrice(coin.last.toString())}>
+        <LabelValueBlock style={{ paddingBottom: 4, paddingTop: 4 }} label="Last" value={coin.last} adjustDecimals />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => setPrice(coin.bid)}>
-        <LabelValueBlock label="Bid" value={coin.bid} adjustDecimals />
+      <TouchableOpacity onPress={() => setPrice(coin.bid.toString())}>
+        <LabelValueBlock style={{ paddingBottom: 4, paddingTop: 4 }} label="Bid" value={coin.bid} adjustDecimals />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => setPrice(coin.ask)}>
-        <LabelValueBlock label="Ask" value={coin.ask} adjustDecimals />
+      <TouchableOpacity onPress={() => setPrice(coin.ask.toString())}>
+        <LabelValueBlock style={{ paddingBottom: 4, paddingTop: 4 }} label="Ask" value={coin.ask} adjustDecimals />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => setPrice(coin.high)}>
-        <LabelValueBlock label="24h highest" value={coin.high} adjustDecimals />
+      <TouchableOpacity onPress={() => setPrice(coin.high.toString())}>
+        <LabelValueBlock
+          style={{ paddingBottom: 4, paddingTop: 4 }}
+          label="24h highest"
+          value={coin.high}
+          adjustDecimals
+        />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => setPrice(coin.low)}>
-        <LabelValueBlock label="24h lowest" value={coin.low} adjustDecimals />
+      <TouchableOpacity onPress={() => setPrice(coin.low.toString())}>
+        <LabelValueBlock
+          style={{ paddingBottom: 4, paddingTop: 4 }}
+          label="24h lowest"
+          value={coin.low}
+          adjustDecimals
+        />
       </TouchableOpacity>
     </>
   );
 
   const myCoinBlock = () => (
-    <TouchableOpacity onPress={() => setQuantity(myCoin.available.toString())}>
-      <LabelValueBlock label={`${coin.name} Available`} value={myCoin ? myCoin.available : 0} adjustDecimals />
+    <TouchableOpacity onPress={() => setQuantity(myCoin?.available?.toString() || '0')}>
+      <LabelValueBlock
+        style={{ paddingBottom: 4, paddingTop: 4 }}
+        label={`${coin.name} Available`}
+        value={myCoin ? myCoin.available : 0}
+        adjustDecimals
+      />
     </TouchableOpacity>
   );
 
@@ -205,13 +220,18 @@ export default function NewOrder({ route, navigation }) {
     <TouchableOpacity
       onPress={() => {
         try {
-          setQuantity(((myMarket.available / price) * 0.9975).toFixed(8));
+          setQuantity(((myMarket.available / parseFloat(price)) * 0.9975).toFixed(8));
         } catch {
           setQuantity('0');
         }
       }}
     >
-      <LabelValueBlock label={`${coin.market} Available`} value={myMarket ? myMarket.available : 0} adjustDecimals />
+      <LabelValueBlock
+        style={{ paddingBottom: 4, paddingTop: 4 }}
+        label={`${coin.market} Available`}
+        value={myMarket ? myMarket.available : 0}
+        adjustDecimals
+      />
     </TouchableOpacity>
   );
 
@@ -243,7 +263,7 @@ export default function NewOrder({ route, navigation }) {
       <MyInput
         // keyboardType="number-pad"
         spellCheck={false}
-        value={quantity.toString()}
+        value={`${quantity}`}
         onChangeText={text => {
           setQuantity(text);
         }}
@@ -252,7 +272,7 @@ export default function NewOrder({ route, navigation }) {
       <Text>Price</Text>
       <MyInput
         spellCheck={false}
-        value={price.toString()}
+        value={`${price}`}
         onChangeText={text => {
           setPrice(text);
         }}

@@ -139,7 +139,6 @@ export async function loadMyOrders(coin: Coin = null): Promise<MyOrder[]> {
     }
 
     let orders: MyOrder[] = [];
-
     data.result.map(it => {
       const order = new MyOrder(
         it.OrderUuid,
@@ -284,9 +283,9 @@ export async function loadCandleChartData(coin: Coin, chartCandle = 'ThirtyMin',
 
   const response = await axios.get(url);
 
-  let json = await response.data;
+  let { data } = response;
 
-  json = json.result;
+  data = data.result;
 
   let quantity = (24 * 60) / 30;
 
@@ -298,15 +297,15 @@ export async function loadCandleChartData(coin: Coin, chartCandle = 'ThirtyMin',
     else if (chartCandle === 'Day') quantity = chartZoom / 24;
   }
 
-  const data = [];
+  const ret = [];
 
-  for (let i = json.length - quantity; i < json.length; i++) {
-    const it = json[i];
+  for (let i = data.length - quantity; i < data.length; i++) {
+    const it = data[i];
 
-    data.push(new ChartData(it.H, it.L, it.O, it.C, it.V, it.BV));
+    ret.push(new ChartData(it.H, it.L, it.O, it.C, it.V, it.BV));
   }
 
-  return data;
+  return ret;
 }
 
 export async function loadMarketSummaries(): Promise<[Coin[], string[]]> {

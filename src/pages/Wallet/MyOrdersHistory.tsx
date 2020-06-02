@@ -9,7 +9,7 @@ import MyOrder from '../../models/MyOrder';
 import { Container } from '../../components/Generics';
 
 export default function CoinPageMyOrdersHistory(props) {
-  const coin: Coin = props.coin || new Coin('DCR', 'BTC');
+  const { coin } = props;
 
   const [showOpened, setShowOpened] = useState(true);
   const [refreshing, setRefreshing] = useState(false);

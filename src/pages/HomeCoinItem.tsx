@@ -6,6 +6,7 @@ import Coin from '../models/Coin';
 import { colors } from '../style/globals';
 import MyCoin from '../models/MyCoin';
 import { useFiats } from '../hooks/FiatContext';
+import { useSummaries } from '../hooks/SummaryContext';
 
 interface HomeCoinItemProps {
   onToggleFavorite: void;
@@ -20,6 +21,7 @@ const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
   const myCoin = myCoins.find(it => it.name === coin.name);
 
   const { fiats } = useFiats();
+  const { allCoinsInBtc } = useSummaries();
 
   return (
     <CoinContainer>
@@ -35,12 +37,11 @@ const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
         <Text>{`Low: ${coin.low.idealDecimalPlaces()}`}</Text>
         <Text>{`Vol: ${coin.volume.idealDecimalPlaces()}`}</Text>
         <Text>{`Vol (${market}): ${coin.baseVolume.idealDecimalPlaces()}`}</Text>
-        {coin.market === 'BTC' &&
-          fiats.map(fiat => (
-            <Text key={`fiat${coin.name}${fiat.label}`}>
-              {`${fiat.label}: ${(coin.last * fiat.data.last).idealDecimalPlaces()}`}
-            </Text>
-          ))}
+        {fiats.map(fiat => (
+          <Text key={`fiat${coin.name}${fiat.label}`}>
+            {`${fiat.label}: ${(coin.last * fiat.data.last * allCoinsInBtc[coin.market]).idealDecimalPlaces()}`}
+          </Text>
+        ))}
         {myCoin && (
           <>
             <Text>{`I Have: ${myCoin.balance}`}</Text>

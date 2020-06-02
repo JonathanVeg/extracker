@@ -12,7 +12,16 @@ export default class MyOrder {
   closedAt = '';
   openedAt = '';
 
-  constructor(id, type, coin, market, quantity, price, openedAt, closedAt) {
+  constructor(
+    id: string,
+    type: string,
+    coin: string,
+    market: string,
+    quantity: number,
+    price: number,
+    openedAt: string,
+    closedAt: string,
+  ) {
     this.id = id;
     this.type = type;
     this.coin = coin;

@@ -26,6 +26,7 @@
     "@typescript-eslint/interface-name-prefix": "off",
     "no-shadow": "off",
     "no-nested-ternary": "off",
+    "react/jsx-props-no-spreading": "off",
     "react-hooks/exhaustive-deps": "off",
     "import/no-named-default": "off",
     "lines-between-class-members": "off",

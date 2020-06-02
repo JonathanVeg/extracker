@@ -38,22 +38,20 @@ export default class Fiat {
 
   async load() {
     try {
-      console.log(`Loading: ${this.label}`);
       const response = await Axios.get(this.url);
+      const { data } = response;
 
-      const json = await response.data;
-
-      let priceData = json;
+      let priceData = data;
       this.priceFieldName.split('.').map(it => {
         priceData = priceData[it];
       });
 
-      let lowData = json;
+      let lowData = data;
       this.lowFieldName.split('.').map(it => {
         lowData = lowData[it];
       });
 
-      let highData = json;
+      let highData = data;
       this.highFieldName.split('.').map(it => {
         highData = highData[it];
       });
