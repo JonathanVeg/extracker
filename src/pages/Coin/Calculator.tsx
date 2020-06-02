@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+import styled from 'styled-components/native';
 import { H1, H2 } from '../../components/Hs';
 import Coin from '../../models/Coin';
 import MyInput from '../../components/MyInput';
 import FiatBlock from '../../components/FiatBlock';
 import { Row } from '../../components/Generics';
 import { colors } from '../../style/globals';
-import { loadSummary, calcAllCoinsInBtc } from '../../controllers/Bittrex';
+import { loadSummary } from '../../controllers/Bittrex';
 import { useFiats } from '../../hooks/FiatContext';
+import { useSummaries } from '../../hooks/SummaryContext';
 
 export default function CoinPageCalculator(props) {
+  const { allCoinsInBtc } = useSummaries();
   const { fiats } = useFiats();
-  const [allCoinsInBtc, setAllCoinsInBtc] = useState({});
 
   const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
 
@@ -21,10 +23,6 @@ export default function CoinPageCalculator(props) {
 
   async function loadData() {
     await loadFiats();
-
-    const acib = await calcAllCoinsInBtc();
-    setAllCoinsInBtc(acib);
-
     loadSummary(coin).then(setCoin);
   }
 
@@ -34,56 +32,22 @@ export default function CoinPageCalculator(props) {
 
   async function loadFiats() {
     const valInFiats = [];
-
     fiats.map(_ => valInFiats.push('1'));
-
     setValInFiats(valInFiats);
   }
 
   const MarketBlock = props => (
-    <View
-      style={{
-        flexDirection: 'row',
-        borderWidth: StyleSheet.hairlineWidth,
-        margin: 5,
-        width: 'auto',
-      }}
-    >
-      <Text
-        style={{
-          backgroundColor: colors.darker,
-          color: colors.white,
-          fontWeight: 'bold',
-          padding: 3,
-        }}
-      >
-        {`${coin.market}`}
-      </Text>
+    <BlockContainer>
+      <BlockText>{`${coin.market}`}</BlockText>
       <Text style={{ padding: 3 }}>{props.amount.idealDecimalPlaces()}</Text>
-    </View>
+    </BlockContainer>
   );
 
   const CoinBlock = props => (
-    <View
-      style={{
-        flexDirection: 'row',
-        borderWidth: StyleSheet.hairlineWidth,
-        margin: 5,
-        width: 'auto',
-      }}
-    >
-      <Text
-        style={{
-          backgroundColor: colors.darker,
-          color: colors.white,
-          fontWeight: 'bold',
-          padding: 3,
-        }}
-      >
-        {`${coin.name}`}
-      </Text>
+    <BlockContainer>
+      <BlockText>{`${coin.name}`}</BlockText>
       <Text style={{ padding: 3 }}>{props.amount.idealDecimalPlaces()}</Text>
-    </View>
+    </BlockContainer>
   );
 
   return (
@@ -147,3 +111,17 @@ export default function CoinPageCalculator(props) {
     </View>
   );
 }
+
+const BlockContainer = styled.View`
+  flex-direction: row;
+  border-width: ${StyleSheet.hairlineWidth}px;
+  margin: 5px;
+  width: auto;
+`;
+
+const BlockText = styled.Text`
+  background-color: ${colors.darker};
+  color: ${colors.white};
+  font-weight: bold;
+  padding: 3px;
+`;

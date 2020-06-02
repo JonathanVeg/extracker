@@ -19,6 +19,7 @@ import { loadBalances, loadMarketSummaries } from '../../controllers/Bittrex';
 import { sortArrayByKey } from '../../utils/utils';
 import { useFiats } from '../../hooks/FiatContext';
 import { useKeys } from '../../hooks/KeysContext';
+import { useSummaries } from '../../hooks/SummaryContext';
 
 export default function Home({ navigation }) {
   navigation.setOptions({
@@ -26,14 +27,14 @@ export default function Home({ navigation }) {
     headerLeft: () => <HamburgerIcon navigationProps={navigation} />,
   });
 
+  // const [allCoinsInBtc, setAllCoinsInBtc] = useState({});
+  const { allCoinsInBtc, markets } = useSummaries();
+  const [coins, setCoins] = useState<Coin[]>([]);
   const { fiats } = useFiats();
   const { hasKeys } = useKeys();
   const [showBalanceBlock, setShowBalanceBlock] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [allCoinsInBtc, setAllCoinsInBtc] = useState({});
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [coins, setCoins] = useState<Coin[]>([]);
-  const [markets, setMarkets] = useState<string[]>(['BTC']);
   const [market, setMarket] = useState<string>('BTC');
   const [hideSmall, setHideSmall] = useState<boolean>(false);
   const [myCoins, setMyCoins] = useState<MyCoin[]>([]);
@@ -64,7 +65,6 @@ export default function Home({ navigation }) {
   async function loadFavorites(): Promise<string[]> {
     try {
       const value = await AsyncStorage.getItem('@extracker:favs');
-
       return value !== null ? JSON.parse(value) : [];
     } catch (e) {
       return [];
@@ -99,10 +99,6 @@ export default function Home({ navigation }) {
     const coinsFromStorage = await AsyncStorage.getItem('@extracker:coins');
 
     if (coinsFromStorage) setCoins(JSON.parse(coinsFromStorage));
-
-    const marketsFromStorage = await AsyncStorage.getItem('@extracker:markets');
-
-    if (marketsFromStorage) setMarkets(JSON.parse(marketsFromStorage));
   }
 
   async function loadCoins() {
@@ -126,38 +122,9 @@ export default function Home({ navigation }) {
         });
 
       setCoins(coins);
-
-      setMarkets(data[1]);
-
-      calcAllCoinsInBtc(coins, data[1]);
     } finally {
       setRefreshing(false);
     }
-  }
-
-  function calcAllCoinsInBtc(coins: Coin[], markets: string[]) {
-    const allCoinsInBtc = { BTC: 1 };
-
-    const fakeCoins = markets.filter(it => it !== 'BTC').map(it => new Coin(it, 'BTC'));
-
-    [...coins, ...fakeCoins]
-      .filter(it => it.name !== 'BTC')
-      .map(it => {
-        let pair = coins.find(it2 => it2.name === it.name && it2.market === 'BTC');
-
-        if (pair) {
-          allCoinsInBtc[it.name] = pair.last;
-        } else {
-          pair = coins.find(it2 => it2.name === 'BTC' && it2.market === it.name);
-          if (pair) {
-            allCoinsInBtc[it.name] = 1 / pair.last;
-          }
-        }
-      });
-
-    setAllCoinsInBtc(allCoinsInBtc);
-
-    return allCoinsInBtc;
   }
 
   function totalInMarket(): number {

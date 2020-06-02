@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { ScrollView, RefreshControl } from 'react-native';
 import listFiats from '../../controllers/fiats/FiatsHelper';
-import { loadSummary, calcAllCoinsInBtc, loadBalance } from '../../controllers/Bittrex';
+import { loadSummary, loadBalance } from '../../controllers/Bittrex';
 import Coin from '../../models/Coin';
 import LabelValueBlock from '../../components/LabelValueBlock';
 import MyCoin from '../../models/MyCoin';
@@ -10,6 +10,7 @@ import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import { Container } from '../../components/Generics';
 import { useFiats } from '../../hooks/FiatContext';
+import { useSummaries } from '../../hooks/SummaryContext';
 
 interface CoinPageSummaryInterface {
   coin: Coin | null;
@@ -17,7 +18,7 @@ interface CoinPageSummaryInterface {
 
 export default function CoinPageSummary(props: CoinPageSummaryInterface) {
   const { fiats } = useFiats();
-  const [allCoinsInBtc, setAllCoinsInBtc] = useState({});
+  const { allCoinsInBtc } = useSummaries();
 
   const [refreshing, setRefreshing] = useState(false);
   const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
@@ -46,9 +47,6 @@ export default function CoinPageSummary(props: CoinPageSummaryInterface) {
   async function refresh() {
     load();
     loadMyData();
-
-    const acib = await calcAllCoinsInBtc();
-    setAllCoinsInBtc(acib);
   }
 
   useEffect(() => {

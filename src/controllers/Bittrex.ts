@@ -353,30 +353,3 @@ export async function loadMarketSummaries(): Promise<[Coin[], string[]]> {
 
   return [listCoins, listMarkets];
 }
-
-export async function calcAllCoinsInBtc() {
-  const d = await loadMarketSummaries();
-  const coins: Coin[] = d[0];
-  const markets: string[] = d[1];
-
-  const allCoinsInBtc = { BTC: 1 };
-
-  const fakeCoins = markets.filter(it => it !== 'BTC').map(it => new Coin(it, 'BTC'));
-
-  [...coins, ...fakeCoins]
-    .filter(it => it.name !== 'BTC')
-    .map(it => {
-      let pair = coins.find(it2 => it2.name === it.name && it2.market === 'BTC');
-
-      if (pair) {
-        allCoinsInBtc[it.name] = pair.last;
-      } else {
-        pair = coins.find(it2 => it2.name === 'BTC' && it2.market === it.name);
-        if (pair) {
-          allCoinsInBtc[it.name] = 1 / pair.last;
-        }
-      }
-    });
-
-  return allCoinsInBtc;
-}

@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import { default as FA } from 'react-native-vector-icons/FontAwesome';
-import { FlatList, StyleSheet, View, Text } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Coin from '../../models/Coin';
 import HamburgerIcon from '../../components/HamburgerIcon';
 import LabelValueBlock from '../../components/LabelValueBlock';
 import MyCoin from '../../models/MyCoin';
 import { H1 } from '../../components/Hs';
-import { loadBalances, loadMarketSummaries } from '../../controllers/Bittrex';
+import { loadBalances } from '../../controllers/Bittrex';
 import { Spacer } from '../../components/Spacer';
 import { sortArrayByKey } from '../../utils/utils';
 import Keys from '../Settings/Keys';
 import { useFiats } from '../../hooks/FiatContext';
 import { useKeys } from '../../hooks/KeysContext';
+import { useSummaries } from '../../hooks/SummaryContext';
 
 interface WalletListItem {
   myCoin: MyCoin;
@@ -41,58 +42,21 @@ export default function WalletPage({ navigation }) {
   navigation.setOptions({ title: 'Wallets', headerLeft, headerRight });
 
   const { fiats } = useFiats();
+  const { allCoinsInBtc } = useSummaries();
   const [listItems, setListItems] = useState<WalletListItem[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [myCoins, setMyCoins] = useState<MyCoin[]>([]);
-  const [coins, setCoins] = useState<Coin[]>([]);
-  const [markets, setMarkets] = useState<string[]>([]);
-  const [allCoinsInBtc, setAllCoinsInBtc] = useState<object>({});
   const [totalInBtc, setTotalInBtc] = useState(0.0);
-
-  function calcAllCoinsInBtc() {
-    const acib = { BTC: 1 };
-
-    const fakeCoins = markets.filter(it => it !== 'BTC').map(it => new Coin(it, 'BTC'));
-
-    [...coins, ...fakeCoins]
-      .filter(it => it.name !== 'BTC')
-      .map(it => {
-        let pair = coins.find(it2 => it2.name === it.name && it2.market === 'BTC');
-
-        if (pair) {
-          acib[it.name] = pair.last;
-        } else {
-          pair = coins.find(it2 => it2.name === 'BTC' && it2.market === it.name);
-          if (pair) {
-            acib[it.name] = 1 / pair.last;
-          }
-        }
-      });
-
-    setAllCoinsInBtc(acib);
-  }
 
   useEffect(() => {
     refresh();
   }, [hasKeys]);
 
-  useEffect(() => {
-    calcAllCoinsInBtc();
-  }, [coins, markets]);
-
   const refresh = async () => {
     if (hasKeys) {
       load();
-      loadCoins();
     }
   };
-
-  async function loadCoins() {
-    const data = await loadMarketSummaries();
-
-    setCoins(data[0]);
-    setMarkets(data[1]);
-  }
 
   async function load() {
     try {
