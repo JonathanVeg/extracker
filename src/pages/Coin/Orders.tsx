@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import React, { useState, useEffect } from 'react';
-import { Text, FlatList } from 'react-native';
+import { Text, FlatList, Platform } from 'react-native';
 import Coin from '../../models/Coin';
 import { H1 } from '../../components/Hs';
 import { loadOrderBook, loadMyOrders } from '../../controllers/Bittrex';
@@ -64,11 +64,32 @@ export default function CoinPageOrders(props) {
     return (
       <RowContainer backgroundColor={backgroundColor}>
         <Icon name="star" size={13} style={{ margin: 2 }} color={iHave ? 'black' : 'transparent'} />
-        <Text style={{ flex: 1, textAlign: 'left' }}>
+        <Text
+          style={{
+            flex: 1,
+            textAlign: 'left',
+            fontVariant: ['tabular-nums'],
+          }}
+        >
           {(showSumQuantity ? order.quantityTotal : order.quantity).idealDecimalPlaces()}
         </Text>
-        <Text style={{ flex: 1, textAlign: 'right' }}>{order.rate.idealDecimalPlaces()}</Text>
-        <Text style={{ flex: 1, textAlign: 'right', paddingRight: 2 }}>
+        <Text
+          style={{
+            flex: 1,
+            textAlign: 'center',
+            fontVariant: ['tabular-nums'],
+          }}
+        >
+          {order.rate.idealDecimalPlaces()}
+        </Text>
+        <Text
+          style={{
+            flex: 1,
+            textAlign: 'right',
+            fontVariant: ['tabular-nums'],
+            paddingRight: 2,
+          }}
+        >
           {(showSumPrice ? order.totalTotal : order.total).idealDecimalPlaces()}
         </Text>
       </RowContainer>
@@ -86,7 +107,7 @@ export default function CoinPageOrders(props) {
         >
           {showSumQuantity ? 'Sum Qnt.' : 'Qnt.'}
         </Text>
-        <Text style={{ fontWeight: 'bold' }}>Rate</Text>
+        <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Rate</Text>
         <Text
           style={{ fontWeight: 'bold', paddingRight: 2 }}
           onPress={() => {

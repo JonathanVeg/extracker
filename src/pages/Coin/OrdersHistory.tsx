@@ -45,12 +45,16 @@ export default function CoinPageOrdersHistory(props) {
           paddingHorizontal: 5,
         }}
       >
-        <Text style={{ flex: 1, textAlign: 'left' }}>
+        <Text style={{ flex: 1, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
           {order.type === 'BUY' ? '+ ' : '- '}
-          {order.quantity.idealDecimalPlaces()}
+          {`${order.quantity.idealDecimalPlaces()}`}
         </Text>
-        <Text style={{ flex: 1, textAlign: 'right' }}>{order.rate.idealDecimalPlaces()}</Text>
-        <Text style={{ flex: 1, textAlign: 'right' }}>{order.total.idealDecimalPlaces()}</Text>
+        <Text style={{ flex: 1, textAlign: 'center', fontVariant: ['tabular-nums'] }}>
+          {order.rate.idealDecimalPlaces()}
+        </Text>
+        <Text style={{ flex: 1, textAlign: 'right', fontVariant: ['tabular-nums'] }}>
+          {order.total.idealDecimalPlaces()}
+        </Text>
       </View>
     );
   }
@@ -59,7 +63,7 @@ export default function CoinPageOrdersHistory(props) {
     return (
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ flex: 1, textAlign: 'left', fontWeight: 'bold' }}>Amount</Text>
-        <Text style={{ flex: 1, textAlign: 'right', fontWeight: 'bold' }}>Unit Price</Text>
+        <Text style={{ flex: 1, textAlign: 'center', fontWeight: 'bold' }}>Unit Price</Text>
         <Text style={{ flex: 1, textAlign: 'right', fontWeight: 'bold' }}>Total</Text>
       </View>
     );
