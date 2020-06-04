@@ -17,6 +17,7 @@ import LabelValueBlock from '../../components/LabelValueBlock';
 import MyInput from '../../components/MyInput';
 import { colors } from '../../style/globals';
 import { Container } from '../../components/Generics';
+import { useToast } from '../../hooks/ToastContext';
 
 function usePrevious(value) {
   const ref = useRef();
@@ -40,6 +41,7 @@ export default function NewOrder({ route, navigation }) {
   navigation.setOptions({ title: 'Wallets', headerRight });
 
   const defaultCoin: Coin = (route.params || {}).coin || new Coin('DCR', 'BTC');
+  const { showToast } = useToast();
 
   const [refreshing, setRefreshing] = useState(false);
   const [coin, setCoin] = useState<Coin>(defaultCoin);
@@ -56,7 +58,7 @@ export default function NewOrder({ route, navigation }) {
   const [coinsNames, setCoinsNames] = useState<object[]>([]);
 
   // order data
-  const [type, setType] = useState('BUY');
+  const [type, setType] = useState('');
   const [quantity, setQuantity] = useState('0');
   const [price, setPrice] = useState('0');
   const [resume, setResume] = useState('');
@@ -116,6 +118,17 @@ export default function NewOrder({ route, navigation }) {
   }, [quantity, price, type, coin.market, coin.name]);
 
   async function handleCreateOrder() {
+    let error = '';
+    if (!type) error = 'Please select if you want buy or sell';
+    else if (parseFloat(quantity) === 0.0) error = `Please fill the quantity to ${type.toUpperCase()} ${coin.name}`;
+    else if (parseFloat(price) === 0.0) error = `Please fill the price to ${type.toUpperCase()} ${coin.name}`;
+
+    if (error) {
+      showToast({ text: error, type: 'error' });
+
+      return;
+    }
+
     Alert.alert(
       'Create order',
       resume,
