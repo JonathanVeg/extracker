@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, Text, SafeAreaView } from 'react-native';
+import { TouchableOpacity, Text, SafeAreaView, Image } from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
+import styled from 'styled-components/native';
 import StorageUtils from '../../utils/StorageUtils';
 import { H1, H2 } from '../../components/Hs';
 import { Spacer } from '../../components/Spacer';
@@ -20,7 +21,9 @@ export default function SecurityPage({ setRead }) {
   }
 
   async function readBiometrics() {
-    const { available } = await ReactNativeBiometrics.isSensorAvailable();
+    const { available, biometryType } = await ReactNativeBiometrics.isSensorAvailable();
+
+    console.log(biometryType);
 
     if (!available) {
       setRead(true);
@@ -46,15 +49,23 @@ export default function SecurityPage({ setRead }) {
 
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', height: '100%', alignItems: 'center' }}>
-      <H1>READING BIOMETRIC</H1>
+      <Logo source={require('../../../trexlogo.jpg')} />
+      <H1>Authenticating</H1>
+
       <Spacer />
       <Text>{error}</Text>
       <Spacer />
       {showTryAgain && (
         <TouchableOpacity onPress={readBiometrics}>
-          <H2>Try Again</H2>
+          <H2 style={{ borderWidth: 1, padding: 8, borderColor: 'black' }}>Try Again</H2>
         </TouchableOpacity>
       )}
     </SafeAreaView>
   );
 }
+
+const Logo = styled.Image`
+  width: 150px;
+  height: 150px;
+  margin: 10px;
+`;

@@ -119,7 +119,7 @@ export default function NewOrder({ route, navigation }) {
 
   async function handleCreateOrder() {
     let error = '';
-    if (!type) error = 'Please select if you want buy or sell';
+    if (!type) error = `Please select if you want to buy or to sell ${coin.name}`;
     else if (parseFloat(quantity) === 0.0) error = `Please fill the quantity to ${type.toUpperCase()} ${coin.name}`;
     else if (parseFloat(price) === 0.0) error = `Please fill the price to ${type.toUpperCase()} ${coin.name}`;
 

@@ -18,8 +18,8 @@ interface HomeCoinItemProps {
 
 const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
   const { onClick, coin, market, myCoins, onToggleFavorite } = props;
-  const myCoin = myCoins.find(it => it.name === coin.name);
 
+  const myCoin = myCoins.find(it => it.name === coin.name);
   const { fiats } = useFiats();
   const { allCoinsInBtc } = useSummaries();
 

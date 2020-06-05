@@ -52,15 +52,15 @@ export default function Home({ navigation }) {
     setHideSmall(hideSmall);
 
     loadCoins();
-
-    if (hasKeys) {
-      loadMyCoins();
-    }
   }
 
   useEffect(() => {
     refresh();
   }, []);
+
+  useEffect(() => {
+    if (hasKeys) loadMyCoins();
+  }, [hasKeys]);
 
   async function loadFavorites(): Promise<string[]> {
     try {
@@ -154,7 +154,6 @@ export default function Home({ navigation }) {
             .filter(it => it.data)
             .map(it => {
               const marketInBtc = allCoinsInBtc[market];
-
               return <FiatBlock fiat={it} amount={totalInMarket() * marketInBtc} key={`mytotal_${it.name}`} />;
             })}
         </View>
@@ -184,13 +183,7 @@ export default function Home({ navigation }) {
   const coinsToShow = getCoinsToShow();
 
   const TopBlock = () => (
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <TopBlockContainer>
       <View style={{ flex: 1 }}>
         {showBalanceBlock ? (
           <TotalBalanceBlock />
@@ -203,7 +196,7 @@ export default function Home({ navigation }) {
           <Icon name="chevron-right" size={30} />
         </TouchableOpacity>
       )}
-    </View>
+    </TopBlockContainer>
   );
 
   const HeaderBlock = () => (
@@ -221,14 +214,7 @@ export default function Home({ navigation }) {
     <MarketSelectorBlockContainer>
       {markets.map(it => (
         <TouchableOpacity key={`selectmarket${it}`} style={{ flex: 1, padding: 8 }} onPress={() => setMarket(it)}>
-          <Text
-            style={{
-              textAlign: 'center',
-              fontWeight: market === it ? 'bold' : 'normal',
-            }}
-          >
-            {it}
-          </Text>
+          <Text style={{ textAlign: 'center', fontWeight: market === it ? 'bold' : 'normal' }}>{it}</Text>
         </TouchableOpacity>
       ))}
     </MarketSelectorBlockContainer>
@@ -298,6 +284,12 @@ export default function Home({ navigation }) {
 const Header = styled.View`
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+`;
+
+const TopBlockContainer = styled.View`
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
 `;
 
