@@ -19,6 +19,7 @@ import CoinPageCalculator from './pages/Coin/Calculator';
 import { H1 } from './components/Hs';
 import AppProvider from './hooks';
 import SecurityPage from './pages/Security';
+import OneSignalWrapper from './controllers/OneSignal';
 
 // const CoinPageNavigator = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -140,6 +141,7 @@ const App = () => {
             <GlobalNavigator />
           </NavigationContainer>
         </SafeAreaProvider>
+        <OneSignalWrapper />
       </AppProvider>
     </>
   );

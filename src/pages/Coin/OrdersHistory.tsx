@@ -1,5 +1,6 @@
+import moment from 'moment';
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, Text } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity } from 'react-native';
 import Coin from '../../models/Coin';
 import OrderHistory from '../../models/OrderHistory';
 import { loadMarketHistory } from '../../controllers/Bittrex';
@@ -11,6 +12,7 @@ import { Container } from '../../components/Generics';
 export default function CoinPageOrdersHistory(props) {
   const coin: Coin = props.coin || new Coin('DCR', 'BTC');
   const [refreshing, setRefreshing] = useState(false);
+  const [showWhen, setShowWhen] = useState(false);
 
   const [orders, setOrders] = useState<OrderHistory[]>([]);
 
@@ -53,10 +55,23 @@ export default function CoinPageOrdersHistory(props) {
           {order.rate.idealDecimalPlaces()}
         </Text>
         <Text style={{ flex: 1, textAlign: 'right', fontVariant: ['tabular-nums'] }}>
-          {order.total.idealDecimalPlaces()}
+          {showWhen ? formatDate(order.timestamp) : order.total.idealDecimalPlaces()}
         </Text>
       </View>
     );
+  }
+
+  const formatDate = (timestamp: string) => {
+    let fromNow = moment(parseISOString(`${timestamp}Z`)).fromNow();
+
+    fromNow = fromNow.replace('minutes', 'min(s)').replace(' ago', '').replace('an', '1');
+
+    return fromNow;
+  };
+
+  function parseISOString(s) {
+    const b = s.split(/\D+/);
+    return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
   }
 
   function Header() {
@@ -64,7 +79,13 @@ export default function CoinPageOrdersHistory(props) {
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ flex: 1, textAlign: 'left', fontWeight: 'bold' }}>Amount</Text>
         <Text style={{ flex: 1, textAlign: 'center', fontWeight: 'bold' }}>Unit Price</Text>
-        <Text style={{ flex: 1, textAlign: 'right', fontWeight: 'bold' }}>Total</Text>
+        <TouchableOpacity
+          onPress={() => {
+            setShowWhen(!showWhen);
+          }}
+        >
+          <Text style={{ flex: 1, textAlign: 'right', fontWeight: 'bold' }}>{showWhen ? 'When' : 'Total'}</Text>
+        </TouchableOpacity>
       </View>
     );
   }

@@ -45,6 +45,10 @@ def flipper_post_install(installer)
   end
 end
 
+target 'OneSignalNotificationServiceExtension' do
+  pod 'OneSignal', '>= 2.9.3', '< 3.0'
+end
+
 target 'extracker' do
   # Pods for extracker
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
@@ -81,6 +85,9 @@ target 'extracker' do
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
 
+
+  pod 'react-native-onesignal', :path => '../node_modules/react-native-onesignal'
+
   target 'extrackerTests' do
     inherit! :complete
     # Pods for testing
@@ -96,6 +103,13 @@ target 'extracker' do
   # you should disable these next few lines.
   add_flipper_pods!
   post_install do |installer|
+    
+    # installer.pods_project.targets.each do |t|
+    #   t.build_configurations.each do |config|
+    #     config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
+    #   end
+    # end
+
     flipper_post_install(installer)
   end
 end

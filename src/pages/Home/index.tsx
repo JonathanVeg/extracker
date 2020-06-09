@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import { default as Icon } from 'react-native-vector-icons/MaterialIcons';
+import { default as MCI } from 'react-native-vector-icons/MaterialCommunityIcons';
 import { default as FA } from 'react-native-vector-icons/FontAwesome';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
@@ -25,7 +26,16 @@ export default function Home({ navigation }) {
   navigation.setOptions({
     title: 'Trextracker',
     headerLeft: () => <HamburgerIcon navigationProps={navigation} />,
+    headerRight: () => (
+      <View style={{ marginStart: 5, flexDirection: 'row' }}>
+        <TouchableOpacity onPress={gotoWallets}>
+          <MCI name="wallet" size={25} style={{ marginEnd: 15 }} />
+        </TouchableOpacity>
+      </View>
+    ),
   });
+
+  const gotoWallets = () => navigation.navigate('Wallets');
 
   // const [allCoinsInBtc, setAllCoinsInBtc] = useState({});
   const { allCoinsInBtc, markets } = useSummaries();

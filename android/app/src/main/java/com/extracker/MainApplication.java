@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
+import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.rnbiometrics.ReactNativeBiometricsPackage;
 import com.github.wuxudong.rncharts.MPAndroidChartPackage;
 import com.facebook.react.ReactInstanceManager;
