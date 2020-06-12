@@ -8,7 +8,6 @@ export default function HamburgerIcon({ navigationProps }) {
   const toggleDrawer = () => {
     navigationProps.dispatch(DrawerActions.openDrawer());
   };
-
   return (
     <View style={{ marginStart: 5, flexDirection: 'row' }}>
       <TouchableOpacity onPress={toggleDrawer}>

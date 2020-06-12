@@ -41,6 +41,9 @@ export default function NewOrder({ route, navigation }) {
   navigation.setOptions({ title: 'Wallets', headerRight });
 
   const defaultCoin: Coin = (route.params || {}).coin || new Coin('DCR', 'BTC');
+  const defaultRate = (route.params || {}).rate || 0;
+  const defaultType = ((route.params || {}).type || '').toUpperCase();
+
   const { showToast } = useToast();
 
   const [refreshing, setRefreshing] = useState(false);
@@ -58,9 +61,9 @@ export default function NewOrder({ route, navigation }) {
   const [coinsNames, setCoinsNames] = useState<object[]>([]);
 
   // order data
-  const [type, setType] = useState('');
+  const [type, setType] = useState(defaultType || '');
   const [quantity, setQuantity] = useState('0');
-  const [price, setPrice] = useState('0');
+  const [price, setPrice] = useState((defaultRate || 0).toString());
   const [resume, setResume] = useState('');
 
   useEffect(() => {

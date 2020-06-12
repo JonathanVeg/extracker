@@ -25,6 +25,7 @@
   "rules": {
     "@typescript-eslint/interface-name-prefix": "off",
     "no-shadow": "off",
+    "no-param-reassign": "off",
     "no-nested-ternary": "off",
     "react/jsx-props-no-spreading": "off",
     "react-hooks/exhaustive-deps": "off",

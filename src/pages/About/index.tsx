@@ -36,6 +36,7 @@ const AboutPage = ({ navigation }) => {
       url: 'https://github.com/jonathanveg',
     },
     { icon: 'md-at', label: 'Gmail', url: 'mailto:jonathan.jgs@gmail.com' },
+    { icon: 'ios-code', label: 'Code', url: 'https://github.com/JonathanVeg/extracker' },
   ];
 
   return (

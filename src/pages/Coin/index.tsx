@@ -66,8 +66,8 @@ const CoinPage: React.FC = props => {
 
   const CurrentPage = () => {
     if (currentPage.icon === 'list') return <CoinPageSummary coin={coin} />;
-    if (currentPage.icon === 'plus') return <CoinPageOrders coin={coin} type="buy" />;
-    if (currentPage.icon === 'minus') return <CoinPageOrders coin={coin} type="sell" />;
+    if (currentPage.icon === 'plus') return <CoinPageOrders coin={coin} type="buy" navigation={navigation} />;
+    if (currentPage.icon === 'minus') return <CoinPageOrders coin={coin} type="sell" navigation={navigation} />;
     if (currentPage.icon === 'history') return <CoinPageOrdersHistory coin={coin} />;
     if (currentPage.icon === 'line-chart') return <CoinPageChart coin={coin} />;
     if (currentPage.icon === 'exchange') return <CoinPageMyOrdersHistory coin={coin} />;

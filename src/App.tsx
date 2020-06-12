@@ -19,9 +19,8 @@ import CoinPageCalculator from './pages/Coin/Calculator';
 import { H1 } from './components/Hs';
 import AppProvider from './hooks';
 import SecurityPage from './pages/Security';
-import OneSignalWrapper from './controllers/OneSignal';
+import DonatePage from './pages/Donate';
 
-// const CoinPageNavigator = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
@@ -52,6 +51,12 @@ const WalletPageStack = () => (
 const SettingsPageStack = () => (
   <Stack.Navigator screenOptions={screenOptions} initialRouteName="Settings">
     <Stack.Screen name="Settings" component={SettingsPage} />
+  </Stack.Navigator>
+);
+
+const DonatePageStack = () => (
+  <Stack.Navigator screenOptions={screenOptions} initialRouteName="Donate">
+    <Stack.Screen name="Donate" component={DonatePage} />
   </Stack.Navigator>
 );
 
@@ -101,6 +106,13 @@ function CustomDrawerContent({ drawerPosition, navigation }): ReactElement {
           }}
         />
         <DrawerItem
+          icon={() => <Icon name="home-currency-usd" size={20} />}
+          label="Donate"
+          onPress={() => {
+            navigation.navigate('Donate');
+          }}
+        />
+        <DrawerItem
           icon={() => <Icon name="information" size={20} />}
           label="About"
           onPress={() => {
@@ -123,6 +135,7 @@ const GlobalNavigator = () => (
     <Drawer.Screen name="Home" component={HomeStack} />
     <Drawer.Screen name="Wallets" component={WalletPageStack} />
     <Drawer.Screen name="Settings" component={SettingsPageStack} />
+    <Drawer.Screen name="Donate" component={DonatePageStack} />
     <Drawer.Screen name="About" component={AboutPageStack} />
   </Drawer.Navigator>
 );
@@ -141,7 +154,7 @@ const App = () => {
             <GlobalNavigator />
           </NavigationContainer>
         </SafeAreaProvider>
-        <OneSignalWrapper />
+        {/* <OneSignalWrapper /> */}
       </AppProvider>
     </>
   );

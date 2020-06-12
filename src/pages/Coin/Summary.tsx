@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, RefreshControl } from 'react-native';
-import listFiats from '../../controllers/fiats/FiatsHelper';
 import { loadSummary, loadBalance } from '../../controllers/Bittrex';
 import Coin from '../../models/Coin';
 import LabelValueBlock from '../../components/LabelValueBlock';

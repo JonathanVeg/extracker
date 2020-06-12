@@ -71,7 +71,7 @@
 		00E356F21AD99517003FC87E /* extrackerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = extrackerTests.m; sourceTree = "<group>"; };
 		08F3CB7A591FCDAA40028AE0 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		11E40C5CF55EEB4F4596B2D9 /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07F961A680F5B00A75B9A /* extracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = extracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Trextracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Trextracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = extracker/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = extracker/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -232,7 +232,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* extracker.app */,
+				13B07F961A680F5B00A75B9A /* Trextracker.app */,
 				00E356EE1AD99517003FC87E /* extrackerTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* extracker-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* extracker-tvOSTests.xctest */,
@@ -303,7 +303,7 @@
 			);
 			name = extracker;
 			productName = extracker;
-			productReference = 13B07F961A680F5B00A75B9A /* extracker.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Trextracker.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2D02E47A1E0B4A5D006451C7 /* extracker-tvOS */ = {
@@ -879,7 +879,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.extracker;
-				PRODUCT_NAME = extracker;
+				PRODUCT_NAME = Trextracker;
 				SWIFT_OBJC_BRIDGING_HEADER = "extracker-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -905,7 +905,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.extracker;
-				PRODUCT_NAME = extracker;
+				PRODUCT_NAME = Trextracker;
 				SWIFT_OBJC_BRIDGING_HEADER = "extracker-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
