@@ -1,7 +1,7 @@
-import IconFA, { default as FA } from 'react-native-vector-icons/FontAwesome';
-
 import RNPickerSelect from 'react-native-picker-select';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { View, Text, StyleSheet, Alert, RefreshControl } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import IconFA, { default as FA } from 'react-native-vector-icons/FontAwesome';
 import styled from 'styled-components/native';
 import React, { useState, useEffect, useRef } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -64,7 +64,13 @@ export default function NewOrder({ route, navigation }) {
   const [type, setType] = useState(defaultType || '');
   const [quantity, setQuantity] = useState('0');
   const [price, setPrice] = useState((defaultRate || 0).toString());
+  const [total, setTotal] = useState('0');
   const [resume, setResume] = useState('');
+
+  const [totalChanges, setTotalChanges] = useState('price');
+
+  const totalChangesPrice = () => totalChanges === 'price';
+  const isBuying = () => type === 'BUY';
 
   useEffect(() => {
     async function loadDataFromLocalStorage() {
@@ -102,20 +108,56 @@ export default function NewOrder({ route, navigation }) {
   }, [sCoin, sMarket]);
 
   useEffect(() => {
+    setTotal(calcTotal().toFixed(8));
+  }, [type]);
+
+  const calcTotal = () => {
+    let total = parseFloat(quantity) * parseFloat(price);
+    const fee = total * 0.002;
+    total = isBuying() ? total + fee : total - fee;
+
+    return total;
+  };
+
+  const changeQuantity = quantity => {
+    let total = parseFloat(quantity) * parseFloat(price);
+    const fee = total * 0.002;
+    total = isBuying() ? total + fee : total - fee;
+    setQuantity(quantity);
+    setTotal(total.toFixed(8));
+  };
+
+  const changePrice = price => {
+    let total = parseFloat(quantity) * parseFloat(price);
+    const fee = total * 0.002;
+    total = isBuying() ? total + fee : total - fee;
+    setPrice(price);
+    setTotal(total.toFixed(8));
+  };
+
+  const changeTotal = total => {
+    if (totalChangesPrice()) {
+      const price = (parseFloat(total) / (parseFloat(quantity) * 1.0025)).toFixed(8);
+      setPrice(price);
+    } else {
+      const quantity = (parseFloat(total) / (parseFloat(price) * 1.0025)).toFixed(8);
+      setQuantity(quantity);
+    }
+
+    setTotal(total);
+  };
+
+  useEffect(() => {
+    const total = calcTotal().toFixed(8);
+
     const r =
       type === 'SELL'
         ? `You will ${type} ${parseFloat(quantity || '0').toFixed(8)} ${coin.name} for ${parseFloat(
             price || '0',
-          ).toFixed(8)} ${coin.market} each. The total will be ${(
-            parseFloat(quantity) *
-            parseFloat(price) *
-            1.0025
-          ).toFixed(8)} ${coin.market}`
+          ).toFixed(8)} ${coin.market} each. The total will be ${total} ${coin.market}`
         : `You will ${type} ${parseFloat(quantity || '0').toFixed(8)} ${coin.name} for ${parseFloat(
             price || '0',
-          ).toFixed(8)} ${coin.market} each. The total will be ${(parseFloat(quantity) * parseFloat(price)).toFixed(
-            8,
-          )} ${coin.market}`;
+          ).toFixed(8)} ${coin.market} each. The total will be ${total} ${coin.market}`;
 
     setResume(r);
   }, [quantity, price, type, coin.market, coin.name]);
@@ -193,16 +235,16 @@ export default function NewOrder({ route, navigation }) {
         {refreshing ? '(loading...)' : ''}
       </H1>
       <Spacer margin={2} />
-      <TouchableOpacity onPress={() => setPrice(coin.last.toString())}>
+      <TouchableOpacity onPress={() => changePrice(coin.last.toString())}>
         <LabelValueBlock style={{ paddingBottom: 4, paddingTop: 4 }} label="Last" value={coin.last} adjustDecimals />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => setPrice(coin.bid.toString())}>
+      <TouchableOpacity onPress={() => changePrice(coin.bid.toString())}>
         <LabelValueBlock style={{ paddingBottom: 4, paddingTop: 4 }} label="Bid" value={coin.bid} adjustDecimals />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => setPrice(coin.ask.toString())}>
+      <TouchableOpacity onPress={() => changePrice(coin.ask.toString())}>
         <LabelValueBlock style={{ paddingBottom: 4, paddingTop: 4 }} label="Ask" value={coin.ask} adjustDecimals />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => setPrice(coin.high.toString())}>
+      <TouchableOpacity onPress={() => changePrice(coin.high.toString())}>
         <LabelValueBlock
           style={{ paddingBottom: 4, paddingTop: 4 }}
           label="24h highest"
@@ -210,7 +252,7 @@ export default function NewOrder({ route, navigation }) {
           adjustDecimals
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => setPrice(coin.low.toString())}>
+      <TouchableOpacity onPress={() => changePrice(coin.low.toString())}>
         <LabelValueBlock
           style={{ paddingBottom: 4, paddingTop: 4 }}
           label="24h lowest"
@@ -222,7 +264,7 @@ export default function NewOrder({ route, navigation }) {
   );
 
   const myCoinBlock = () => (
-    <TouchableOpacity onPress={() => setQuantity(myCoin?.available?.toString() || '0')}>
+    <TouchableOpacity onPress={() => changeQuantity(myCoin?.available?.toString() || '0')}>
       <LabelValueBlock
         style={{ paddingBottom: 4, paddingTop: 4 }}
         label={`${coin.name} Available`}
@@ -236,9 +278,9 @@ export default function NewOrder({ route, navigation }) {
     <TouchableOpacity
       onPress={() => {
         try {
-          setQuantity(((myMarket.available / parseFloat(price)) * 0.9975).toFixed(8));
+          changeQuantity(((myMarket.available / parseFloat(price)) * 0.9975).toFixed(8));
         } catch {
-          setQuantity('0');
+          changeQuantity('0');
         }
       }}
     >
@@ -274,25 +316,33 @@ export default function NewOrder({ route, navigation }) {
 
   const inputs = (
     <>
-      <Text>Quantity</Text>
+      <Text>{`Quantity (${((parseFloat(quantity) / (myCoin?.available || 1)) * 100).toFixed(2)}% of available)`}</Text>
+      <MyInput spellCheck={false} value={`${quantity}`} onChangeText={text => changeQuantity(text)} />
 
-      <MyInput
-        // keyboardType="number-pad"
-        spellCheck={false}
-        value={`${quantity}`}
-        onChangeText={text => {
-          setQuantity(text);
-        }}
-      />
+      <Text>{`Price (${((parseFloat(price) / coin.last) * 100).toFixed(2)}% of last price)`}</Text>
+      <MyInput spellCheck={false} value={`${price}`} onChangeText={text => changePrice(text)} />
 
-      <Text>Price</Text>
-      <MyInput
-        spellCheck={false}
-        value={`${price}`}
-        onChangeText={text => {
-          setPrice(text);
-        }}
-      />
+      <View style={{ flexDirection: 'row' }}>
+        <Text>Total</Text>
+        <TouchableOpacity
+          onPress={() => {
+            setTotalChanges('price');
+          }}
+          style={{ marginStart: 8, marginEnd: 2 }}
+        >
+          <Text style={{ fontWeight: totalChanges === 'price' ? 'bold' : 'normal' }}>adjust price</Text>
+        </TouchableOpacity>
+        <Text>|</Text>
+        <TouchableOpacity
+          onPress={() => {
+            setTotalChanges('quantity');
+          }}
+          style={{ marginStart: 2 }}
+        >
+          <Text style={{ fontWeight: totalChanges === 'quantity' ? 'bold' : 'normal' }}>adjust quantity</Text>
+        </TouchableOpacity>
+      </View>
+      <MyInput spellCheck={false} value={`${total}`} onChangeText={text => changeTotal(text)} />
     </>
   );
 
@@ -304,7 +354,7 @@ export default function NewOrder({ route, navigation }) {
             more
             key={`+${p}`}
             onPress={() => {
-              setPrice(parseFloat((price * (1 + p / 100)).toFixed(8)));
+              changePrice(parseFloat((price * (1 + p / 100)).toFixed(8)));
             }}
           >
             <Text>{`+${p}%`}</Text>
@@ -318,7 +368,7 @@ export default function NewOrder({ route, navigation }) {
             less
             key={`-${p}`}
             onPress={() => {
-              setPrice(parseFloat((price * (1 - p / 100)).toFixed(8)));
+              changePrice(parseFloat((price * (1 - p / 100)).toFixed(8)));
             }}
           >
             <Text>{`-${p}%`}</Text>
@@ -331,66 +381,66 @@ export default function NewOrder({ route, navigation }) {
   // refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}>
   return (
     <Container>
-      {/* <ScrollView> */}
-      <View
-        style={{
-          flexDirection: 'column',
-          margin: 5,
-          padding: 5,
-          justifyContent: 'space-evenly',
-        }}
-      >
-        <View>
-          <H1>Select the market</H1>
-          <RNPickerSelect
-            placeholder={{
-              label: 'Select market',
-            }}
-            value={sMarket}
-            itemKey={sMarket}
-            style={pickerStyle}
-            Icon={() => {
-              return <IconFA name="chevron-down" size={17} color="#333" />;
-            }}
-            onValueChange={value => setSMarket(value)}
-            items={sortArrayByKey(
-              markets.map(it => ({ key: it, label: it, value: it })),
-              'label',
-            )}
-          />
+      <KeyboardAwareScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}>
+        <View
+          style={{
+            flexDirection: 'column',
+            margin: 5,
+            padding: 5,
+            justifyContent: 'space-evenly',
+          }}
+        >
+          <View>
+            <H1>Select the market</H1>
+            <RNPickerSelect
+              placeholder={{
+                label: 'Select market',
+              }}
+              value={sMarket}
+              itemKey={sMarket}
+              style={pickerStyle}
+              Icon={() => {
+                return <IconFA name="chevron-down" size={17} color="#333" />;
+              }}
+              onValueChange={value => setSMarket(value)}
+              items={sortArrayByKey(
+                markets.map(it => ({ key: it, label: it, value: it })),
+                'label',
+              )}
+            />
+          </View>
+
+          <View>
+            <H1>Select the coin</H1>
+            <RNPickerSelect
+              placeholder={{
+                label: 'Select coin',
+              }}
+              value={sCoin}
+              itemKey={sCoin}
+              style={pickerStyle}
+              Icon={() => {
+                return <IconFA name="chevron-down" size={17} color="#333" />;
+              }}
+              onValueChange={value => setSCoin(value)}
+              items={coinsNames}
+            />
+          </View>
         </View>
 
-        <View>
-          <H1>Select the coin</H1>
-          <RNPickerSelect
-            placeholder={{
-              label: 'Select coin',
-            }}
-            value={sCoin}
-            itemKey={sCoin}
-            style={pickerStyle}
-            Icon={() => {
-              return <IconFA name="chevron-down" size={17} color="#333" />;
-            }}
-            onValueChange={value => setSCoin(value)}
-            items={coinsNames}
-          />
-        </View>
-      </View>
+        {summary}
+        {myCoinBlock()}
+        {myMarketBlock()}
 
-      {summary}
-      {myCoinBlock()}
-      {myMarketBlock()}
+        {inputs}
+        {percentChangers}
+        {toggleType}
 
-      {inputs}
-      {percentChangers}
-      {toggleType}
-
-      <ExecOrderButton onPress={handleCreateOrder} type={type}>
-        <Text style={{ textAlign: 'center' }}>Create Order</Text>
-      </ExecOrderButton>
-      <Text>{resume}</Text>
-      {/* </ScrollView> */}
+        <ExecOrderButton onPress={handleCreateOrder} type={type}>
+          <Text style={{ textAlign: 'center' }}>Create Order</Text>
+        </ExecOrderButton>
+        <Text>{resume}</Text>
+      </KeyboardAwareScrollView>
     </Container>
   );
 }

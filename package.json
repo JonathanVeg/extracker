@@ -28,6 +28,7 @@
     "react-native-charts-wrapper": "^0.5.7",
     "react-native-dotenv": "^0.2.0",
     "react-native-gesture-handler": "^1.6.1",
+    "react-native-keyboard-aware-scroll-view": "^0.9.1",
     "react-native-keychain": "^6.0.0",
     "react-native-modal-selector": "^2.0.1",
     "react-native-onesignal": "^3.7.3",

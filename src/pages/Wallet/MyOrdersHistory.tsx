@@ -77,12 +77,11 @@ export default function CoinPageMyOrdersHistory(props) {
                 'Cancel order',
                 'Are you sure you want to cancel this order?',
                 [
+                  { text: 'No', style: 'cancel' },
                   {
                     text: 'Yes',
                     onPress: () => cancelOrder(order),
-                    style: 'cancel',
                   },
-                  { text: 'No' },
                 ],
                 { cancelable: false },
               );

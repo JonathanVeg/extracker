@@ -23,8 +23,6 @@ export default function SecurityPage({ setRead }) {
   async function readBiometrics() {
     const { available, biometryType } = await ReactNativeBiometrics.isSensorAvailable();
 
-    console.log(biometryType);
-
     if (!available) {
       setRead(true);
       return;
