@@ -194,7 +194,11 @@ export async function loadSummary(coin: Coin): Promise<Coin> {
 
   const json = await response.data;
 
-  if (!json.success) return coin;
+  if (!json.success) {
+    coin.pairAvailable = false;
+
+    return coin;
+  }
 
   const item = await json.result[0];
   coin.ask = item.Ask;

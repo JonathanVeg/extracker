@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Coin from '../../models/Coin';
 import { loadMyOrders, loadClosedOrders } from '../../controllers/Bittrex';
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import MyOrder from '../../models/MyOrder';
 import { Container } from '../../components/Generics';
+import { useToast } from '../../hooks/ToastContext';
 
 export default function CoinPageMyOrdersHistory(props) {
   const { coin } = props;
@@ -14,6 +14,9 @@ export default function CoinPageMyOrdersHistory(props) {
   const [showOpened, setShowOpened] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [orders, setOrders] = useState<MyOrder[]>([]);
+  const [showUnity, setShowUnit] = useState(true);
+
+  const { showToast } = useToast();
 
   async function loadOrders() {
     try {
@@ -35,7 +38,7 @@ export default function CoinPageMyOrdersHistory(props) {
     try {
       await order.cancel();
 
-      Alert.alert('Order cancelled');
+      showToast({ text: 'Order cancelled', type: 'success' });
 
       refresh();
     } catch (e) {
@@ -58,24 +61,30 @@ export default function CoinPageMyOrdersHistory(props) {
           paddingHorizontal: 5,
         }}
       >
-        <Text style={{ flex: 0.8, textAlign: 'left' }}>
+        <Text style={{ flex: 0.8, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
           {order.type === 'BUY' ? '+ ' : '- '}
-          {order.coin}/{order.market}
+          {`${order.coin}/${order.market}`}
         </Text>
 
-        <Text style={{ flex: 1, textAlign: 'left' }}>
+        <Text style={{ flex: 1, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
           {order.type === 'BUY' ? '+ ' : '- '}
           {order.quantity.idealDecimalPlaces()}
         </Text>
-        <Text style={{ flex: 1, textAlign: 'right' }}>{order.price.idealDecimalPlaces()}</Text>
+        <Text style={{ flex: 1, textAlign: 'right', fontVariant: ['tabular-nums'] }}>
+          {showUnity ? order.price.idealDecimalPlaces() : order.total.idealDecimalPlaces()}
+        </Text>
 
         {showOpened && (
           <TouchableOpacity
             style={{ flex: 0.5, alignItems: 'flex-end' }}
             onPress={() => {
+              let line = 'Are you sure you want to cancel this order?\n';
+
+              line += `${order.type} ${order.quantity} for ${order.price} ${order.market} each.`;
+
               Alert.alert(
                 'Cancel order',
-                'Are you sure you want to cancel this order?',
+                line,
                 [
                   { text: 'No', style: 'cancel' },
                   {
@@ -106,7 +115,9 @@ export default function CoinPageMyOrdersHistory(props) {
         <Text style={{ flex: 0.8, textAlign: 'left' }}>Pair</Text>
 
         <Text style={{ flex: 1, textAlign: 'left' }}>Quantity</Text>
-        <Text style={{ flex: 1, textAlign: 'right' }}>Unity Price</Text>
+        <TouchableOpacity style={{ flex: 1 }} onPress={() => setShowUnit(!showUnity)}>
+          <Text style={{ flex: 1, textAlign: 'right' }}>{showUnity ? 'Unity Price' : 'Total'}</Text>
+        </TouchableOpacity>
 
         {showOpened && <Text style={{ flex: 0.5, textAlign: 'right' }}>Cancel</Text>}
       </View>

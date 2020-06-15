@@ -21,6 +21,7 @@ import { sortArrayByKey } from '../../utils/utils';
 import { useFiats } from '../../hooks/FiatContext';
 import { useKeys } from '../../hooks/KeysContext';
 import { useSummaries } from '../../hooks/SummaryContext';
+import { colors } from '../../style/globals';
 
 export default function Home({ navigation }) {
   navigation.setOptions({
@@ -237,6 +238,7 @@ export default function Home({ navigation }) {
         style={{
           borderWidth: StyleSheet.hairlineWidth,
           borderColor: 'black',
+          color: colors.darker,
           padding: 3,
         }}
         placeholder="Search..."

@@ -1,4 +1,5 @@
 export default class Coin {
+  pairAvailable = true;
   name: string;
   market: string;
   last: number;
