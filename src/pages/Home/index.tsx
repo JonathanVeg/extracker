@@ -1,3 +1,4 @@
+import { BlurView, VibrancyView } from '@react-native-community/blur';
 import AsyncStorage from '@react-native-community/async-storage';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
@@ -11,17 +12,19 @@ import Coin from '../../models/Coin';
 import FiatBlock from '../../components/FiatBlock';
 import FiatsBlock from './FiatsBlock';
 import HamburgerIcon from '../../components/HamburgerIcon';
-import HomeCoinItem from '../HomeCoinItem';
+import HomeCoinItem from './HomeCoinItem';
 import MyCoin from '../../models/MyCoin';
 import StorageUtils from '../../utils/StorageUtils';
 import { Container } from '../../components/Generics';
-import { H1 } from '../../components/Hs';
+import { H1, H2 } from '../../components/Hs';
 import { loadBalances, loadMarketSummaries } from '../../controllers/Bittrex';
 import { sortArrayByKey } from '../../utils/utils';
 import { useFiats } from '../../hooks/FiatContext';
 import { useKeys } from '../../hooks/KeysContext';
 import { useSummaries } from '../../hooks/SummaryContext';
 import { colors } from '../../style/globals';
+import HomeCoinItemCompact from './HomeCoinItemCompact';
+import CoinPageChart from '../Coin/Chart';
 
 export default function Home({ navigation }) {
   navigation.setOptions({
@@ -39,6 +42,8 @@ export default function Home({ navigation }) {
   const gotoWallets = () => navigation.navigate('Wallets');
 
   // const [allCoinsInBtc, setAllCoinsInBtc] = useState({});
+  const [chartCoin, setChartCoin] = useState<Coin | null>(null);
+  const [compactMode, setCompactMode] = useState(false);
   const { allCoinsInBtc, markets } = useSummaries();
   const [coins, setCoins] = useState<Coin[]>([]);
   const { fiats } = useFiats();
@@ -52,6 +57,8 @@ export default function Home({ navigation }) {
   const [search, setSearch] = useState('');
 
   async function refresh() {
+    await loadCompactModeFromLocalStorage();
+
     let hideSmall = false;
 
     if (hasKeys) {
@@ -110,6 +117,18 @@ export default function Home({ navigation }) {
     const coinsFromStorage = await AsyncStorage.getItem('@extracker:coins');
 
     if (coinsFromStorage) setCoins(JSON.parse(coinsFromStorage));
+  }
+
+  async function loadCompactModeFromLocalStorage() {
+    const compactModeFromStorage = await AsyncStorage.getItem('@extracker:compactMode');
+
+    if (compactModeFromStorage) setCompactMode(!!compactModeFromStorage);
+  }
+
+  async function toggleCompactMode() {
+    await AsyncStorage.setItem('@extracker:compactMode', !compactMode ? 'true' : '');
+
+    setCompactMode(!compactMode);
   }
 
   async function loadCoins() {
@@ -217,6 +236,9 @@ export default function Home({ navigation }) {
         <TouchableOpacity onPress={() => setShowSearch(!showSearch)}>
           <FA name={showSearch ? 'search-minus' : 'search-plus'} size={20} style={{ margin: 3 }} />
         </TouchableOpacity>
+        <TouchableOpacity onPress={toggleCompactMode}>
+          <FA name={compactMode ? 'list' : 'table'} size={20} style={{ margin: 3 }} />
+        </TouchableOpacity>
       </View>
     </Header>
   );
@@ -260,38 +282,125 @@ export default function Home({ navigation }) {
     );
 
   return (
-    <Container>
-      <TopBlock />
+    <>
+      <Container>
+        <TopBlock />
 
-      <HeaderBlock />
+        <HeaderBlock />
 
-      <SearchBlock />
+        <SearchBlock />
 
-      <HideSmallBlock />
+        <HideSmallBlock />
 
-      <MarketSelectorBlock />
+        <MarketSelectorBlock />
 
-      <FlatList
-        onRefresh={loadCoins}
-        refreshing={refreshing}
-        style={{ alignSelf: 'stretch', margin: 8 }}
-        keyExtractor={item => `${item.name}`}
-        showsVerticalScrollIndicator={false}
-        data={coinsToShow}
-        ItemSeparatorComponent={itemSeparator}
-        renderItem={({ item }) => (
-          <HomeCoinItem
-            market={market}
-            coin={item}
-            myCoins={myCoins}
-            onToggleFavorite={() => toggleFavorite(item)}
-            onClick={() => navigation.navigate('Coins', { coin: item })}
+        {compactMode && (
+          <FlatList
+            onRefresh={loadCoins}
+            refreshing={refreshing}
+            numColumns={3}
+            style={{ alignSelf: 'stretch', margin: 8 }}
+            keyExtractor={item => `${item.name}`}
+            showsVerticalScrollIndicator={false}
+            data={coinsToShow}
+            renderItem={({ item }) => (
+              <HomeCoinItemCompact
+                market={market}
+                coin={item}
+                myCoins={myCoins}
+                onToggleFavorite={() => toggleFavorite(item)}
+                onClick={() => navigation.navigate('Coins', { coin: item })}
+                onLongClick={() => setChartCoin(item)}
+              />
+            )}
           />
         )}
-      />
-    </Container>
+
+        {!compactMode && (
+          <FlatList
+            onRefresh={loadCoins}
+            refreshing={refreshing}
+            style={{ alignSelf: 'stretch', margin: 8 }}
+            keyExtractor={item => `${item.name}`}
+            showsVerticalScrollIndicator={false}
+            data={coinsToShow}
+            ItemSeparatorComponent={itemSeparator}
+            renderItem={({ item }) => (
+              <HomeCoinItem
+                market={market}
+                coin={item}
+                myCoins={myCoins}
+                onToggleFavorite={() => toggleFavorite(item)}
+                onClick={() => navigation.navigate('Coins', { coin: item })}
+                onLongClick={() => setChartCoin(item)}
+              />
+            )}
+          />
+        )}
+      </Container>
+
+      {chartCoin && (
+        <>
+          <BlurView style={styles.absolute} blurType="light" blurAmount={8} reducedTransparencyFallbackColor="white" />
+
+          <ChartContainer>
+            <ChartSubContainer>
+              <TouchableOpacity
+                style={{
+                  width: 30,
+                  height: 30,
+                  position: 'absolute',
+                  top: -30,
+                  right: 0,
+                  marginTop: 3,
+                  marginRight: 3,
+                }}
+                onPress={() => setChartCoin(null)}
+              >
+                <View>
+                  <Icon name="close" size={30} />
+                </View>
+              </TouchableOpacity>
+              <CoinPageChart showControllers={false} coin={chartCoin} />
+            </ChartSubContainer>
+          </ChartContainer>
+        </>
+      )}
+    </>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  absolute: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },
+});
+
+const ChartContainer = styled.View`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  justify-content: center;
+  z-index: 888;
+  background-color: #cccccc10;
+`;
+
+const ChartSubContainer = styled.View`
+  flex: 1;
+  margin: 30% 8%;
+  border-radius: 10px;
+  background-color: #ccccccff;
+`;
 
 const Header = styled.View`
   flex-direction: row;

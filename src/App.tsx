@@ -87,37 +87,27 @@ function CustomDrawerContent({ drawerPosition, navigation }): ReactElement {
         <DrawerItem
           icon={() => <Icon name="home" size={20} />}
           label="Home"
-          onPress={() => {
-            navigation.navigate('Home');
-          }}
+          onPress={() => navigation.navigate('Home')}
         />
         <DrawerItem
           icon={() => <Icon name="wallet" size={20} />}
           label="Wallets"
-          onPress={() => {
-            navigation.navigate('Wallets');
-          }}
+          onPress={() => navigation.navigate('Wallets')}
         />
         <DrawerItem
           icon={() => <Icon name="settings" size={20} />}
           label="Settings"
-          onPress={() => {
-            navigation.navigate('Settings');
-          }}
+          onPress={() => navigation.navigate('Settings')}
         />
-        <DrawerItem
+        {/* <DrawerItem
           icon={() => <Icon name="home-currency-usd" size={20} />}
           label="Donate"
-          onPress={() => {
-            navigation.navigate('Donate');
-          }}
-        />
+          onPress={() => navigation.navigate('Donate')}
+        /> */}
         <DrawerItem
           icon={() => <Icon name="information" size={20} />}
           label="About"
-          onPress={() => {
-            navigation.navigate('About');
-          }}
+          onPress={() => navigation.navigate('About')}
         />
       </View>
       <DivisionLine />

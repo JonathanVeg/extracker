@@ -26,6 +26,7 @@
     "@typescript-eslint/interface-name-prefix": "off",
     "no-shadow": "off",
     "no-param-reassign": "off",
+    "class-methods-use-this": "off",
     "no-nested-ternary": "off",
     "react/jsx-props-no-spreading": "off",
     "react-hooks/exhaustive-deps": "off",

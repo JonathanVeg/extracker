@@ -1,0 +1,38 @@
+[
+  {
+    "Closed": "2020-05-27T00:01:07.62",
+    "Commission": 0.00010566,
+    "Condition": "",
+    "ConditionTarget": 0,
+    "Exchange": "BTC-DCR",
+    "ImmediateOrCancel": false,
+    "IsConditional": false,
+    "Limit": 0.00165093,
+    "OrderType": "LIMIT_SELL",
+    "OrderUuid": "d03caadb-0a40-407e-8426-cf83f1ecf974",
+    "Price": 0.05283655,
+    "PricePerUnit": 0.00165093,
+    "Quantity": 32.00412038,
+    "QuantityRemaining": 0,
+    "TimeStamp": "2020-05-12T03:06:54.05"
+  },
+  {
+    "CancelInitiated": false,
+    "Closed": null,
+    "CommissionPaid": 0,
+    "Condition": "NONE",
+    "ConditionTarget": null,
+    "Exchange": "BTC-DCR",
+    "ImmediateOrCancel": false,
+    "IsConditional": false,
+    "Limit": 0.0092212,
+    "Opened": "2020-06-15T02:44:27.02",
+    "OrderType": "LIMIT_SELL",
+    "OrderUuid": "344e8896-d082-4edb-9b64-a4cc20390448",
+    "Price": 0,
+    "PricePerUnit": null,
+    "Quantity": 3.00001442,
+    "QuantityRemaining": 3.00001442,
+    "Uuid": null
+  }
+]

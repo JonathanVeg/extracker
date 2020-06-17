@@ -2,22 +2,23 @@ import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import Coin from '../models/Coin';
-import { colors } from '../style/globals';
-import MyCoin from '../models/MyCoin';
-import { useFiats } from '../hooks/FiatContext';
-import { useSummaries } from '../hooks/SummaryContext';
+import Coin from '../../models/Coin';
+import { colors } from '../../style/globals';
+import MyCoin from '../../models/MyCoin';
+import { useFiats } from '../../hooks/FiatContext';
+import { useSummaries } from '../../hooks/SummaryContext';
 
 interface HomeCoinItemProps {
   onToggleFavorite: void;
   onClick: void;
+  onLongClick: void;
   coin: Coin;
   market: string;
   myCoins: MyCoin[];
 }
 
 const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
-  const { onClick, coin, market, myCoins, onToggleFavorite } = props;
+  const { onClick, onLongClick, coin, market, myCoins, onToggleFavorite } = props;
 
   const myCoin = myCoins.find(it => it.name === coin.name);
   const { fiats } = useFiats();
@@ -31,7 +32,7 @@ const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
           <Icon name={coin.favorite ? 'heart' : 'hearto'} size={32} color="#000" />
         </TouchableOpacity>
       </CoinName>
-      <CoinData onPress={onClick}>
+      <CoinData onPress={onClick} onLongPress={onLongClick}>
         <Text>{`Last: ${coin.last.idealDecimalPlaces()}`}</Text>
         <Text>{`High: ${coin.high.idealDecimalPlaces()}`}</Text>
         <Text>{`Low: ${coin.low.idealDecimalPlaces()}`}</Text>

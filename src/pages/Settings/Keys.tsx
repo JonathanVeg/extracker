@@ -60,6 +60,7 @@ export default function Keys() {
 
       <H2>Key</H2>
       <MyInput
+        text
         spellCheck={false}
         value={newKey}
         onChangeText={text => {
@@ -70,6 +71,7 @@ export default function Keys() {
       <H2>Secret</H2>
 
       <MyInput
+        number={false}
         spellCheck={false}
         value={newSecret}
         onChangeText={text => {

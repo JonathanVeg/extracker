@@ -94,20 +94,20 @@ export async function loadClosedOrders(coin: Coin = null): Promise<MyOrder[]> {
 
     const data = await response.data;
 
-    data.result.map(it => {
-      const order = new MyOrder(
-        it.OrderUuid,
-        it.OrderType.split('_')[1],
-        it.Exchange.split('-')[1],
-        it.Exchange.split('-')[0],
-        it.Quantity,
-        it.Limit,
-        it.Opened,
-        it.Closed,
-      );
-
-      orders.push(order);
-    });
+    data.result.map(it =>
+      orders.push(
+        new MyOrder(
+          it.OrderUuid,
+          it.OrderType.split('_')[1],
+          it.Exchange.split('-')[1],
+          it.Exchange.split('-')[0],
+          it.Quantity,
+          it.Limit,
+          it.Opened,
+          it.Closed,
+        ),
+      ),
+    );
 
     if (coin) {
       orders = orders.filter(
@@ -139,20 +139,20 @@ export async function loadMyOrders(coin: Coin = null): Promise<MyOrder[]> {
     }
 
     let orders: MyOrder[] = [];
-    data.result.map(it => {
-      const order = new MyOrder(
-        it.OrderUuid,
-        it.OrderType.split('_')[1],
-        it.Exchange.split('-')[1],
-        it.Exchange.split('-')[0],
-        it.Quantity,
-        it.Limit,
-        it.Opened,
-        it.Closed,
-      );
-
-      orders.push(order);
-    });
+    data.result.map(it =>
+      orders.push(
+        new MyOrder(
+          it.OrderUuid,
+          it.OrderType.split('_')[1],
+          it.Exchange.split('-')[1],
+          it.Exchange.split('-')[0],
+          it.Quantity,
+          it.Limit,
+          it.Opened,
+          it.Closed,
+        ),
+      ),
+    );
 
     if (coin) {
       orders = orders.filter(

@@ -79,12 +79,8 @@ export default function CoinPageOrdersHistory(props) {
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ flex: 1, textAlign: 'left', fontWeight: 'bold' }}>Amount</Text>
         <Text style={{ flex: 1, textAlign: 'center', fontWeight: 'bold' }}>Unit Price</Text>
-        <TouchableOpacity
-          onPress={() => {
-            setShowWhen(!showWhen);
-          }}
-        >
-          <Text style={{ flex: 1, textAlign: 'right', fontWeight: 'bold' }}>{showWhen ? 'When' : 'Total'}</Text>
+        <TouchableOpacity style={{ flex: 1 }} onPress={() => setShowWhen(!showWhen)}>
+          <Text style={{ textAlign: 'right', fontWeight: 'bold' }}>{showWhen ? 'When' : 'Total'}</Text>
         </TouchableOpacity>
       </View>
     );

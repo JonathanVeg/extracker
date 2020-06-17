@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -39,8 +39,10 @@
 	</dict>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Enabling Face ID allows you quick and secure access to your account.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Location is used to deliver notification with localization destination. Its required by an extension, but never used (even do not ask for permission) </string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Location is used to deliver notification with localization destination. Its required by an extension, but never used (even do not ask for permission) </string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

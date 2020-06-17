@@ -7,8 +7,9 @@ import Coin from '../../models/Coin';
 import { candleChartData, loadCandleChartData } from '../../controllers/Bittrex';
 import StorageUtils from '../../utils/StorageUtils';
 import { Container } from '../../components/Generics';
+import { H2 } from '../../components/Hs';
 
-export default function CoinPageChart({ coin: pCoin }) {
+export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
   const coin: Coin = pCoin || new Coin('DCR', 'BTC');
   // const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
   const [zoom, setZoom] = useState(candleChartData().zoom[2]);
@@ -145,7 +146,12 @@ export default function CoinPageChart({ coin: pCoin }) {
 
   return (
     <Container>
-      {selectors}
+      {!showControllers && (
+        <View>
+          <H2 center>{`${coin.name}/${coin.market} - ${candle.label}/${zoom.label}`}</H2>
+        </View>
+      )}
+      {showControllers && selectors}
 
       {values.length > 0 && chart}
     </Container>

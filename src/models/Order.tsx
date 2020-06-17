@@ -1,3 +1,5 @@
+import MyOrder from './MyOrder';
+
 export default class Order {
   quantity = 0;
   rate = 0;
@@ -6,6 +8,7 @@ export default class Order {
   quantityTotal = 0;
 
   isMine = false;
+  myOrder: MyOrder | null = null;
 
   constructor(quantity, rate, total, totalTotal, quantityTotal) {
     this.quantity = quantity;

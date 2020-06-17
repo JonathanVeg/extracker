@@ -281,13 +281,7 @@ export default function NewOrder({ route, navigation }) {
     <>
       <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
         {[1, 5, 10, 20].map(p => (
-          <PercentButton
-            more
-            key={`+${p}`}
-            onPress={() => {
-              changePrice((parseFloat(price) * (1 + p / 100)).toFixed(8));
-            }}
-          >
+          <PercentButton more key={`+${p}`} onPress={() => changePrice((parseFloat(price) * (1 + p / 100)).toFixed(8))}>
             <Text>{`+${p}%`}</Text>
           </PercentButton>
         ))}
@@ -295,13 +289,7 @@ export default function NewOrder({ route, navigation }) {
 
       <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
         {[1, 5, 10, 20].map(p => (
-          <PercentButton
-            less
-            key={`-${p}`}
-            onPress={() => {
-              changePrice(parseFloat(price * (1 - p / 100)).toFixed(8));
-            }}
-          >
+          <PercentButton less key={`-${p}`} onPress={() => changePrice(parseFloat(price * (1 - p / 100)).toFixed(8))}>
             <Text>{`-${p}%`}</Text>
           </PercentButton>
         ))}

@@ -4,9 +4,62 @@ import React from 'react';
 import { Text, TouchableOpacity, Alert } from 'react-native';
 import Order from '../../../models/Order';
 import { colors } from '../../../style/globals';
+import { useToast } from '../../../hooks/ToastContext';
 
-const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, navigation }) => {
+const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, navigation, refresh }) => {
   const order: Order = item;
+
+  const { showToast } = useToast();
+
+  async function cancelMyOrder() {
+    try {
+      await order.myOrder.cancel();
+
+      showToast({ text: 'Order cancelled', type: 'success' });
+
+      refresh();
+    } catch (e) {
+      Alert.alert(`Error while cancelling order:\n\n${e.toString()}`);
+    }
+  }
+
+  function offerCancelOrders() {
+    Alert.alert(
+      'Cancel order',
+      `Do you want to cancel your order to ${type} ${coin.name} for ${item.rate.idealDecimalPlaces()}?`,
+      [
+        {
+          text: 'No',
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: cancelMyOrder,
+        },
+      ],
+      { cancelable: true },
+    );
+  }
+
+  function offerCreateNewOrder() {
+    Alert.alert(
+      'Create order',
+      `Do you want to create an order to ${type} ${coin.name} for ${item.rate.idealDecimalPlaces()}?`,
+      [
+        {
+          text: 'No',
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            navigation.navigate('NewOrder', { coin, rate: item.rate, type });
+          },
+        },
+      ],
+      { cancelable: true },
+    );
+  }
 
   const backgroundColor =
     type === 'buy'
@@ -19,23 +72,8 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, navigati
   return (
     <TouchableOpacity
       onLongPress={() => {
-        Alert.alert(
-          'Create order',
-          `Do you want to create an order to ${type} ${coin.name} for ${item.rate.idealDecimalPlaces()}?`,
-          [
-            {
-              text: 'No',
-              style: 'cancel',
-            },
-            {
-              text: 'Yes',
-              onPress: () => {
-                navigation.navigate('NewOrder', { coin, rate: item.rate, type });
-              },
-            },
-          ],
-          { cancelable: true },
-        );
+        if (order.isMine) offerCancelOrders();
+        else offerCreateNewOrder();
       }}
     >
       <RowContainer backgroundColor={backgroundColor}>

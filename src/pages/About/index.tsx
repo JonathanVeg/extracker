@@ -2,6 +2,7 @@
 import React from 'react';
 import { Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { default as FA } from 'react-native-vector-icons/FontAwesome';
 import {
   Container,
   Disclaimer,
@@ -25,18 +26,15 @@ const AboutPage = ({ navigation }) => {
   });
 
   const links = [
-    {
-      icon: 'logo-twitter',
-      label: 'Twitter',
-      url: 'https://twitter.com/jonathanveg2',
-    },
-    {
-      icon: 'logo-github',
-      label: 'GitHub',
-      url: 'https://github.com/jonathanveg',
-    },
-    { icon: 'md-at', label: 'Gmail', url: 'mailto:jonathan.jgs@gmail.com' },
-    { icon: 'ios-code', label: 'Code', url: 'https://github.com/JonathanVeg/extracker' },
+    [
+      { icon: 'logo-twitter', label: 'Twitter', url: 'https://twitter.com/jonathanveg2' },
+      { icon: 'logo-github', label: 'GitHub', url: 'https://github.com/jonathanveg' },
+      { icon: 'md-at', label: 'Gmail', url: 'mailto:jonathan.jgs@gmail.com' },
+    ],
+    [
+      { icon: 'ios-code', label: 'Code', url: 'https://github.com/JonathanVeg/extracker' },
+      { icon: 'telegram', label: 'Telegram', url: 'https://t.me/TrackersAppGroup' },
+    ],
   ];
 
   return (
@@ -50,11 +48,29 @@ const AboutPage = ({ navigation }) => {
       </Header>
 
       <Links>
-        {links.map(link => {
+        {links[0].map(link => {
           return (
-            <Link key={link.label} onPress={() => Linking.openURL(link.url)}>
+            <Link key={link.label} style={{ flex: 1 }} onPress={() => Linking.openURL(link.url)}>
               <LinkText>{link.label}</LinkText>
-              <Icon name={link.icon} size={60} color={colors.darker} />
+              {link.icon === 'telegram' ? (
+                <FA name={link.icon} size={60} color={colors.darker} />
+              ) : (
+                <Icon name={link.icon} size={60} color={colors.darker} />
+              )}
+            </Link>
+          );
+        })}
+      </Links>
+      <Links>
+        {links[1].map(link => {
+          return (
+            <Link key={link.label} style={{ flex: 1 }} onPress={() => Linking.openURL(link.url)}>
+              <LinkText>{link.label}</LinkText>
+              {link.icon === 'telegram' ? (
+                <FA name={link.icon} size={60} color={colors.darker} />
+              ) : (
+                <Icon name={link.icon} size={60} color={colors.darker} />
+              )}
             </Link>
           );
         })}

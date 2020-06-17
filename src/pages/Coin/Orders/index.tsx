@@ -7,7 +7,6 @@ import { loadOrderBook, loadMyOrders } from '../../../controllers/Bittrex';
 import Order from '../../../models/Order';
 import MyOrder from '../../../models/MyOrder';
 import { Container } from '../../../components/Generics';
-import ProgressBar from '../../../components/ProgressBar';
 import Item from './Item';
 
 export default function CoinPageOrders(props) {
@@ -38,9 +37,14 @@ export default function CoinPageOrders(props) {
     setMyOrders(myOrders);
   }
 
-  function refresh() {
-    loadOrders().finally(() => {
+  function refresh(changeRefreshing = true) {
+    // console.log('Refresh');
+    loadOrders(changeRefreshing).finally(() => {
       loadMOrders();
+
+      // setTimeout(() => {
+      //   refresh(false);
+      // }, 2500);
     });
   }
 
@@ -53,6 +57,7 @@ export default function CoinPageOrders(props) {
 
       if (have) {
         order.isMine = true;
+        order.myOrder = have;
       }
     });
 
@@ -66,21 +71,11 @@ export default function CoinPageOrders(props) {
   function Header() {
     return (
       <HeaderContainer>
-        <Text
-          style={{ fontWeight: 'bold' }}
-          onPress={() => {
-            setShowSumQuantity(!showSumQuantity);
-          }}
-        >
+        <Text style={{ fontWeight: 'bold' }} onPress={() => setShowSumQuantity(!showSumQuantity)}>
           {showSumQuantity ? 'Sum Qnt.' : 'Qnt.'}
         </Text>
         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Rate</Text>
-        <Text
-          style={{ fontWeight: 'bold', paddingRight: 2 }}
-          onPress={() => {
-            setShowSumPrice(!showSumPrice);
-          }}
-        >
+        <Text style={{ fontWeight: 'bold', paddingRight: 2 }} onPress={() => setShowSumPrice(!showSumPrice)}>
           {showSumPrice ? 'Sum Price' : 'Total Price'}
         </Text>
       </HeaderContainer>
@@ -108,6 +103,7 @@ export default function CoinPageOrders(props) {
             type={type}
             coin={coin}
             navigation={props.navigation}
+            refresh={refresh}
           />
         )}
       />
