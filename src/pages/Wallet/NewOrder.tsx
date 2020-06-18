@@ -55,7 +55,6 @@ export default function NewOrder({ route, navigation }) {
   const [sMarket, setSMarket] = useState(defaultCoin.market);
 
   // order data
-  const [foo, setFoo] = useState('');
   const [type, setType] = useState(defaultType || '');
   const [quantity, setQuantity] = useState('0');
   const [price, setPrice] = useState((defaultRate || 0).toString());
@@ -166,7 +165,11 @@ export default function NewOrder({ route, navigation }) {
   async function callExecOrder() {
     try {
       const ret = await execOrder(type, coin.market, coin.name, quantity, price);
-      Alert.alert(ret.success ? 'Success' : 'Error', ret.message);
+
+      showToast({
+        text: ret.success ? 'Order created' : 'Error while creating order',
+        type: ret.success ? 'success' : 'error',
+      });
     } catch {
       Alert.alert('ERROR', 'Error while creating order');
     } finally {
