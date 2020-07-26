@@ -2,17 +2,19 @@ import React, { createContext, useEffect, useState, useContext } from 'react';
 import StorageUtils from '../utils/StorageUtils';
 
 interface KeysContextProps {
+  usingKeys: boolean;
   key: string;
   secret: string;
   hasKeys: boolean;
   reloadKeys(): void | null;
 }
 
-const initialValue = { key: '', secret: '', hasKeys: false, reloadKeys: null };
+const initialValue = { usingKeys: false, key: '', secret: '', hasKeys: false, reloadKeys: null };
 
 const KeysContext = createContext<KeysContextProps>(initialValue);
 
 const KeysProvider = ({ children }) => {
+  const usingKeys = true;
   const [key, setKey] = useState('');
   const [secret, setSecret] = useState('');
 
@@ -28,7 +30,7 @@ const KeysProvider = ({ children }) => {
   }, []);
 
   return (
-    <KeysContext.Provider value={{ key, secret, hasKeys: !!key && !!secret, reloadKeys }}>
+    <KeysContext.Provider value={{ usingKeys, key, secret, hasKeys: !!key && !!secret, reloadKeys }}>
       {children}
     </KeysContext.Provider>
   );

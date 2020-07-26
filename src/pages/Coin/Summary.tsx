@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, RefreshControl } from 'react-native';
+import { ScrollView, RefreshControl, SectionList } from 'react-native';
 import { loadSummary, loadBalance } from '../../controllers/Bittrex';
 import Coin from '../../models/Coin';
 import LabelValueBlock from '../../components/LabelValueBlock';
@@ -10,6 +10,7 @@ import { colors } from '../../style/globals';
 import { Container } from '../../components/Generics';
 import { useFiats } from '../../hooks/FiatContext';
 import { useSummaries } from '../../hooks/SummaryContext';
+import { useKeys } from '../../hooks/KeysContext';
 
 interface CoinPageSummaryInterface {
   coin: Coin | null;
@@ -19,6 +20,7 @@ export default function CoinPageSummary(props: CoinPageSummaryInterface) {
   const { fiats } = useFiats();
   const { allCoinsInBtc } = useSummaries();
 
+  const { usingKeys } = useKeys();
   const [refreshing, setRefreshing] = useState(false);
   const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
   const [myCoin, setMyCoin] = useState<MyCoin | null>(null);
@@ -45,7 +47,7 @@ export default function CoinPageSummary(props: CoinPageSummaryInterface) {
 
   async function refresh() {
     load();
-    loadMyData();
+    if (usingKeys) loadMyData();
   }
 
   useEffect(() => {
@@ -184,8 +186,6 @@ export default function CoinPageSummary(props: CoinPageSummaryInterface) {
         <Summary />
         <Spacer />
         {myCoin && myCoinBlock()}
-
-        {/* <SectionList/> */}
       </ScrollView>
     </Container>
   );

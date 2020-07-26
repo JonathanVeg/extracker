@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 interface ToastContextProps {
-  showToast(data: ToastData): void | null;
+  showToast(data: ToastData | string): void | null;
   cancelToast(): void | null;
 }
 
@@ -27,8 +27,8 @@ interface ToastData {
 const ToastProvider = ({ children }) => {
   const [toastData, setToastData] = useState<ToastData | null>(null);
 
-  function showToast(data: ToastData) {
-    setToastData(data);
+  function showToast(data: ToastData | string) {
+    setToastData(typeof data === 'string' ? { text: data } : data);
   }
 
   function cancelToast() {

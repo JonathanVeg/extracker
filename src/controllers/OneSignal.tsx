@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import OneSignal from 'react-native-onesignal';
 import { ONE_SIGNAL_KEY } from 'react-native-dotenv';
 import { useToast } from '../hooks/ToastContext';
+import StorageUtils from '../utils/StorageUtils';
 
 const OneSignalWrapper: React.FC = () => {
   const { showToast } = useToast();
@@ -17,22 +18,24 @@ const OneSignalWrapper: React.FC = () => {
     OneSignal.addEventListener('opened', onOpened);
     OneSignal.addEventListener('ids', onIds);
 
-    showToast({ text: 'OneSignal Started' });
+    showToast('OneSignal Started');
   }, []);
 
   function onReceived(notification) {
-    showToast({ text: `Notification received: ${notification}` });
+    showToast(`Notification received: ${notification}`);
   }
 
   function onOpened(openResult) {
-    showToast({ text: `Message: ${openResult.notification.payload.body}` });
-    showToast({ text: `Data: ${openResult.notification.payload.additionalData}` });
-    showToast({ text: `isActive: ${openResult.notification.isAppInFocus}` });
-    showToast({ text: `openResult: ${openResult}` });
+    showToast(`Message: ${openResult.notification.payload.body}`);
+    showToast(`Data: ${openResult.notification.payload.additionalData}`);
+    showToast(`isActive: ${openResult.notification.isAppInFocus}`);
+    showToast(`openResult: ${openResult}`);
   }
 
   function onIds(device) {
-    // Alert.alert(`Device info: ${JSON.stringify(device)}`);
+    const uid = device.userId;
+
+    StorageUtils.setItem('@extracker:OneSignalUserId', uid);
   }
 
   function myiOSPromptCallback(permission) {
@@ -41,5 +44,11 @@ const OneSignalWrapper: React.FC = () => {
 
   return <></>;
 };
+
+export async function readOneSignalUserId() {
+  const oneSignalUserIdKey = await StorageUtils.getItem('@extracker:OneSignalUserId');
+
+  return oneSignalUserIdKey;
+}
 
 export default OneSignalWrapper;

@@ -8,6 +8,7 @@ export default class MyOrder {
   coin = '';
   market = '';
   quantity = 0.0;
+  quantityRemaining = 0.0;
   price = 0.0;
   total = 0.0;
   closedAt = '';
@@ -19,6 +20,7 @@ export default class MyOrder {
     coin: string,
     market: string,
     quantity: number,
+    quantityRemaining: number,
     price: number,
     openedAt: string,
     closedAt: string,
@@ -28,6 +30,7 @@ export default class MyOrder {
     this.coin = coin;
     this.market = market;
     this.quantity = quantity;
+    this.quantityRemaining = quantityRemaining;
     this.price = price;
     this.closedAt = closedAt;
     this.openedAt = openedAt;
@@ -66,6 +69,7 @@ export default class MyOrder {
     resume += `Type: ${this.type}\n`;
     resume += `Unity price: ${this.price.idealDecimalPlaces()}\n`;
     resume += `Quantity: ${this.quantity.idealDecimalPlaces()}\n`;
+    resume += `Quantity remaning: ${this.quantityRemaining.idealDecimalPlaces()}\n`;
     resume += `Total: ${this.total.idealDecimalPlaces()}\n`;
     if (this.openedAtAgo()) resume += `Opened: ${this.openedAtAgo()}\n`;
     if (this.closedAtAgo()) resume += `Closed: ${this.closedAtAgo()}\n`;

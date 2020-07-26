@@ -1,4 +1,4 @@
-import { BlurView, VibrancyView } from '@react-native-community/blur';
+import { BlurView } from '@react-native-community/blur';
 import AsyncStorage from '@react-native-community/async-storage';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
@@ -16,7 +16,7 @@ import HomeCoinItem from './HomeCoinItem';
 import MyCoin from '../../models/MyCoin';
 import StorageUtils from '../../utils/StorageUtils';
 import { Container } from '../../components/Generics';
-import { H1, H2 } from '../../components/Hs';
+import { H1 } from '../../components/Hs';
 import { loadBalances, loadMarketSummaries } from '../../controllers/Bittrex';
 import { sortArrayByKey } from '../../utils/utils';
 import { useFiats } from '../../hooks/FiatContext';
@@ -27,27 +27,29 @@ import HomeCoinItemCompact from './HomeCoinItemCompact';
 import CoinPageChart from '../Coin/Chart';
 
 export default function Home({ navigation }) {
+  const { usingKeys, hasKeys } = useKeys();
+
   navigation.setOptions({
     title: 'Trextracker',
     headerLeft: () => <HamburgerIcon navigationProps={navigation} />,
-    headerRight: () => (
-      <View style={{ marginStart: 5, flexDirection: 'row' }}>
-        <TouchableOpacity onPress={gotoWallets}>
-          <MCI name="wallet" size={25} style={{ marginEnd: 15 }} />
-        </TouchableOpacity>
-      </View>
-    ),
+    headerRight: () => headerRight,
   });
 
   const gotoWallets = () => navigation.navigate('Wallets');
 
-  // const [allCoinsInBtc, setAllCoinsInBtc] = useState({});
+  const headerRight = usingKeys && (
+    <View style={{ marginStart: 5, flexDirection: 'row' }}>
+      <TouchableOpacity onPress={gotoWallets}>
+        <MCI name="wallet" size={25} style={{ marginEnd: 15 }} />
+      </TouchableOpacity>
+    </View>
+  );
+
   const [chartCoin, setChartCoin] = useState<Coin | null>(null);
   const [compactMode, setCompactMode] = useState(false);
   const { allCoinsInBtc, markets } = useSummaries();
   const [coins, setCoins] = useState<Coin[]>([]);
-  const { fiats } = useFiats();
-  const { hasKeys } = useKeys();
+  const { fiats, reloadFiats } = useFiats();
   const [showBalanceBlock, setShowBalanceBlock] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -70,6 +72,8 @@ export default function Home({ navigation }) {
     setHideSmall(hideSmall);
 
     loadCoins();
+
+    reloadFiats();
   }
 
   useEffect(() => {

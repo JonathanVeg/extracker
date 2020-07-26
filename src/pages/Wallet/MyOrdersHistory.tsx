@@ -14,13 +14,14 @@ export default function CoinPageMyOrdersHistory(props) {
   const [showOpened, setShowOpened] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [orders, setOrders] = useState<MyOrder[]>([]);
-  const [showUnity, setShowUnit] = useState(true);
+  const [showUnit, setShowUnit] = useState(true);
+  const [showQuantity, setShowQuantity] = useState(true);
 
   const { showToast } = useToast();
 
-  async function loadOrders() {
+  async function loadOrders(toggleRefreshing = true) {
     try {
-      setRefreshing(true);
+      if (toggleRefreshing) setRefreshing(true);
 
       const orders = await (showOpened ? loadMyOrders(coin) : loadClosedOrders(coin));
 
@@ -30,8 +31,20 @@ export default function CoinPageMyOrdersHistory(props) {
     }
   }
 
-  function refresh() {
-    loadOrders();
+  function refresh(toggleRefreshing = true) {
+    loadOrders(toggleRefreshing);
+  }
+
+  async function cancelAllOrders() {
+    try {
+      for (let i = 0; i < orders.length; i++) {
+        await orders[i].cancel();
+      }
+      showToast({ text: 'All orders cancelled', type: 'success' });
+      refresh(false);
+    } catch (e) {
+      Alert.alert(`Error while cancelling order:\n\n${e.toString()}`);
+    }
   }
 
   async function cancelOrder(order: MyOrder) {
@@ -40,19 +53,38 @@ export default function CoinPageMyOrdersHistory(props) {
 
       showToast({ text: 'Order cancelled', type: 'success' });
 
-      refresh();
+      refresh(false);
     } catch (e) {
       Alert.alert(`Error while cancelling order:\n\n${e.toString()}`);
     }
   }
 
   useEffect(() => {
-    refresh();
+    refresh(true);
   }, [showOpened]);
 
   const showDetails = (item: MyOrder) => {
     Alert.alert('Resume', item.toResumeString());
   };
+
+  function askCancelOrder(order) {
+    let line = 'Are you sure you want to cancel this order?\n';
+
+    line += `${order.type} ${order.quantity} for ${order.price} ${order.market} each.`;
+
+    Alert.alert(
+      'Cancel order',
+      line,
+      [
+        { text: 'No', style: 'cancel' },
+        {
+          text: 'Yes',
+          onPress: () => cancelOrder(order),
+        },
+      ],
+      { cancelable: false },
+    );
+  }
 
   function renderItem({ item }) {
     const order: MyOrder = item;
@@ -77,34 +109,16 @@ export default function CoinPageMyOrdersHistory(props) {
 
           <Text style={{ flex: 1, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
             {order.type === 'BUY' ? '+ ' : '- '}
-            {order.quantity.idealDecimalPlaces()}
+            {showQuantity
+              ? `${order.quantity.idealDecimalPlaces()}`
+              : `${order.quantityRemaining.idealDecimalPlaces()}`}
           </Text>
           <Text style={{ flex: 1, textAlign: 'right', fontVariant: ['tabular-nums'] }}>
-            {showUnity ? order.price.idealDecimalPlaces() : order.total.idealDecimalPlaces()}
+            {showUnit ? order.price.idealDecimalPlaces() : order.total.idealDecimalPlaces()}
           </Text>
 
           {showOpened && (
-            <TouchableOpacity
-              style={{ flex: 0.6, alignItems: 'flex-end' }}
-              onPress={() => {
-                let line = 'Are you sure you want to cancel this order?\n';
-
-                line += `${order.type} ${order.quantity} for ${order.price} ${order.market} each.`;
-
-                Alert.alert(
-                  'Cancel order',
-                  line,
-                  [
-                    { text: 'No', style: 'cancel' },
-                    {
-                      text: 'Yes',
-                      onPress: () => cancelOrder(order),
-                    },
-                  ],
-                  { cancelable: false },
-                );
-              }}
-            >
+            <TouchableOpacity style={{ flex: 0.6, alignItems: 'flex-end' }} onPress={() => askCancelOrder(order)}>
               <Icon name="trash-alt" size={20} />
             </TouchableOpacity>
           )}
@@ -123,13 +137,38 @@ export default function CoinPageMyOrdersHistory(props) {
         }}
       >
         <Text style={{ fontWeight: 'bold', flex: 0.8, textAlign: 'left' }}>Pair</Text>
-
-        <Text style={{ fontWeight: 'bold', flex: 1, textAlign: 'left' }}>Quantity</Text>
-        <TouchableOpacity style={{ flex: 1 }} onPress={() => setShowUnit(!showUnity)}>
-          <Text style={{ fontWeight: 'bold', flex: 1, textAlign: 'right' }}>{showUnity ? 'Unity Price' : 'Total'}</Text>
+        <TouchableOpacity style={{ flex: 1 }} onPress={() => setShowQuantity(!showQuantity)}>
+          <Text style={{ fontWeight: 'bold', flex: 1, textAlign: 'left' }}>
+            {showQuantity ? 'Quantity' : 'Qnt. remaining'}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ flex: 1 }} onPress={() => setShowUnit(!showUnit)}>
+          <Text style={{ fontWeight: 'bold', flex: 1, textAlign: 'right' }}>{showUnit ? 'Unity Price' : 'Total'}</Text>
         </TouchableOpacity>
 
-        {showOpened && <Text style={{ fontWeight: 'bold', flex: 0.6, textAlign: 'right' }}>Cancel</Text>}
+        {showOpened && (
+          <TouchableOpacity
+            style={{ flex: 0.6, alignItems: 'flex-end' }}
+            onPress={() => {
+              const line = 'Are you sure you want to cancel ALL OPENED order(s)?\n';
+
+              Alert.alert(
+                'Cancel order',
+                line,
+                [
+                  { text: 'No', style: 'cancel' },
+                  {
+                    text: 'Yes',
+                    onPress: () => cancelAllOrders(),
+                  },
+                ],
+                { cancelable: false },
+              );
+            }}
+          >
+            <Icon name="trash-alt" size={20} />
+          </TouchableOpacity>
+        )}
       </View>
     );
   }

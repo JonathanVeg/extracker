@@ -68,7 +68,7 @@ export default function NewOrder({ route, navigation }) {
   const isTypeSelected = () => type !== '';
 
   useEffect(() => {
-    if (lastCoin?.name !== coin.name || lastCoin?.market !== coin.market) refresh();
+    if (lastCoin?.name !== coin.name || lastCoin?.market !== coin.market) refresh(true);
   }, [coin]);
 
   useEffect(() => {
@@ -173,7 +173,7 @@ export default function NewOrder({ route, navigation }) {
     } catch {
       Alert.alert('ERROR', 'Error while creating order');
     } finally {
-      refresh();
+      refresh(false);
     }
   }
 
@@ -184,9 +184,9 @@ export default function NewOrder({ route, navigation }) {
     setMyMarket(data.find(it => it.name === coin.market));
   }
 
-  async function load() {
+  async function load(showRefreshing = true) {
     try {
-      setRefreshing(true);
+      if (showRefreshing) setRefreshing(true);
 
       await loadSummary(coin);
 
@@ -198,8 +198,8 @@ export default function NewOrder({ route, navigation }) {
     }
   }
 
-  function refresh() {
-    load();
+  function refresh(showRefreshing) {
+    load(showRefreshing);
     loadMyData();
   }
 

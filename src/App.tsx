@@ -20,6 +20,9 @@ import { H1 } from './components/Hs';
 import AppProvider from './hooks';
 import SecurityPage from './pages/Security';
 import DonatePage from './pages/Donate';
+import { useKeys } from './hooks/KeysContext';
+import AlertPage from './pages/Alert';
+import OneSignalWrapper from './controllers/OneSignal';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -60,16 +63,20 @@ const DonatePageStack = () => (
   </Stack.Navigator>
 );
 
+const AlertPageStack = () => (
+  <Stack.Navigator screenOptions={screenOptions} initialRouteName="Alert">
+    <Stack.Screen name="Alert" component={AlertPage} />
+  </Stack.Navigator>
+);
+
 const AboutPageStack = () => (
   <Stack.Navigator screenOptions={screenOptions} initialRouteName="About">
     <Stack.Screen name="About" component={AboutPage} />
   </Stack.Navigator>
 );
 
-function CustomDrawerContent({ drawerPosition, navigation }): ReactElement {
+function CustomDrawerContent({ usingKeys, drawerPosition, navigation }): ReactElement {
   const insets = useSafeArea();
-
-  // navigation.openDrawer();
 
   return (
     <View
@@ -89,15 +96,23 @@ function CustomDrawerContent({ drawerPosition, navigation }): ReactElement {
           label="Home"
           onPress={() => navigation.navigate('Home')}
         />
-        <DrawerItem
-          icon={() => <Icon name="wallet" size={20} />}
-          label="Wallets"
-          onPress={() => navigation.navigate('Wallets')}
-        />
+
+        {usingKeys && (
+          <DrawerItem
+            icon={() => <Icon name="wallet" size={20} />}
+            label="Wallets"
+            onPress={() => navigation.navigate('Wallets')}
+          />
+        )}
         <DrawerItem
           icon={() => <Icon name="settings" size={20} />}
           label="Settings"
           onPress={() => navigation.navigate('Settings')}
+        />
+        <DrawerItem
+          icon={() => <Icon name="bell" size={20} />}
+          label="Alert"
+          onPress={() => navigation.navigate('Alert')}
         />
         {/* <DrawerItem
           icon={() => <Icon name="home-currency-usd" size={20} />}
@@ -120,15 +135,23 @@ function CustomDrawerContent({ drawerPosition, navigation }): ReactElement {
   );
 }
 
-const GlobalNavigator = () => (
-  <Drawer.Navigator initialRouteName="Home" drawerContent={(props): ReactElement => <CustomDrawerContent {...props} />}>
-    <Drawer.Screen name="Home" component={HomeStack} />
-    <Drawer.Screen name="Wallets" component={WalletPageStack} />
-    <Drawer.Screen name="Settings" component={SettingsPageStack} />
-    <Drawer.Screen name="Donate" component={DonatePageStack} />
-    <Drawer.Screen name="About" component={AboutPageStack} />
-  </Drawer.Navigator>
-);
+const GlobalNavigator = () => {
+  const { usingKeys } = useKeys();
+
+  return (
+    <Drawer.Navigator
+      initialRouteName="Alert"
+      drawerContent={(props): ReactElement => <CustomDrawerContent usingKeys={usingKeys} {...props} />}
+    >
+      <Drawer.Screen name="Home" component={HomeStack} />
+      {usingKeys && <Drawer.Screen name="Wallets" component={WalletPageStack} />}
+      <Drawer.Screen name="Settings" component={SettingsPageStack} />
+      <Drawer.Screen name="Alert" component={AlertPageStack} />
+      <Drawer.Screen name="Donate" component={DonatePageStack} />
+      <Drawer.Screen name="About" component={AboutPageStack} />
+    </Drawer.Navigator>
+  );
+};
 
 const App = () => {
   const [read, setRead] = useState(false);
@@ -144,7 +167,7 @@ const App = () => {
             <GlobalNavigator />
           </NavigationContainer>
         </SafeAreaProvider>
-        {/* <OneSignalWrapper /> */}
+        <OneSignalWrapper />
       </AppProvider>
     </>
   );

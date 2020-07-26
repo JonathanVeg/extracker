@@ -12,22 +12,29 @@ import CoinPageChart from './Chart';
 import { colors } from '../../style/globals';
 import { Container } from '../../components/Generics';
 import CoinPageCalculator from './Calculator';
+import { useKeys } from '../../hooks/KeysContext';
 
 const CoinPage: React.FC = props => {
   const coin: Coin = (props?.route?.params || {}).coin || new Coin('DCR', 'BTC');
 
   const { navigation } = props;
 
-  const headerRight = () => (
-    <View style={{ marginStart: 5, flexDirection: 'row' }}>
-      <TouchableOpacity onPress={gotoOrders}>
-        <FA name="exchange" size={25} style={{ marginEnd: 15 }} />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={gotoNewOrder}>
-        <FA name="cart-plus" size={25} style={{ marginEnd: 15 }} />
-      </TouchableOpacity>
-    </View>
-  );
+  const { usingKeys } = useKeys();
+
+  const headerRight = () => {
+    if (!usingKeys) return <></>;
+
+    return (
+      <View style={{ marginStart: 5, flexDirection: 'row' }}>
+        <TouchableOpacity onPress={gotoOrders}>
+          <FA name="exchange" size={25} style={{ marginEnd: 15 }} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={gotoNewOrder}>
+          <FA name="cart-plus" size={25} style={{ marginEnd: 15 }} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   const gotoNewOrder = () => navigation.navigate('NewOrder', { coin });
   const gotoOrders = () => navigation.navigate('Orders');
@@ -42,9 +49,11 @@ const CoinPage: React.FC = props => {
     { icon: 'minus' },
     { icon: 'history' },
     { icon: 'line-chart' },
-    { icon: 'exchange' },
-    { icon: 'calculator' },
   ];
+
+  if (usingKeys) footerItems.push({ icon: 'exchange' });
+
+  footerItems.push({ icon: 'calculator' });
 
   const [currentPage, setCurrentPage] = useState(footerItems[0]);
 

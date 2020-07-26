@@ -7,6 +7,7 @@ import { colors } from '../../style/globals';
 import MyCoin from '../../models/MyCoin';
 import { useFiats } from '../../hooks/FiatContext';
 import { useSummaries } from '../../hooks/SummaryContext';
+import { useKeys } from '../../hooks/KeysContext';
 
 interface HomeCoinItemProps {
   onToggleFavorite: void;
@@ -21,6 +22,7 @@ const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
   const { onClick, onLongClick, coin, market, myCoins, onToggleFavorite } = props;
 
   const myCoin = myCoins.find(it => it.name === coin.name);
+  const { usingKeys } = useKeys();
   const { fiats } = useFiats();
   const { allCoinsInBtc } = useSummaries();
 
@@ -43,7 +45,7 @@ const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
             {`${fiat.label}: ${(coin.last * fiat.data.last * allCoinsInBtc[coin.market]).idealDecimalPlaces()}`}
           </Text>
         ))}
-        {myCoin && (
+        {usingKeys && myCoin && (
           <>
             <Text>{`I Have: ${myCoin.balance}`}</Text>
             <Text>{`I Have (${market}): ${(myCoin.balance * coin.last).idealDecimalPlaces()}`}</Text>
