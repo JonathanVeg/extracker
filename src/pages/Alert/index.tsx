@@ -9,14 +9,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MyInput from '../../components/MyInput';
 import AlertsAPI from '../../controllers/Alerts';
 import { readOneSignalUserId } from '../../controllers/OneSignal';
+import { useToast } from '../../hooks/ToastContext';
 
 const AlertPage = ({ navigation }) => {
-  const [alerts, setAlerts] = useState<Alert[]>([
-    new Alert(`${Math.random()}`, 'DCR', 'BTC', 'LT', 0.2, false),
-    new Alert(`${Math.random()}`, 'DCR', 'BTC', 'LT', 0.1),
-    new Alert(`${Math.random()}`, 'DCR', 'BTC', 'LT', 0.3, false),
-    new Alert(`${Math.random()}`, 'DCR', 'BTC', 'LT', 0.4),
-  ]);
+  const [alerts, setAlerts] = useState<Alert[]>([]);
+  const { showToast } = useToast();
 
   navigation.setOptions({
     title: 'Alerts',
@@ -31,11 +28,15 @@ const AlertPage = ({ navigation }) => {
   }
 
   async function handleCreateAlert() {
-    const newAlert = new Alert(`${Math.random()}`, coin, market, 'GT', parseFloat(price));
+    try {
+      const newAlert = new Alert(`${Math.random()}`, coin, market, 'GT', parseFloat(price));
 
-    await AlertsAPI.createAlert(newAlert);
+      await AlertsAPI.createAlert(newAlert);
 
-    readAlerts();
+      readAlerts();
+    } catch (err) {
+      showToast({ text: 'Error while creating alert', type: 'error' });
+    }
   }
 
   async function toggleAlertActive(alert: Alert) {
@@ -86,7 +87,7 @@ const AlertPage = ({ navigation }) => {
           {alert.coin}/{alert.market}
         </Text>
         <Text>{alert.condition}</Text>
-        <Text>{alert.price.idealDecimalPlaces()}</Text>
+        <Text>{parseFloat(alert.price).idealDecimalPlaces()}</Text>
       </Row>
     );
   };

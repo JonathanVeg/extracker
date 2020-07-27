@@ -9,11 +9,7 @@ export default class AlertsAPI {
   static async createAlert(alert: Alert) {
     const uid = await readOneSignalUserId();
 
-    const response = await axios.post(`${baseURL}`, { ...alert.toJSON(), uid });
-
-    const { data } = response;
-
-    console.log(data);
+    await axios.post(`${baseURL}`, { ...alert.toJSON(), uid });
   }
 
   static async getAlerts(uid: string): Promise<Alert[]> {
