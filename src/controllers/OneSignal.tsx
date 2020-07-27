@@ -17,8 +17,6 @@ const OneSignalWrapper: React.FC = () => {
     OneSignal.addEventListener('received', onReceived);
     OneSignal.addEventListener('opened', onOpened);
     OneSignal.addEventListener('ids', onIds);
-
-    showToast('OneSignal Started');
   }, []);
 
   function onReceived(notification) {
