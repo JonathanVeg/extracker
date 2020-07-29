@@ -1,11 +1,11 @@
-import { Row } from '../../components/Generics';
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Row } from '../../components/Generics';
 import HamburgerIcon from '../../components/HamburgerIcon';
 import { H2 } from '../../components/Hs';
 import { Spacer } from '../../components/Spacer';
 import Alert from '../../models/Alert';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MyInput from '../../components/MyInput';
 import AlertsAPI from '../../controllers/Alerts';
 import { readOneSignalUserId } from '../../controllers/OneSignal';
@@ -13,6 +13,7 @@ import { useToast } from '../../hooks/ToastContext';
 
 const AlertPage = ({ navigation }) => {
   const [alerts, setAlerts] = useState<Alert[]>([]);
+  const [saving, setSaving] = useState(false);
   const { showToast } = useToast();
 
   navigation.setOptions({
@@ -29,6 +30,8 @@ const AlertPage = ({ navigation }) => {
 
   async function handleCreateAlert() {
     try {
+      setSaving(true);
+
       const newAlert = new Alert(`${Math.random()}`, coin, market, 'GT', parseFloat(price));
 
       await AlertsAPI.createAlert(newAlert);
@@ -36,6 +39,8 @@ const AlertPage = ({ navigation }) => {
       readAlerts();
     } catch (err) {
       showToast({ text: 'Error while creating alert', type: 'error' });
+    } finally {
+      setSaving(false);
     }
   }
 
@@ -65,7 +70,7 @@ const AlertPage = ({ navigation }) => {
       <MyInput value={price} onChangeText={setPrice} />
 
       <TouchableOpacity onPress={handleCreateAlert}>
-        <H2 center>Save</H2>
+        <H2 center>{saving ? 'Saving...' : 'Save'}</H2>
       </TouchableOpacity>
       <Spacer />
     </>
@@ -78,7 +83,7 @@ const AlertPage = ({ navigation }) => {
       <Row key={alert.id} style={{ justifyContent: 'space-between', paddingHorizontal: 10 }}>
         <TouchableOpacity
           onPress={() => {
-            toggleAlertActive(item);
+            if (!saving) toggleAlertActive(item);
           }}
         >
           <Icon name={alert.active ? 'bell' : 'bell-off'} size={20} />

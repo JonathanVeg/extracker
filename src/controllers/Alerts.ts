@@ -1,6 +1,5 @@
 import axios from 'axios';
 import Alert from '../models/Alert';
-import StorageUtils from '../utils/StorageUtils';
 import { readOneSignalUserId } from './OneSignal';
 
 const baseURL = 'http://localhost:3333/alerts';

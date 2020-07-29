@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import OneSignal from 'react-native-onesignal';
-import { ONE_SIGNAL_KEY } from 'react-native-dotenv';
+import { ONE_SIGNAL_KEY2 } from 'react-native-dotenv';
 import { useToast } from '../hooks/ToastContext';
 import StorageUtils from '../utils/StorageUtils';
 
@@ -8,7 +8,8 @@ const OneSignalWrapper: React.FC = () => {
   const { showToast } = useToast();
 
   useEffect(() => {
-    OneSignal.init(ONE_SIGNAL_KEY);
+    OneSignal.init(ONE_SIGNAL_KEY2);
+    console.log('AQUI', ONE_SIGNAL_KEY2);
 
     OneSignal.inFocusDisplaying(2); // Controls what should happen if a notification is received while the app is open. 2 means that the notification will go directly to the device's notification center.
 
@@ -32,6 +33,8 @@ const OneSignalWrapper: React.FC = () => {
 
   function onIds(device) {
     const uid = device.userId;
+
+    console.log(`UID: ${uid}`);
 
     StorageUtils.setItem('@extracker:OneSignalUserId', uid);
   }

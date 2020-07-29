@@ -140,7 +140,7 @@ const GlobalNavigator = () => {
 
   return (
     <Drawer.Navigator
-      initialRouteName="Alert"
+      initialRouteName="Home"
       drawerContent={(props): ReactElement => <CustomDrawerContent usingKeys={usingKeys} {...props} />}
     >
       <Drawer.Screen name="Home" component={HomeStack} />
