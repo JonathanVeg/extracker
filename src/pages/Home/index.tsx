@@ -78,6 +78,8 @@ export default function Home({ navigation }) {
 
   useEffect(() => {
     refresh();
+
+    if (hasKeys) loadMyCoins();
   }, []);
 
   useEffect(() => {
@@ -300,7 +302,7 @@ export default function Home({ navigation }) {
 
         {compactMode && (
           <FlatList
-            onRefresh={loadCoins}
+            onRefresh={refresh}
             refreshing={refreshing}
             numColumns={3}
             style={{ alignSelf: 'stretch', margin: 8 }}

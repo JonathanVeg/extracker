@@ -30,9 +30,15 @@ const AlertPage = ({ navigation }) => {
 
   async function handleCreateAlert() {
     try {
+      if (parseFloat(price) === 0.0) {
+        showToast({ text: 'Please fill the price', type: 'error' });
+
+        return;
+      }
+
       setSaving(true);
 
-      const newAlert = new Alert(`${Math.random()}`, coin, market, 'GT', parseFloat(price));
+      const newAlert = new Alert(`${Math.random()}`, coin, market, when, parseFloat(price));
 
       await AlertsAPI.createAlert(newAlert);
 
@@ -52,6 +58,14 @@ const AlertPage = ({ navigation }) => {
     readAlerts();
   }
 
+  async function deleteAlert(alert: Alert) {
+    const uid = await readOneSignalUserId();
+
+    await AlertsAPI.deleteAlert(alert, uid);
+
+    readAlerts();
+  }
+
   useEffect(() => {
     readAlerts();
   }, []);
@@ -59,28 +73,34 @@ const AlertPage = ({ navigation }) => {
   const [price, setPrice] = useState<string>('0.0');
   const [coin, setCoin] = useState<string>('DCR');
   const [market, setMarket] = useState<string>('BTC');
+  const [when, setWhen] = useState<string>('GT');
 
   const inputs = (
-    <>
-      <H2>Coin</H2>
-      <MyInput value={coin} onChangeText={setCoin} />
-      <H2>Market</H2>
-      <MyInput value={market} onChangeText={setMarket} />
+    <View>
+      <H2>Alert me when (coin)</H2>
+      <MyInput placeholder={'coin'} value={coin} onChangeText={setCoin} />
+
+      <H2>in market (market)</H2>
+      <MyInput placeholder="market" value={market} onChangeText={setMarket} />
+
+      <H2>gets (GT / LT)</H2>
+      <MyInput placeholder="gets (GT / LT)" value={when} onChangeText={setWhen} />
+
       <H2>Price</H2>
-      <MyInput value={price} onChangeText={setPrice} />
+      <MyInput placeholder="price" value={price} onChangeText={setPrice} />
 
       <TouchableOpacity onPress={handleCreateAlert}>
         <H2 center>{saving ? 'Saving...' : 'Save'}</H2>
       </TouchableOpacity>
       <Spacer />
-    </>
+    </View>
   );
 
   const renderItem = ({ item }) => {
     const alert: Alert = item;
 
     return (
-      <Row key={alert.id} style={{ justifyContent: 'space-between', paddingHorizontal: 10 }}>
+      <Row key={alert.id} style={{ justifyContent: 'space-between' }}>
         <TouchableOpacity
           onPress={() => {
             if (!saving) toggleAlertActive(item);
@@ -93,14 +113,25 @@ const AlertPage = ({ navigation }) => {
         </Text>
         <Text>{alert.condition}</Text>
         <Text>{parseFloat(alert.price).idealDecimalPlaces()}</Text>
+        <TouchableOpacity
+          onPress={() => {
+            deleteAlert(item);
+          }}
+        >
+          <Icon name={'delete'} size={20} />
+        </TouchableOpacity>
       </Row>
     );
   };
 
   return (
-    <View>
+    <View style={{ paddingHorizontal: 10 }}>
       {inputs}
-      <FlatList data={alerts} keyExtractor={it => it.coin} renderItem={renderItem} />
+      {alerts.length > 0 ? (
+        <FlatList data={alerts} keyExtractor={it => it.coin} renderItem={renderItem} />
+      ) : (
+        <Text>No alerts yet</Text>
+      )}
     </View>
   );
 };

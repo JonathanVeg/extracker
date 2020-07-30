@@ -69,7 +69,8 @@ export default class MyOrder {
     resume += `Type: ${this.type}\n`;
     resume += `Unity price: ${this.price.idealDecimalPlaces()}\n`;
     resume += `Quantity: ${this.quantity.idealDecimalPlaces()}\n`;
-    resume += `Quantity remaning: ${this.quantityRemaining.idealDecimalPlaces()}\n`;
+    resume += `Quantity done: ${(this.quantity - this.quantityRemaining).idealDecimalPlaces()}\n`;
+    resume += `Quantity remaining: ${this.quantityRemaining.idealDecimalPlaces()}\n`;
     resume += `Total: ${this.total.idealDecimalPlaces()}\n`;
     if (this.openedAtAgo()) resume += `Opened: ${this.openedAtAgo()}\n`;
     if (this.closedAtAgo()) resume += `Closed: ${this.closedAtAgo()}\n`;

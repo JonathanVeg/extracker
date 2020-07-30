@@ -111,7 +111,9 @@ export default function CoinPageMyOrdersHistory(props) {
             {order.type === 'BUY' ? '+ ' : '- '}
             {showQuantity
               ? `${order.quantity.idealDecimalPlaces()}`
-              : `${order.quantityRemaining.idealDecimalPlaces()}`}
+              : showOpened
+              ? `${order.quantityRemaining.idealDecimalPlaces()}`
+              : `${(order.quantity - order.quantityRemaining).idealDecimalPlaces()}`}
           </Text>
           <Text style={{ flex: 1, textAlign: 'right', fontVariant: ['tabular-nums'] }}>
             {showUnit ? order.price.idealDecimalPlaces() : order.total.idealDecimalPlaces()}
@@ -139,7 +141,7 @@ export default function CoinPageMyOrdersHistory(props) {
         <Text style={{ fontWeight: 'bold', flex: 0.8, textAlign: 'left' }}>Pair</Text>
         <TouchableOpacity style={{ flex: 1 }} onPress={() => setShowQuantity(!showQuantity)}>
           <Text style={{ fontWeight: 'bold', flex: 1, textAlign: 'left' }}>
-            {showQuantity ? 'Quantity' : 'Qnt. remaining'}
+            {showQuantity ? 'Quantity' : showOpened ? 'Remaining' : 'Done'}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={{ flex: 1 }} onPress={() => setShowUnit(!showUnit)}>

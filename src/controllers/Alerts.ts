@@ -20,4 +20,8 @@ export default class AlertsAPI {
   static async toggleAlertStatus(alert: Alert, uid: string): Promise<void> {
     await axios.put(`${baseURL}/${alert.id}?uid=${uid}`);
   }
+
+  static async deleteAlert(alert: Alert, uid: string): Promise<void> {
+    await axios.delete(`${baseURL}/${alert.id}?uid=${uid}`);
+  }
 }
