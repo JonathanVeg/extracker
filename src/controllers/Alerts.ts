@@ -2,7 +2,8 @@ import axios from 'axios';
 import Alert from '../models/Alert';
 import { readOneSignalUserId } from './OneSignal';
 
-const baseURL = 'http://localhost:3333/alerts';
+const baseURL = 'http://159.65.217.50/alerts';
+// const baseURL = 'http://localhost:3333/alerts';
 
 export default class AlertsAPI {
   static async createAlert(alert: Alert) {

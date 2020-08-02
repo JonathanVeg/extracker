@@ -9,7 +9,6 @@ const OneSignalWrapper: React.FC = () => {
 
   useEffect(() => {
     OneSignal.init(ONE_SIGNAL_KEY2);
-    console.log('AQUI', ONE_SIGNAL_KEY2);
 
     OneSignal.inFocusDisplaying(2); // Controls what should happen if a notification is received while the app is open. 2 means that the notification will go directly to the device's notification center.
 
@@ -25,16 +24,16 @@ const OneSignalWrapper: React.FC = () => {
   }
 
   function onOpened(openResult) {
-    showToast(`Message: ${openResult.notification.payload.body}`);
-    showToast(`Data: ${openResult.notification.payload.additionalData}`);
-    showToast(`isActive: ${openResult.notification.isAppInFocus}`);
-    showToast(`openResult: ${openResult}`);
+    try {
+      const { isAppInFocus } = openResult.notification;
+      const { coin, market, price } = openResult.notification.payload.additionalData;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   function onIds(device) {
     const uid = device.userId;
-
-    console.log(`UID: ${uid}`);
 
     StorageUtils.setItem('@extracker:OneSignalUserId', uid);
   }
