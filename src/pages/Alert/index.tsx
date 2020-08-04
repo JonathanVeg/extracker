@@ -78,13 +78,13 @@ const AlertPage = ({ navigation }) => {
   const inputs = (
     <View>
       <H2>Alert me when (coin)</H2>
-      <MyInput placeholder={'coin'} value={coin} onChangeText={setCoin} />
+      <MyInput text placeholder={'coin'} value={coin} onChangeText={setCoin} />
 
       <H2>in market (market)</H2>
-      <MyInput placeholder="market" value={market} onChangeText={setMarket} />
+      <MyInput text placeholder="market" value={market} onChangeText={setMarket} />
 
       <H2>gets (GT / LT)</H2>
-      <MyInput placeholder="gets (GT / LT)" value={when} onChangeText={setWhen} />
+      <MyInput text placeholder="gets (GT / LT)" value={when} onChangeText={setWhen} />
 
       <H2>Price</H2>
       <MyInput placeholder="price" value={price} onChangeText={setPrice} />
