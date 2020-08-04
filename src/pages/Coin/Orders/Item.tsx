@@ -3,13 +3,33 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import React from 'react';
 import { Text, TouchableOpacity, Alert } from 'react-native';
 import Order from '../../../models/Order';
+import { default as MyAlert } from '../../../models/Alert';
 import { colors } from '../../../style/globals';
 import { useToast } from '../../../hooks/ToastContext';
+import AlertsAPI from '../../../controllers/Alerts';
 
 const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, navigation, refresh }) => {
   const order: Order = item;
 
   const { showToast } = useToast();
+
+  async function createAlert() {
+    try {
+      const newAlert = new MyAlert(
+        `${Math.random()}`,
+        coin.name,
+        coin.market,
+        type === 'sell' ? 'GT' : 'LT',
+        parseFloat(item.rate),
+      );
+
+      await AlertsAPI.createAlert(newAlert);
+
+      showToast('Alert created');
+    } catch (err) {
+      showToast({ text: `Error while creating alert\n\n${err}`, type: 'error' });
+    }
+  }
 
   async function cancelMyOrder() {
     try {
@@ -44,16 +64,22 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, navigati
   function offerCreateNewOrder() {
     Alert.alert(
       'Create order',
-      `Do you want to create an order to ${type} ${coin.name} for ${item.rate.idealDecimalPlaces()}?`,
+      `Do you want to create for ${coin.name} in this price (${item.rate.idealDecimalPlaces()})?`,
       [
         {
-          text: 'No',
+          text: 'Nothing',
           style: 'cancel',
         },
         {
-          text: 'Yes',
+          text: 'Create order',
           onPress: () => {
             navigation.navigate('NewOrder', { coin, rate: item.rate, type });
+          },
+        },
+        {
+          text: 'Create alert',
+          onPress: () => {
+            createAlert();
           },
         },
       ],

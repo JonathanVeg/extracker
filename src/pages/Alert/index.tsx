@@ -14,6 +14,7 @@ import { useToast } from '../../hooks/ToastContext';
 const AlertPage = ({ navigation }) => {
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [saving, setSaving] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const { showToast } = useToast();
 
   navigation.setOptions({
@@ -22,10 +23,15 @@ const AlertPage = ({ navigation }) => {
   });
 
   async function readAlerts() {
-    const uid = await readOneSignalUserId();
-    const alerts = await AlertsAPI.getAlerts(uid);
+    try {
+      setRefreshing(true);
+      const uid = await readOneSignalUserId();
+      const alerts = await AlertsAPI.getAlerts(uid);
 
-    setAlerts(alerts);
+      setAlerts(alerts);
+    } finally {
+      setRefreshing(false);
+    }
   }
 
   async function handleCreateAlert() {
@@ -78,7 +84,7 @@ const AlertPage = ({ navigation }) => {
   const inputs = (
     <View>
       <H2>Alert me when (coin)</H2>
-      <MyInput text placeholder={'coin'} value={coin} onChangeText={setCoin} />
+      <MyInput text placeholder="coin" value={coin} onChangeText={setCoin} />
 
       <H2>in market (market)</H2>
       <MyInput text placeholder="market" value={market} onChangeText={setMarket} />
@@ -118,7 +124,7 @@ const AlertPage = ({ navigation }) => {
             deleteAlert(item);
           }}
         >
-          <Icon name={'delete'} size={20} />
+          <Icon name="delete" size={20} />
         </TouchableOpacity>
       </Row>
     );
@@ -128,7 +134,13 @@ const AlertPage = ({ navigation }) => {
     <View style={{ paddingHorizontal: 10 }}>
       {inputs}
       {alerts.length > 0 ? (
-        <FlatList data={alerts} keyExtractor={it => it.coin} renderItem={renderItem} />
+        <FlatList
+          onRefresh={readAlerts}
+          refreshing={refreshing}
+          data={alerts}
+          keyExtractor={it => it.coin}
+          renderItem={renderItem}
+        />
       ) : (
         <Text>No alerts yet</Text>
       )}

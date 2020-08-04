@@ -27,7 +27,6 @@ const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
   const { allCoinsInBtc } = useSummaries();
 
   if (!coin.last) {
-    console.log(coin);
     return <></>;
   }
 
