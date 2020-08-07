@@ -48,6 +48,7 @@ const WalletPageStack = () => (
     <Stack.Screen name="NewOrder" component={NewOrder} />
     <Stack.Screen name="Orders" component={CoinPageMyOrdersHistory} />
     <Stack.Screen name="Calculator" component={CoinPageCalculator} />
+    <Stack.Screen name="Alert" component={AlertPage} />
   </Stack.Navigator>
 );
 

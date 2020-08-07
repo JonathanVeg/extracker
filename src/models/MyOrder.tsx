@@ -3,38 +3,19 @@ import { cancelOrder } from '../controllers/Bittrex';
 
 export default class MyOrder {
   canceling = false;
-  id = '';
-  type = '';
-  coin = '';
-  market = '';
-  quantity = 0.0;
-  quantityRemaining = 0.0;
-  price = 0.0;
   total = 0.0;
-  closedAt = '';
-  openedAt = '';
 
   constructor(
-    id: string,
-    type: string,
-    coin: string,
-    market: string,
-    quantity: number,
-    quantityRemaining: number,
-    price: number,
-    openedAt: string,
-    closedAt: string,
+    public id: string,
+    public type: string,
+    public coin: string,
+    public market: string,
+    public quantity: number,
+    public quantityRemaining: number,
+    public price: number,
+    public openedAt: string,
+    public closedAt: string,
   ) {
-    this.id = id;
-    this.type = type;
-    this.coin = coin;
-    this.market = market;
-    this.quantity = quantity;
-    this.quantityRemaining = quantityRemaining;
-    this.price = price;
-    this.closedAt = closedAt;
-    this.openedAt = openedAt;
-
     this.total = price * quantity;
   }
 

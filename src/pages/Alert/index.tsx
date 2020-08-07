@@ -10,14 +10,17 @@ import MyInput from '../../components/MyInput';
 import AlertsAPI from '../../controllers/Alerts';
 import { readOneSignalUserId } from '../../controllers/OneSignal';
 import { useToast } from '../../hooks/ToastContext';
+import Coin from '../../models/Coin';
 
-const AlertPage = ({ navigation }) => {
+const AlertPage = ({ navigation, route }) => {
+  const defaultCoin: Coin = (route?.params || {}).coin || new Coin('DCR', 'BTC');
+
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [saving, setSaving] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const { showToast } = useToast();
 
-  navigation.setOptions({
+  navigation?.setOptions({
     title: 'Alerts',
     headerLeft: () => <HamburgerIcon navigationProps={navigation} />,
   });
@@ -84,10 +87,10 @@ const AlertPage = ({ navigation }) => {
   const inputs = (
     <View>
       <H2>Alert me when (coin)</H2>
-      <MyInput text placeholder="coin" value={coin} onChangeText={setCoin} />
+      <MyInput text placeholder="coin" value={defaultCoin.name} onChangeText={setCoin} />
 
       <H2>in market (market)</H2>
-      <MyInput text placeholder="market" value={market} onChangeText={setMarket} />
+      <MyInput text placeholder="market" value={defaultCoin.market} onChangeText={setMarket} />
 
       <H2>gets (GT / LT)</H2>
       <MyInput text placeholder="gets (GT / LT)" value={when} onChangeText={setWhen} />

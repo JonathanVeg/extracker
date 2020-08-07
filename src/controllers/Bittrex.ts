@@ -185,7 +185,7 @@ export async function loadOrderBook(coin: Coin, type): Promise<Order[]> {
     quantity += it.Quantity;
     total += it.Rate * it.Quantity;
 
-    return new Order(it.Quantity, it.Rate, it.Rate * it.Quantity, total, quantity);
+    return new Order(coin.name, coin.market, it.Quantity, it.Rate, it.Rate * it.Quantity, total, quantity);
   });
 }
 

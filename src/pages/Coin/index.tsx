@@ -13,11 +13,10 @@ import { colors } from '../../style/globals';
 import { Container } from '../../components/Generics';
 import CoinPageCalculator from './Calculator';
 import { useKeys } from '../../hooks/KeysContext';
+import AlertPage from '../Alert';
 
-const CoinPage: React.FC = props => {
-  const coin: Coin = (props?.route?.params || {}).coin || new Coin('DCR', 'BTC');
-
-  const { navigation } = props;
+const CoinPage: React.FC = ({ route, navigation }) => {
+  const coin: Coin = (route?.params || {}).coin || new Coin('DCR', 'BTC');
 
   const { usingKeys } = useKeys();
 
@@ -53,6 +52,8 @@ const CoinPage: React.FC = props => {
 
   if (usingKeys) footerItems.push({ icon: 'exchange' });
 
+  footerItems.push({ icon: 'bell' });
+
   footerItems.push({ icon: 'calculator' });
 
   const [currentPage, setCurrentPage] = useState(footerItems[0]);
@@ -80,6 +81,7 @@ const CoinPage: React.FC = props => {
     if (currentPage.icon === 'history') return <CoinPageOrdersHistory coin={coin} />;
     if (currentPage.icon === 'line-chart') return <CoinPageChart coin={coin} />;
     if (currentPage.icon === 'exchange') return <CoinPageMyOrdersHistory coin={coin} />;
+    if (currentPage.icon === 'bell') return <AlertPage coin={coin} />;
     // if (currentPage.icon === 'calculator')
     return <CoinPageCalculator coin={coin} />;
   };

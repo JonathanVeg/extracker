@@ -8,6 +8,8 @@ import Order from '../../../models/Order';
 import MyOrder from '../../../models/MyOrder';
 import { Container } from '../../../components/Generics';
 import Item from './Item';
+import AlertsAPI from '../../../controllers/Alerts';
+import { readOneSignalUserId } from '../../../controllers/OneSignal';
 
 export default function CoinPageOrders(props) {
   const { type } = props;
@@ -23,7 +25,20 @@ export default function CoinPageOrders(props) {
     try {
       if (changeRefreshing) setRefreshing(true);
 
+      const uid = await readOneSignalUserId();
+      const alerts = await AlertsAPI.getAlerts(uid);
+
       const orders = await loadOrderBook(coin, type);
+
+      orders.map(order => {
+        order.alerts = alerts.filter(it => {
+          return (
+            it.coin === order.coin &&
+            it.market === order.marker &&
+            parseFloat(it.price.toString()) === parseFloat(order.rate.toString())
+          );
+        });
+      });
 
       setOrders(orders);
     } finally {
@@ -37,14 +52,9 @@ export default function CoinPageOrders(props) {
     setMyOrders(myOrders);
   }
 
-  function refresh(changeRefreshing = true) {
-    // console.log('Refresh');
+  async function refresh(changeRefreshing = true) {
     loadOrders(changeRefreshing).finally(() => {
       loadMOrders();
-
-      // setTimeout(() => {
-      //   refresh(false);
-      // }, 2500);
     });
   }
 

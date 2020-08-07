@@ -1,12 +1,14 @@
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import React from 'react';
+import { default as MaterialCommunityIcons } from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, { useState } from 'react';
 import { Text, TouchableOpacity, Alert } from 'react-native';
 import Order from '../../../models/Order';
 import { default as MyAlert } from '../../../models/Alert';
 import { colors } from '../../../style/globals';
 import { useToast } from '../../../hooks/ToastContext';
 import AlertsAPI from '../../../controllers/Alerts';
+import { readOneSignalUserId } from '../../../controllers/OneSignal';
 
 const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, navigation, refresh }) => {
   const order: Order = item;
@@ -26,8 +28,23 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, navigati
       await AlertsAPI.createAlert(newAlert);
 
       showToast('Alert created');
+
+      refresh();
     } catch (err) {
       showToast({ text: `Error while creating alert\n\n${err}`, type: 'error' });
+    }
+  }
+
+  async function cancelAlert() {
+    try {
+      const uid = await readOneSignalUserId();
+      for (let i = 0; i < item.alerts.length; i++) {
+        await AlertsAPI.deleteAlert(item.alerts[i], uid);
+      }
+
+      showToast('Alert cancelled');
+    } finally {
+      refresh();
     }
   }
 
@@ -43,45 +60,44 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, navigati
     }
   }
 
-  function offerCancelOrders() {
-    Alert.alert(
-      'Cancel order',
-      `Do you want to cancel your order to ${type} ${coin.name} for ${item.rate.idealDecimalPlaces()}?`,
-      [
-        {
-          text: 'No',
-          style: 'cancel',
-        },
-        {
-          text: 'Yes',
+  function offerOptions() {
+    const secondOption = item.isMine
+      ? {
+          text: 'Cancel order',
           onPress: cancelMyOrder,
-        },
-      ],
-      { cancelable: true },
-    );
-  }
+        }
+      : {
+          text: 'Create order',
+          onPress: () => {
+            navigation.navigate('NewOrder', { coin, rate: item.rate, type });
+          },
+        };
 
-  function offerCreateNewOrder() {
+    const thirdOption =
+      item.alerts.length > 0
+        ? {
+            text: 'Cancel alert',
+            onPress: () => {
+              cancelAlert();
+            },
+          }
+        : {
+            text: 'Create alert',
+            onPress: () => {
+              createAlert();
+            },
+          };
+
     Alert.alert(
-      'Create order',
+      'Select an option',
       `Do you want to create for ${coin.name} in this price (${item.rate.idealDecimalPlaces()})?`,
       [
         {
           text: 'Nothing',
           style: 'cancel',
         },
-        {
-          text: 'Create order',
-          onPress: () => {
-            navigation.navigate('NewOrder', { coin, rate: item.rate, type });
-          },
-        },
-        {
-          text: 'Create alert',
-          onPress: () => {
-            createAlert();
-          },
-        },
+        secondOption,
+        thirdOption,
       ],
       { cancelable: true },
     );
@@ -95,15 +111,21 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, navigati
       : index % 2 === 0
       ? colors.sellBackground
       : colors.sellBackground2;
+
   return (
-    <TouchableOpacity
-      onLongPress={() => {
-        if (order.isMine) offerCancelOrders();
-        else offerCreateNewOrder();
-      }}
-    >
+    <TouchableOpacity onLongPress={offerOptions}>
       <RowContainer backgroundColor={backgroundColor}>
-        <Icon name="star" size={13} style={{ margin: 2 }} color={item.isMine ? 'black' : 'transparent'} />
+        {item.isMine ? (
+          <Icon name="star" size={13} style={{ margin: 2 }} color={'black'} />
+        ) : (
+          <MaterialCommunityIcons
+            name="bell"
+            size={13}
+            style={{ margin: 2 }}
+            color={item.alerts.length > 0 ? 'black' : 'transparent'}
+          />
+        )}
+
         <Text
           style={{
             flex: 1,
