@@ -98,17 +98,17 @@ export default function CoinPageMyOrdersHistory(props) {
           style={{
             flexDirection: 'row',
             padding: 5,
-            backgroundColor: order.type === 'BUY' ? colors.buyBackground : colors.sellBackground,
+            backgroundColor: order.type === 'buy' ? colors.buyBackground : colors.sellBackground,
             paddingHorizontal: 5,
           }}
         >
           <Text style={{ flex: 0.8, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
-            {order.type === 'BUY' ? '+ ' : '- '}
+            {order.type === 'buy' ? '+ ' : '- '}
             {`${order.coin}/${order.market}`}
           </Text>
 
           <Text style={{ flex: 1, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
-            {order.type === 'BUY' ? '+ ' : '- '}
+            {order.type === 'buy' ? '+ ' : '- '}
             {showQuantity
               ? `${order.quantity.idealDecimalPlaces()}`
               : showOpened

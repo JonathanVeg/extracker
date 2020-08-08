@@ -4,6 +4,7 @@ import { default as FA } from 'react-native-vector-icons/FontAwesome';
 import React, { useState, useEffect, useRef } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Coin from '../../models/Coin';
+import MyAlert from '../../models/Alert';
 import { loadBalances, loadSummary, execOrder } from '../../controllers/Bittrex';
 import MyCoin from '../../models/MyCoin';
 import { H1 } from '../../components/Hs';
@@ -14,6 +15,7 @@ import MyInput from '../../components/MyInput';
 import { Container } from '../../components/Generics';
 import { useToast } from '../../hooks/ToastContext';
 import CoinSelector from '../../components/CoinSelector';
+import AlertsAPI from '../../controllers/Alerts';
 
 function usePrevious(value) {
   const ref = useRef();
@@ -64,7 +66,7 @@ export default function NewOrder({ route, navigation }) {
   const [totalChanges, setTotalChanges] = useState('price');
 
   const totalChangesPrice = () => totalChanges === 'price';
-  const isBuying = () => type === 'BUY';
+  const isBuying = () => type === 'buy';
   const isTypeSelected = () => type !== '';
 
   useEffect(() => {
@@ -85,7 +87,7 @@ export default function NewOrder({ route, navigation }) {
     const total = calcTotal();
 
     const r =
-      type === 'SELL'
+      type === 'sell'
         ? `You will ${type} ${parseFloat(quantity || '0').toFixed(8)} ${coin.name} for ${parseFloat(
             price || '0',
           ).toFixed(8)} ${coin.market} each. The total will be ${total} ${coin.market}`
@@ -162,14 +164,49 @@ export default function NewOrder({ route, navigation }) {
     );
   }
 
+  async function createAlert() {
+    try {
+      const newAlert = new MyAlert(
+        `${Math.random()}`,
+        coin.name,
+        coin.market,
+        type === 'sell' ? 'GT' : 'LT',
+        parseFloat(price),
+      );
+
+      await AlertsAPI.createAlert(newAlert);
+
+      showToast('Alert created');
+    } catch (err) {
+      showToast({ text: `Error while creating alert\n\n${err}`, type: 'error' });
+    }
+  }
+
   async function callExecOrder() {
     try {
       const ret = await execOrder(type, coin.market, coin.name, quantity, price);
 
-      showToast({
-        text: ret.success ? 'Order created' : 'Error while creating order',
-        type: ret.success ? 'success' : 'error',
-      });
+      if (ret.success) {
+        Alert.alert(
+          'Order created',
+          'Do you want to create an alert for this value?',
+          [
+            {
+              text: 'No',
+              style: 'cancel',
+            },
+            {
+              text: 'Do it!',
+              onPress: () => createAlert(),
+            },
+          ],
+          { cancelable: false },
+        );
+      } else
+        showToast({
+          text: 'Error while creating order',
+          type: 'error',
+        });
     } catch {
       Alert.alert('ERROR', 'Error while creating order');
     } finally {
@@ -271,10 +308,10 @@ export default function NewOrder({ route, navigation }) {
 
   const toggleType = (
     <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-      <ToggleButton bold={isTypeSelected() && isBuying()} onPress={() => setType('BUY')}>
+      <ToggleButton bold={isTypeSelected() && isBuying()} onPress={() => setType('buy')}>
         BUY
       </ToggleButton>
-      <ToggleButton bold={isTypeSelected() && !isBuying()} onPress={() => setType('SELL')}>
+      <ToggleButton bold={isTypeSelected() && !isBuying()} onPress={() => setType('sell')}>
         SELL
       </ToggleButton>
     </View>
