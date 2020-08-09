@@ -70,7 +70,7 @@ export default function CoinPageMyOrdersHistory(props) {
   function askCancelOrder(order) {
     let line = 'Are you sure you want to cancel this order?\n';
 
-    line += `${order.type} ${order.quantity} for ${order.price} ${order.market} each.`;
+    line += `${order.type} ${order.quantity} ${order.coin} for ${order.price} ${order.market} each.`;
 
     Alert.alert(
       'Cancel order',

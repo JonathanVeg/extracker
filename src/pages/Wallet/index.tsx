@@ -155,8 +155,8 @@ export default function WalletPage({ navigation }) {
   );
 }
 const Container = styled.SafeAreaView`
+  padding: 8px;
   margin: 8px;
-  width: 100%;
 `;
 
 const BlockContainer = styled.View`

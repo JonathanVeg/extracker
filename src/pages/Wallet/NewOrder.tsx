@@ -16,6 +16,7 @@ import { Container } from '../../components/Generics';
 import { useToast } from '../../hooks/ToastContext';
 import CoinSelector from '../../components/CoinSelector';
 import AlertsAPI from '../../controllers/Alerts';
+import Order from '../../models/Order';
 
 function usePrevious(value) {
   const ref = useRef();
@@ -49,6 +50,7 @@ export default function NewOrder({ route, navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [coin, setCoin] = useState<Coin>(defaultCoin);
   const lastCoin = usePrevious(coin);
+  const [newAlert, setNewAlert] = useState(true);
 
   const [myCoin, setMyCoin] = useState<MyCoin>(null);
   const [myMarket, setMyMarket] = useState<MyCoin>(null);
@@ -187,21 +189,10 @@ export default function NewOrder({ route, navigation }) {
       const ret = await execOrder(type, coin.market, coin.name, quantity, price);
 
       if (ret.success) {
-        Alert.alert(
-          'Order created',
-          'Do you want to create an alert for this value?',
-          [
-            {
-              text: 'No',
-              style: 'cancel',
-            },
-            {
-              text: 'Do it!',
-              onPress: () => createAlert(),
-            },
-          ],
-          { cancelable: false },
-        );
+        Alert.alert('Order created');
+        setTimeout(() => {
+          if (newAlert) createAlert();
+        }, 100);
       } else
         showToast({
           text: 'Error while creating order',
@@ -239,6 +230,15 @@ export default function NewOrder({ route, navigation }) {
     load(showRefreshing);
     loadMyData();
   }
+
+  const newAlertBlock = (
+    <TouchableOpacity onPress={() => setNewAlert(!newAlert)}>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingVertical: 4 }}>
+        <FA name={newAlert ? 'bell' : 'bell-o'} size={25} style={{ marginEnd: 15 }} />
+        <Text style={{ fontWeight: newAlert ? 'bold' : 'normal' }}>create alert</Text>
+      </View>
+    </TouchableOpacity>
+  );
 
   const summaryBlock = (
     <>
@@ -370,6 +370,7 @@ export default function NewOrder({ route, navigation }) {
         {percentChangers}
         {toggleType}
 
+        {newAlertBlock}
         <ExecOrderButton onPress={handleCreateOrder} buying={isBuying()}>
           <Text style={{ textAlign: 'center' }}>Create Order</Text>
         </ExecOrderButton>

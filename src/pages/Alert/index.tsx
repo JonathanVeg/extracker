@@ -25,9 +25,10 @@ const AlertPage = ({ navigation, route }) => {
     headerLeft: () => <HamburgerIcon navigationProps={navigation} />,
   });
 
-  async function readAlerts() {
+  async function readAlerts(showRefreshing = true) {
     try {
-      setRefreshing(true);
+      if (showRefreshing) setRefreshing(true);
+
       const uid = await readOneSignalUserId();
       const alerts = await AlertsAPI.getAlerts(uid);
 
@@ -51,7 +52,7 @@ const AlertPage = ({ navigation, route }) => {
 
       await AlertsAPI.createAlert(newAlert);
 
-      readAlerts();
+      readAlerts(false);
     } catch (err) {
       showToast({ text: 'Error while creating alert', type: 'error' });
     } finally {
@@ -64,7 +65,7 @@ const AlertPage = ({ navigation, route }) => {
 
     await AlertsAPI.toggleAlertStatus(alert, uid);
 
-    readAlerts();
+    readAlerts(false);
   }
 
   async function deleteAlert(alert: Alert) {
@@ -72,7 +73,7 @@ const AlertPage = ({ navigation, route }) => {
 
     await AlertsAPI.deleteAlert(alert, uid);
 
-    readAlerts();
+    readAlerts(false);
   }
 
   useEffect(() => {
@@ -118,7 +119,8 @@ const AlertPage = ({ navigation, route }) => {
           <Icon name={alert.active ? 'bell' : 'bell-off'} size={20} />
         </TouchableOpacity>
         <Text>
-          {alert.coin}/{alert.market}
+          {alert.coin}
+/{alert.market}
         </Text>
         <Text>{alert.condition}</Text>
         <Text>{parseFloat(alert.price).idealDecimalPlaces()}</Text>
