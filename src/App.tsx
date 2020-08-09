@@ -163,12 +163,12 @@ const App = () => {
     <>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       <AppProvider>
+        <OneSignalWrapper />
         <SafeAreaProvider>
           <NavigationContainer>
             <GlobalNavigator />
           </NavigationContainer>
         </SafeAreaProvider>
-        <OneSignalWrapper />
       </AppProvider>
     </>
   );

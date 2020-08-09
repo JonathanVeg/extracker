@@ -86,6 +86,12 @@ export default function Home({ navigation }) {
     if (hasKeys) loadMyCoins();
   }, [hasKeys]);
 
+  function toggleSearch() {
+    if (showSearch) setSearch('');
+
+    setShowSearch(!showSearch);
+  }
+
   async function loadFavorites(): Promise<string[]> {
     try {
       const value = await AsyncStorage.getItem('@extracker:favs');
@@ -239,7 +245,7 @@ export default function Home({ navigation }) {
     <Header>
       <H1>COINS</H1>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TouchableOpacity onPress={() => setShowSearch(!showSearch)}>
+        <TouchableOpacity onPress={toggleSearch}>
           <FA name={showSearch ? 'search-minus' : 'search-plus'} size={20} style={{ margin: 3 }} />
         </TouchableOpacity>
         <TouchableOpacity onPress={toggleCompactMode}>
@@ -285,6 +291,35 @@ export default function Home({ navigation }) {
       >
         <Text>{hideSmall ? 'Show small balances' : 'Hide small balances'}</Text>
       </TouchableOpacity>
+    );
+
+  const ChartBlock = () =>
+    chartCoin && (
+      <>
+        <BlurView style={styles.absolute} blurType="light" blurAmount={8} reducedTransparencyFallbackColor="white" />
+
+        <ChartContainer>
+          <ChartSubContainer>
+            <TouchableOpacity
+              style={{
+                width: 30,
+                height: 30,
+                position: 'absolute',
+                top: -30,
+                right: 0,
+                marginTop: 3,
+                marginRight: 3,
+              }}
+              onPress={() => setChartCoin(null)}
+            >
+              <View>
+                <Icon name="close" size={30} />
+              </View>
+            </TouchableOpacity>
+            <CoinPageChart showControllers={false} coin={chartCoin} />
+          </ChartSubContainer>
+        </ChartContainer>
+      </>
     );
 
   return (
@@ -345,33 +380,7 @@ export default function Home({ navigation }) {
         )}
       </Container>
 
-      {chartCoin && (
-        <>
-          <BlurView style={styles.absolute} blurType="light" blurAmount={8} reducedTransparencyFallbackColor="white" />
-
-          <ChartContainer>
-            <ChartSubContainer>
-              <TouchableOpacity
-                style={{
-                  width: 30,
-                  height: 30,
-                  position: 'absolute',
-                  top: -30,
-                  right: 0,
-                  marginTop: 3,
-                  marginRight: 3,
-                }}
-                onPress={() => setChartCoin(null)}
-              >
-                <View>
-                  <Icon name="close" size={30} />
-                </View>
-              </TouchableOpacity>
-              <CoinPageChart showControllers={false} coin={chartCoin} />
-            </ChartSubContainer>
-          </ChartContainer>
-        </>
-      )}
+      <ChartBlock />
     </>
   );
 }

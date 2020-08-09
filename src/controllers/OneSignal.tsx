@@ -3,6 +3,7 @@ import OneSignal from 'react-native-onesignal';
 import { ONE_SIGNAL_KEY2 } from 'react-native-dotenv';
 import { useToast } from '../hooks/ToastContext';
 import StorageUtils from '../utils/StorageUtils';
+import { Alert } from 'react-native';
 
 const OneSignalWrapper: React.FC = () => {
   const { showToast } = useToast();
@@ -10,7 +11,7 @@ const OneSignalWrapper: React.FC = () => {
   useEffect(() => {
     OneSignal.init(ONE_SIGNAL_KEY2);
 
-    OneSignal.inFocusDisplaying(2); // Controls what should happen if a notification is received while the app is open. 2 means that the notification will go directly to the device's notification center.
+    OneSignal.inFocusDisplaying(2);
 
     OneSignal.promptForPushNotificationsWithUserResponse(myiOSPromptCallback);
 
@@ -38,8 +39,10 @@ const OneSignalWrapper: React.FC = () => {
     StorageUtils.setItem('@extracker:OneSignalUserId', uid);
   }
 
-  function myiOSPromptCallback(permission) {
-    // Alert.alert(`Permission: ${permission}`);
+  function myiOSPromptCallback(permission: boolean) {
+    if (!permission) {
+      Alert.alert('For using the alerts you need accept notifications. Consider changing in settings.');
+    }
   }
 
   return <></>;
