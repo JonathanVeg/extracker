@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Alert from '../models/Alert';
+import { Alert as RNAlert } from 'react-native';
 import { readOneSignalUserId } from './OneSignal';
 
 const baseURL = 'https://trextracker.jonathanveg.dev/alerts';
@@ -9,7 +10,11 @@ export default class AlertsAPI {
   static async createAlert(alert: Alert) {
     const uid = await readOneSignalUserId();
 
-    console.log(uid);
+    if (!uid) {
+      RNAlert.alert('Error while creating alert.\nPlese restart the app for loading your notification ID');
+
+      return;
+    }
 
     await axios.post(`${baseURL}`, { ...alert.toJSON(), uid });
   }
