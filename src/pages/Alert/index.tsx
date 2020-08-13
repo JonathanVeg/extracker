@@ -1,3 +1,5 @@
+import IconFA from 'react-native-vector-icons/FontAwesome';
+import RNPickerSelect from 'react-native-picker-select';
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,6 +13,7 @@ import AlertsAPI from '../../controllers/Alerts';
 import { readOneSignalUserId } from '../../controllers/OneSignal';
 import { useToast } from '../../hooks/ToastContext';
 import Coin from '../../models/Coin';
+import CoinSelector from '../../components/CoinSelector';
 
 const AlertPage = ({ navigation, route }) => {
   const defaultCoin: Coin = (route?.params || {}).coin || new Coin('DCR', 'BTC');
@@ -87,14 +90,24 @@ const AlertPage = ({ navigation, route }) => {
 
   const inputs = (
     <View>
-      <H2>Alert me when (coin)</H2>
-      <MyInput text placeholder="coin" value={defaultCoin.name} onChangeText={setCoin} />
+      <H2>{`Alert me when the pair ${coin}/${market} gets`}</H2>
 
-      <H2>in market (market)</H2>
-      <MyInput text placeholder="market" value={defaultCoin.market} onChangeText={setMarket} />
-
-      <H2>gets (GT / LT)</H2>
-      <MyInput text placeholder="gets (GT / LT)" value={when} onChangeText={setWhen} />
+      <RNPickerSelect
+        placeholder={{
+          label: 'Select when',
+        }}
+        value={when}
+        itemKey={when}
+        style={pickerStyle}
+        Icon={() => {
+          return <IconFA name="chevron-down" size={17} color="#333" />;
+        }}
+        onValueChange={value => setWhen(value)}
+        items={[
+          { key: 'GT', label: 'Greater than', value: 'GT' },
+          { key: 'LT', label: 'Lower than', value: 'LT' },
+        ]}
+      />
 
       <H2>Price</H2>
       <MyInput placeholder="price" value={price} onChangeText={setPrice} />
@@ -112,19 +125,18 @@ const AlertPage = ({ navigation, route }) => {
     return (
       <Row key={alert.id} style={{ justifyContent: 'space-between' }}>
         <TouchableOpacity
+          style={{ flex: 1 }}
           onPress={() => {
             if (!saving) toggleAlertActive(item);
           }}
         >
           <Icon name={alert.active ? 'bell' : 'bell-off'} size={20} />
         </TouchableOpacity>
-        <Text>
-          {alert.coin}
-/{alert.market}
-        </Text>
-        <Text>{alert.condition}</Text>
-        <Text>{parseFloat(alert.price).idealDecimalPlaces()}</Text>
+        <Text style={{ flex: 4 }}>{`${alert.coin}/${alert.market}`}</Text>
+        <Text style={{ flex: 1 }}>{alert.condition}</Text>
+        <Text style={{ flex: 4, fontVariant: ['tabular-nums'] }}>{parseFloat(alert.price).idealDecimalPlaces()}</Text>
         <TouchableOpacity
+          style={{ flex: 1 }}
           onPress={() => {
             deleteAlert(item);
           }}
@@ -137,6 +149,7 @@ const AlertPage = ({ navigation, route }) => {
 
   return (
     <View style={{ paddingHorizontal: 10 }}>
+      <CoinSelector sMarket="BTC" sCoin="DCR" setSMarket={setMarket} setSCoin={setCoin} />
       {inputs}
       {alerts.length > 0 ? (
         <FlatList
@@ -154,3 +167,27 @@ const AlertPage = ({ navigation, route }) => {
 };
 
 export default AlertPage;
+
+const pickerStyle = {
+  iconContainer: {
+    borderColor: 'red',
+    borderRadius: 1,
+    top: 10,
+    right: 0,
+  },
+
+  inputIOS: {
+    color: '#333',
+    fontSize: 16,
+    paddingLeft: 10,
+    paddingTop: 12,
+    paddingBottom: 10,
+  },
+  inputAndroid: {
+    color: '#333',
+    fontSize: 16,
+    paddingLeft: 10,
+    paddingTop: 12,
+    paddingBottom: 10,
+  },
+};

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components/native';
 import { TouchableWithoutFeedback, View, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { loadMyOrders, loadClosedOrders } from '../../controllers/Bittrex';
@@ -86,29 +87,36 @@ export default function CoinPageMyOrdersHistory(props) {
     );
   }
 
+  function handleCancelAllOrders() {
+    const line = 'Are you sure you want to cancel ALL OPENED order(s)?\n';
+
+    Alert.alert(
+      'Cancel order',
+      line,
+      [
+        { text: 'No', style: 'cancel' },
+        {
+          text: 'Yes',
+          onPress: () => cancelAllOrders(),
+        },
+      ],
+      { cancelable: false },
+    );
+  }
+
   function renderItem({ item }) {
     const order: MyOrder = item;
+
     return (
-      <TouchableWithoutFeedback
-        onLongPress={() => {
-          showDetails(item);
-        }}
-      >
-        <View
-          style={{
-            flexDirection: 'row',
-            padding: 5,
-            backgroundColor: order.type === 'buy' ? colors.buyBackground : colors.sellBackground,
-            paddingHorizontal: 5,
-          }}
-        >
+      <TouchableWithoutFeedback onLongPress={() => showDetails(item)}>
+        <OrderItemContainer type={order.type}>
           <Text style={{ flex: 0.8, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
-            {order.type === 'buy' ? '+ ' : '- '}
+            {order.type === 'BUY' ? '+ ' : '- '}
             {`${order.coin}/${order.market}`}
           </Text>
 
           <Text style={{ flex: 1, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
-            {order.type === 'buy' ? '+ ' : '- '}
+            {order.type === 'BUY' ? '+ ' : '- '}
             {showQuantity
               ? `${order.quantity.idealDecimalPlaces()}`
               : showOpened
@@ -124,7 +132,7 @@ export default function CoinPageMyOrdersHistory(props) {
               <Icon name="trash-alt" size={20} />
             </TouchableOpacity>
           )}
-        </View>
+        </OrderItemContainer>
       </TouchableWithoutFeedback>
     );
   }
@@ -149,25 +157,7 @@ export default function CoinPageMyOrdersHistory(props) {
         </TouchableOpacity>
 
         {showOpened && (
-          <TouchableOpacity
-            style={{ flex: 0.6, alignItems: 'flex-end' }}
-            onPress={() => {
-              const line = 'Are you sure you want to cancel ALL OPENED order(s)?\n';
-
-              Alert.alert(
-                'Cancel order',
-                line,
-                [
-                  { text: 'No', style: 'cancel' },
-                  {
-                    text: 'Yes',
-                    onPress: () => cancelAllOrders(),
-                  },
-                ],
-                { cancelable: false },
-              );
-            }}
-          >
+          <TouchableOpacity style={{ flex: 0.6, alignItems: 'flex-end' }} onPress={handleCancelAllOrders}>
             <Icon name="trash-alt" size={20} />
           </TouchableOpacity>
         )}
@@ -237,3 +227,9 @@ export default function CoinPageMyOrdersHistory(props) {
     </Container>
   );
 }
+
+export const OrderItemContainer = styled.View`
+  flex-direction: row;
+  padding: 5px;
+  background-color: ${({ type }) => (type === 'BUY' ? colors.buyBackground : colors.sellBackground)};
+`;

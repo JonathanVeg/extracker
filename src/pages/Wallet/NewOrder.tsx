@@ -189,10 +189,10 @@ export default function NewOrder({ route, navigation }) {
       const ret = await execOrder(type, coin.market, coin.name, quantity, price);
 
       if (ret.success) {
-        Alert.alert('Order created');
+        showToast('Order created');
         setTimeout(() => {
           if (newAlert) createAlert();
-        }, 100);
+        }, 1000);
       } else
         showToast({
           text: 'Error while creating order',

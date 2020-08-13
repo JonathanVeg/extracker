@@ -43,12 +43,12 @@ export default function CoinPageOrdersHistory(props) {
         style={{
           flexDirection: 'row',
           paddingVertical: 4,
-          backgroundColor: order.type === 'buy' ? colors.buyBackground : colors.sellBackground,
+          backgroundColor: order.type === 'BUY' ? colors.buyBackground : colors.sellBackground,
           paddingHorizontal: 5,
         }}
       >
         <Text style={{ flex: 1, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
-          {order.type === 'buy' ? '+ ' : '- '}
+          {order.type === 'BUY' ? '+ ' : '- '}
           {`${order.quantity.idealDecimalPlaces()}`}
         </Text>
         <Text style={{ flex: 1, textAlign: 'center', fontVariant: ['tabular-nums'] }}>

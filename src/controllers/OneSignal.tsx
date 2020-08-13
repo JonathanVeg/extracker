@@ -21,7 +21,7 @@ const OneSignalWrapper: React.FC = () => {
   }, []);
 
   function onReceived(notification) {
-    showToast(`Notification received: ${notification}`);
+    // showToast(`Notification received: ${notification}`);
   }
 
   function onOpened(openResult) {
