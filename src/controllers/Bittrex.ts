@@ -181,11 +181,23 @@ export async function loadOrderBook(coin: Coin, type): Promise<Order[]> {
   let quantity = 0.0;
   let total = 0.0;
 
+  let key = 0;
   return json.map(it => {
     quantity += it.Quantity;
     total += it.Rate * it.Quantity;
 
-    return new Order(coin.name, coin.market, it.Quantity, it.Rate, it.Rate * it.Quantity, total, quantity);
+    key++;
+    return new Order(
+      coin.name,
+      coin.market,
+      it.Quantity,
+      it.Rate,
+      it.Rate * it.Quantity,
+      total,
+      quantity,
+      Math.random() + '',
+      // `order_${type}_${key}`,
+    );
   });
 }
 

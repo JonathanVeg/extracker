@@ -119,6 +119,7 @@ export default function CoinPageOrders(props) {
       <FlatList
         onRefresh={refresh}
         refreshing={refreshing}
+        keyExtractor={() => `${Math.random()}`}
         showsVerticalScrollIndicator={false}
         data={orders}
         renderItem={({ index, item }) => (

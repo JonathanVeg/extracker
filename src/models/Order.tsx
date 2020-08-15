@@ -14,6 +14,7 @@ export default class Order {
     public total: number,
     public totalTotal: number,
     public quantityTotal: number,
+    public key: string,
   ) {
     this.isMine = false;
   }
