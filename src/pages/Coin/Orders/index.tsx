@@ -21,6 +21,8 @@ export default function CoinPageOrders(props) {
   const [showSumQuantity, setShowSumQuantity] = useState(true);
   const [orders, setOrders] = useState<Order[]>([]);
 
+  let timeout = null;
+
   async function loadOrders(changeRefreshing = true) {
     try {
       if (changeRefreshing) setRefreshing(true);
@@ -53,9 +55,16 @@ export default function CoinPageOrders(props) {
   }
 
   async function refresh(changeRefreshing = true) {
-    loadOrders(changeRefreshing).finally(() => {
-      loadMOrders();
-    });
+    // console.log('AQUI', type);
+    try {
+      loadOrders(changeRefreshing).finally(() => {
+        loadMOrders();
+      });
+    } finally {
+      // timeout = setTimeout(() => {
+      //   refresh(false);
+      // }, 2000);
+    }
   }
 
   useEffect(() => {
@@ -75,6 +84,15 @@ export default function CoinPageOrders(props) {
   }, [myOrders]);
 
   useEffect(() => {
+    console.log('AQUI', 'effect');
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
+
+  useEffect(() => {
+    clearTimeout(timeout);
+
     refresh();
   }, [type]);
 

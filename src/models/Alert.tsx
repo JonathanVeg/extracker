@@ -1,5 +1,3 @@
-const AlertConditions = ['GT', 'LT'];
-
 export default class Alert {
   constructor(
     public id: string,
