@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { default as MaterialCommunityIcons } from 'react-native-vector-icons/MaterialCommunityIcons';
-import React, { useState } from 'react';
+import React, { memo } from 'react';
 import { Text, TouchableOpacity, Alert } from 'react-native';
 import Order from '../../../models/Order';
 import { default as MyAlert } from '../../../models/Alert';
