@@ -377,7 +377,6 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = R4U6H5V8R8;
 						LastSwiftMigration = 1140;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -865,7 +864,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = extracker/extracker.entitlements;
 				CURRENT_PROJECT_VERSION = 6;
-				DEVELOPMENT_TEAM = R4U6H5V8R8;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -896,7 +895,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = extracker/extracker.entitlements;
 				CURRENT_PROJECT_VERSION = 6;
-				DEVELOPMENT_TEAM = R4U6H5V8R8;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = extracker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (

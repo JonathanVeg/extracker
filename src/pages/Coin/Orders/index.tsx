@@ -10,7 +10,6 @@ import { Container } from '../../../components/Generics';
 import Item from './Item';
 import AlertsAPI from '../../../controllers/Alerts';
 import { readOneSignalUserId } from '../../../controllers/OneSignal';
-import { colors } from '../../../style/globals';
 
 export default function CoinPageOrders(props) {
   const { type } = props;
@@ -21,8 +20,6 @@ export default function CoinPageOrders(props) {
   const [showSumPrice, setShowSumPrice] = useState(true);
   const [showSumQuantity, setShowSumQuantity] = useState(true);
   const [orders, setOrders] = useState<Order[]>([]);
-
-  let timeout = null;
 
   async function loadOrders(changeRefreshing = true) {
     try {
@@ -62,9 +59,6 @@ export default function CoinPageOrders(props) {
         loadMOrders();
       });
     } finally {
-      // timeout = setTimeout(() => {
-      //   refresh(false);
-      // }, 2000);
     }
   }
 
@@ -85,15 +79,6 @@ export default function CoinPageOrders(props) {
   }, [myOrders]);
 
   useEffect(() => {
-    console.log('AQUI', 'effect');
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, []);
-
-  useEffect(() => {
-    clearTimeout(timeout);
-
     refresh();
   }, [type]);
 
