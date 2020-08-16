@@ -1,3 +1,4 @@
+import codePush from 'react-native-code-push';
 import React, { ReactElement, useState } from 'react';
 import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -174,7 +175,7 @@ const App = () => {
   );
 };
 
-export default App;
+export default codePush(App);
 
 const DivisionLine = styled.View`
   margin-bottom: 10px;

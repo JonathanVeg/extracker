@@ -2,7 +2,8 @@ import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { default as MaterialCommunityIcons } from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { memo, useEffect } from 'react';
-import { Text, TouchableOpacity, Alert } from 'react-native';
+import { Text, Alert } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import Order from '../../../models/Order';
 import { default as MyAlert } from '../../../models/Alert';
 import { colors } from '../../../style/globals';
@@ -10,7 +11,7 @@ import { useToast } from '../../../hooks/ToastContext';
 import AlertsAPI from '../../../controllers/Alerts';
 import { readOneSignalUserId } from '../../../controllers/OneSignal';
 
-const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, navigation, refresh }) => {
+const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, gotoNewOrder, refresh }) => {
   const order: Order = item;
 
   const { showToast } = useToast();
@@ -69,7 +70,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, navigati
       : {
           text: 'Create order',
           onPress: () => {
-            navigation.navigate('NewOrder', { coin, rate: item.rate, type });
+            gotoNewOrder(coin, item.rate, type);
           },
         };
 

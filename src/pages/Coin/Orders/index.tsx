@@ -10,6 +10,7 @@ import { Container } from '../../../components/Generics';
 import Item from './Item';
 import AlertsAPI from '../../../controllers/Alerts';
 import { readOneSignalUserId } from '../../../controllers/OneSignal';
+import { colors } from '../../../style/globals';
 
 export default function CoinPageOrders(props) {
   const { type } = props;
@@ -110,6 +111,10 @@ export default function CoinPageOrders(props) {
     );
   }
 
+  function gotoNewOrder(coin, rate, type) {
+    props.navigation.navigate('NewOrder', { coin, rate, type });
+  }
+
   return (
     <Container>
       <H1>ORDERS</H1>
@@ -118,6 +123,7 @@ export default function CoinPageOrders(props) {
 
       <FlatList
         onRefresh={refresh}
+        keyExtractor={() => `${Math.random()}`}
         refreshing={refreshing}
         showsVerticalScrollIndicator={false}
         data={orders}
@@ -129,7 +135,7 @@ export default function CoinPageOrders(props) {
             item={item}
             type={type}
             coin={coin}
-            navigation={props.navigation}
+            gotoNewOrder={gotoNewOrder}
             refresh={refresh}
           />
         )}
