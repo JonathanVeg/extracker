@@ -14,7 +14,7 @@ const initialValue = { usingKeys: false, key: '', secret: '', hasKeys: false, re
 const KeysContext = createContext<KeysContextProps>(initialValue);
 
 const KeysProvider = ({ children }) => {
-  const usingKeys = true;
+  const usingKeys = false;
   const [key, setKey] = useState('');
   const [secret, setSecret] = useState('');
 

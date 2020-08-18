@@ -104,11 +104,15 @@ export default function Home({ navigation }) {
   async function toggleFavorite(c: Coin) {
     try {
       const cc = [...coins];
+
+      const favs = new Set(cc.filter(it => it.favorite).map(it => it.name));
+
       c.toggleFavorite();
 
-      const favs = Array.from(new Set(cc.filter(it => it.favorite).map(it => it.name)));
+      if (c.favorite) favs.add(c.name);
+      else favs.delete(c.name);
 
-      await AsyncStorage.setItem('@extracker:favs', JSON.stringify(favs));
+      await AsyncStorage.setItem('@extracker:favs', JSON.stringify(Array.from(favs)));
 
       setCoins(cc);
 

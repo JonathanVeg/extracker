@@ -8,6 +8,7 @@ import Order from '../../../models/Order';
 import { default as MyAlert } from '../../../models/Alert';
 import { colors } from '../../../style/globals';
 import { useToast } from '../../../hooks/ToastContext';
+import { useKeys } from '../../../hooks/KeysContext';
 import AlertsAPI from '../../../controllers/Alerts';
 import { readOneSignalUserId } from '../../../controllers/OneSignal';
 
@@ -15,6 +16,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, gotoNewO
   const order: Order = item;
 
   const { showToast } = useToast();
+  const { usingKeys } = useKeys();
 
   async function createAlert() {
     try {
@@ -89,17 +91,21 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, gotoNewO
             },
           };
 
+    const options = [
+      {
+        text: 'Nothing',
+        style: 'cancel',
+      },
+    ];
+
+    if (usingKeys) options.push(secondOption);
+
+    options.push(thirdOption);
+
     Alert.alert(
       'Select an option',
       `Do you want to create for ${coin.name} in this price (${item.rate.idealDecimalPlaces()})?`,
-      [
-        {
-          text: 'Nothing',
-          style: 'cancel',
-        },
-        secondOption,
-        thirdOption,
-      ],
+      options,
       { cancelable: true },
     );
   }
