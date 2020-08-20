@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 import { default as Icon } from 'react-native-vector-icons/MaterialIcons';
 import { default as MCI } from 'react-native-vector-icons/MaterialCommunityIcons';
 import { default as FA } from 'react-native-vector-icons/FontAwesome';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import BlackWhiteBlock from '../../components/BlackWhiteBlock';
 import Coin from '../../models/Coin';
@@ -25,9 +25,11 @@ import { useSummaries } from '../../hooks/SummaryContext';
 import { colors } from '../../style/globals';
 import HomeCoinItemCompact from './HomeCoinItemCompact';
 import CoinPageChart from '../Coin/Chart';
+import { sort } from 'core-js/fn/array';
 
 export default function Home({ navigation }) {
   const { usingKeys, hasKeys } = useKeys();
+  const [sortCoinsBy, setSortCoinsBy] = useState('baseVolume');
 
   navigation.setOptions({
     title: 'Trextracker',
@@ -77,14 +79,31 @@ export default function Home({ navigation }) {
   }
 
   useEffect(() => {
-    refresh();
+    async function run() {
+      let sortCoinsBy = await AsyncStorage.getItem('@extracker:sortCoinsBy');
+      sortCoinsBy = sortCoinsBy || 'baseVolume';
 
-    if (hasKeys) loadMyCoins();
+      setSortCoinsBy(sortCoinsBy);
+
+      refresh();
+
+      if (hasKeys) loadMyCoins();
+    }
+
+    run();
   }, []);
 
   useEffect(() => {
     if (hasKeys) loadMyCoins();
   }, [hasKeys]);
+
+  useEffect(() => {
+    async function saveIt() {
+      await AsyncStorage.setItem('@extracker:sortCoinsBy', sortCoinsBy);
+    }
+
+    saveIt();
+  }, [sortCoinsBy]);
 
   function toggleSearch() {
     if (showSearch) setSearch('');
@@ -145,6 +164,29 @@ export default function Home({ navigation }) {
     await AsyncStorage.setItem('@extracker:compactMode', !compactMode ? 'true' : '');
 
     setCompactMode(!compactMode);
+  }
+
+  async function changeSortMode() {
+    const options = [
+      {
+        text: sortCoinsBy === 'baseVolume' ? 'Volume (current)' : 'Volume',
+        onPress: () => setSortCoinsBy('baseVolume'),
+      },
+      {
+        text: sortCoinsBy === 'name' ? 'Name (current)' : 'Name',
+        onPress: () => setSortCoinsBy('name'),
+      },
+      {
+        text: sortCoinsBy === 'last' ? 'Last price (current)' : 'Last price',
+        onPress: () => setSortCoinsBy('last'),
+      },
+      {
+        text: 'Do not change',
+        style: 'cancel',
+      },
+    ];
+
+    Alert.alert('Sort coins by', `Select an option`, options, { cancelable: true });
   }
 
   async function loadCoins() {
@@ -210,7 +252,7 @@ export default function Home({ navigation }) {
   const getCoinsToShow = () => {
     let coinsToShow = coins.filter(it => it.name.indexOf(search.trim().toUpperCase()) !== -1 && it.market === market);
 
-    coinsToShow = sortArrayByKey(coinsToShow, 'baseVolume', true);
+    coinsToShow = sortArrayByKey(coinsToShow, sortCoinsBy, sortCoinsBy !== 'name');
 
     if (hideSmall) {
       coinsToShow = coinsToShow.filter(it => myCoins.find(i => i.name === it.name));
@@ -218,8 +260,8 @@ export default function Home({ navigation }) {
 
     coinsToShow = [
       ...coinsToShow.filter(it => myCoins.find(myIt => myIt.name === it.name)).filter(it => it.favorite),
-      ...coinsToShow.filter(it => myCoins.find(myIt => myIt.name === it.name)).filter(it => !it.favorite),
       ...coinsToShow.filter(it => !myCoins.find(myIt => myIt.name === it.name)).filter(it => it.favorite),
+      ...coinsToShow.filter(it => myCoins.find(myIt => myIt.name === it.name)).filter(it => !it.favorite),
       ...coinsToShow.filter(it => !myCoins.find(myIt => myIt.name === it.name)).filter(it => !it.favorite),
     ];
 
@@ -254,6 +296,9 @@ export default function Home({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity onPress={toggleCompactMode}>
           <FA name={compactMode ? 'list' : 'table'} size={20} style={{ margin: 3 }} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={changeSortMode}>
+          <FA name={'sort'} size={20} style={{ margin: 3 }} />
         </TouchableOpacity>
       </View>
     </Header>
