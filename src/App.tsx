@@ -25,6 +25,12 @@ import { useKeys } from './hooks/KeysContext';
 import AlertPage from './pages/Alert';
 import OneSignalWrapper from './controllers/OneSignal';
 
+declare global {
+  interface Number {
+    idealDecimalPlaces: () => string;
+  }
+}
+
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
