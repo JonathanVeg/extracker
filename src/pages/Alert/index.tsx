@@ -1,7 +1,7 @@
 import IconFA from 'react-native-vector-icons/FontAwesome';
 import RNPickerSelect from 'react-native-picker-select';
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { Alert as RNAlert, View, Text, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Row } from '../../components/Generics';
 import HamburgerIcon from '../../components/HamburgerIcon';
@@ -15,9 +15,7 @@ import { useToast } from '../../hooks/ToastContext';
 import Coin from '../../models/Coin';
 import CoinSelector from '../../components/CoinSelector';
 
-const AlertPage = ({ navigation, route }) => {
-  const defaultCoin: Coin = (route?.params || {}).coin || new Coin('DCR', 'BTC');
-
+const AlertPage = ({ navigation }) => {
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [saving, setSaving] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -26,6 +24,11 @@ const AlertPage = ({ navigation, route }) => {
   navigation?.setOptions({
     title: 'Alerts',
     headerLeft: () => <HamburgerIcon navigationProps={navigation} />,
+    headerRight: () => (
+      <TouchableOpacity style={{ flex: 1 }} onPress={deleteAllAlerts}>
+        <Icon name="delete" size={25} style={{ marginEnd: 10 }} />
+      </TouchableOpacity>
+    ),
   });
 
   async function readAlerts(showRefreshing = true) {
@@ -69,6 +72,33 @@ const AlertPage = ({ navigation, route }) => {
     await AlertsAPI.toggleAlertStatus(alert, uid);
 
     readAlerts(false);
+  }
+
+  async function deleteAllAlerts() {
+    async function run() {
+      const uid = await readOneSignalUserId();
+
+      for (let i = 0; i < alerts.length; i++) {
+        const alert = alerts[i];
+
+        await AlertsAPI.deleteAlert(alert, uid);
+      }
+
+      readAlerts(false);
+    }
+
+    RNAlert.alert(
+      'Delete all alerts',
+      'Do you want to delete all alerts',
+      [
+        { text: 'No', style: 'cancel' },
+        {
+          text: 'Yes',
+          onPress: run,
+        },
+      ],
+      { cancelable: true },
+    );
   }
 
   async function deleteAlert(alert: Alert) {
@@ -148,13 +178,14 @@ const AlertPage = ({ navigation, route }) => {
   };
 
   return (
-    <View style={{ paddingHorizontal: 10 }}>
+    <View style={{ paddingHorizontal: 10, flex: 1 }}>
       <CoinSelector sMarket="BTC" sCoin="DCR" setSMarket={setMarket} setSCoin={setCoin} />
       {inputs}
       {alerts.length > 0 ? (
         <FlatList
           onRefresh={readAlerts}
           refreshing={refreshing}
+          style={{ alignSelf: 'stretch', margin: 8 }}
           data={alerts}
           keyExtractor={it => it.coin}
           renderItem={renderItem}
