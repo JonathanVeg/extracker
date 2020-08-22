@@ -108,7 +108,10 @@ export default function NewOrder({ route, navigation }) {
   };
 
   function changeQuantity(quantity) {
-    if (!quantity) return;
+    if (!quantity) {
+      setQuantity('0');
+      return;
+    }
     setQuantity(quantity);
     let total = parseFloat(quantity) * parseFloat(price);
     const fee = total * 0.002;
@@ -117,7 +120,10 @@ export default function NewOrder({ route, navigation }) {
   }
 
   function changePrice(price) {
-    if (!price) return;
+    if (!price) {
+      setPrice('0');
+      return;
+    }
     setPrice(price);
     let total = parseFloat(quantity) * parseFloat(price);
     const fee = total * 0.002;
@@ -126,7 +132,10 @@ export default function NewOrder({ route, navigation }) {
   }
 
   function changeTotal(total) {
-    if (!total) return;
+    if (!total) {
+      setTotal('0');
+      return;
+    }
     setTotal(total);
     if (totalChangesPrice()) {
       const price = (parseFloat(total) / (parseFloat(quantity) * 1.0025)).toFixed(8);
