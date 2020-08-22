@@ -309,10 +309,10 @@ export default function NewOrder({ route, navigation }) {
   const toggleType = (
     <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
       <ToggleButton bold={isTypeSelected() && isBuying()} onPress={() => setType('buy')}>
-        BUY
+        buy
       </ToggleButton>
       <ToggleButton bold={isTypeSelected() && !isBuying()} onPress={() => setType('sell')}>
-        SELL
+        sell
       </ToggleButton>
     </View>
   );

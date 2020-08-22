@@ -98,7 +98,7 @@ export async function loadClosedOrders(coin: Coin = null): Promise<MyOrder[]> {
       orders.push(
         new MyOrder(
           it.OrderUuid,
-          it.OrderType.split('_')[1],
+          it.OrderType.split('_')[1].toLowerCase(),
           it.Exchange.split('-')[1],
           it.Exchange.split('-')[0],
           it.Quantity,
@@ -144,7 +144,7 @@ export async function loadMyOrders(coin: Coin = null): Promise<MyOrder[]> {
       orders.push(
         new MyOrder(
           it.OrderUuid,
-          it.OrderType.split('_')[1],
+          it.OrderType.split('_')[1].toLowerCase(),
           it.Exchange.split('-')[1],
           it.Exchange.split('-')[0],
           it.Quantity,
@@ -238,7 +238,9 @@ export async function loadMarketHistory(coin: Coin) {
 
   json = json.result;
 
-  return json.map(it => new OrderHistory(it.Quantity, it.Price, it.Price * it.Quantity, it.OrderType, it.TimeStamp));
+  return json.map(
+    it => new OrderHistory(it.Quantity, it.Price, it.Price * it.Quantity, it.OrderType.toLowerCase(), it.TimeStamp),
+  );
 }
 
 export async function cancelOrder(order: MyOrder) {

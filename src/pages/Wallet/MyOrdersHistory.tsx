@@ -111,12 +111,12 @@ export default function CoinPageMyOrdersHistory(props) {
       <TouchableWithoutFeedback onLongPress={() => showDetails(item)}>
         <OrderItemContainer type={order.type}>
           <Text style={{ flex: 0.8, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
-            {order.type === 'BUY' ? '+ ' : '- '}
+            {order.type === 'buy' ? '+ ' : '- '}
             {`${order.coin}/${order.market}`}
           </Text>
 
           <Text style={{ flex: 1, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
-            {order.type === 'BUY' ? '+ ' : '- '}
+            {order.type === 'buy' ? '+ ' : '- '}
             {showQuantity
               ? `${order.quantity.idealDecimalPlaces()}`
               : showOpened
@@ -231,5 +231,5 @@ export default function CoinPageMyOrdersHistory(props) {
 export const OrderItemContainer = styled.View`
   flex-direction: row;
   padding: 5px;
-  background-color: ${({ type }) => (type === 'BUY' ? colors.buyBackground : colors.sellBackground)};
+  background-color: ${({ type }) => (type === 'buy' ? colors.buyBackground : colors.sellBackground)};
 `;
