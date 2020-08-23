@@ -14,8 +14,16 @@ export default class Order {
     public total: number,
     public totalTotal: number,
     public quantityTotal: number,
-    public key: string,
+    public type: string,
   ) {
     this.isMine = false;
+  }
+
+  isSell() {
+    return this.type.toLowerCase() === 'sell';
+  }
+
+  isBuy() {
+    return this.type.toLowerCase() === 'buy';
   }
 }

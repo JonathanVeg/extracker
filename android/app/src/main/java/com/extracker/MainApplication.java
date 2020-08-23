@@ -1,5 +1,9 @@
 package com.extracker;
 
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
+
+import com.microsoft.codepush.react.CodePush;
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
@@ -16,7 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.github.wuxudong.rncharts.MPAndroidChartPackage;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends MultiDexApplication implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
@@ -40,6 +44,11 @@ public class MainApplication extends Application implements ReactApplication {
         protected String getJSMainModuleName() {
           return "index";
         }
+
+        @Override
+        protected String getJSBundleFile() {
+            return CodePush.getJSBundleFile();
+        }
       };
 
   @Override
@@ -50,6 +59,8 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+    MultiDex.install(this);
+
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
@@ -83,5 +94,11 @@ public class MainApplication extends Application implements ReactApplication {
         e.printStackTrace();
       }
     }
+  }
+
+  @Override
+  protected void attachBaseContext(Context base) {
+    super.attachBaseContext(base);
+    MultiDex.install(this);
   }
 }

@@ -12,7 +12,7 @@ import { useKeys } from '../../../hooks/KeysContext';
 import AlertsAPI from '../../../controllers/Alerts';
 import { readOneSignalUserId } from '../../../controllers/OneSignal';
 
-const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, gotoNewOrder, refresh }) => {
+const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, refresh }) => {
   const order: Order = item;
 
   const { showToast } = useToast();
@@ -24,7 +24,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, gotoNewO
         `${Math.random()}`,
         coin.name,
         coin.market,
-        type === 'sell' ? 'GT' : 'LT',
+        order.isSell() ? 'GT' : 'LT',
         parseFloat(item.rate),
       );
 
@@ -72,7 +72,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, gotoNewO
       : {
           text: 'Create order',
           onPress: () => {
-            gotoNewOrder(coin, item.rate, type);
+            gotoNewOrder(coin, item.rate, order.type);
           },
         };
 
@@ -110,14 +110,13 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, type, gotoNewO
     );
   }
 
-  const backgroundColor =
-    type === 'buy'
-      ? index % 2 === 0
-        ? colors.buyBackground
-        : colors.buyBackground2
-      : index % 2 === 0
-      ? colors.sellBackground
-      : colors.sellBackground2;
+  const backgroundColor = order.isBuy()
+    ? index % 2 === 0
+      ? colors.buyBackground
+      : colors.buyBackground2
+    : index % 2 === 0
+    ? colors.sellBackground
+    : colors.sellBackground2;
 
   return (
     <TouchableOpacity onLongPress={offerOptions}>

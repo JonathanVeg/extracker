@@ -187,17 +187,7 @@ export async function loadOrderBook(coin: Coin, type): Promise<Order[]> {
     total += it.Rate * it.Quantity;
 
     key++;
-    return new Order(
-      coin.name,
-      coin.market,
-      it.Quantity,
-      it.Rate,
-      it.Rate * it.Quantity,
-      total,
-      quantity,
-      Math.random() + '',
-      // `order_${type}_${key}`,
-    );
+    return new Order(coin.name, coin.market, it.Quantity, it.Rate, it.Rate * it.Quantity, total, quantity, type);
   });
 }
 

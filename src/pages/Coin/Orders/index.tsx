@@ -13,6 +13,7 @@ import { readOneSignalUserId } from '../../../controllers/OneSignal';
 
 export default function CoinPageOrders(props) {
   const { type } = props;
+
   const coin = props.coin || new Coin('DCR', 'BTC');
 
   const [refreshing, setRefreshing] = useState(false);
@@ -118,7 +119,6 @@ export default function CoinPageOrders(props) {
             showSumPrice={showSumPrice}
             showSumQuantity={showSumQuantity}
             item={item}
-            type={type}
             coin={coin}
             gotoNewOrder={gotoNewOrder}
             refresh={refresh}
