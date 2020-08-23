@@ -8,7 +8,7 @@ import HamburgerIcon from '../../components/HamburgerIcon';
 import LabelValueBlock from '../../components/LabelValueBlock';
 import MyCoin from '../../models/MyCoin';
 import { H1 } from '../../components/Hs';
-import { loadBalances } from '../../controllers/Bittrex';
+import { loadBalances } from '../../controllers/Exchange';
 import { Spacer } from '../../components/Spacer';
 import { sortArrayByKey } from '../../utils/utils';
 import Keys from '../Settings/Keys';

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, processColor } from 'react-native';
 import { colors } from '../../style/globals';
 import Coin from '../../models/Coin';
-import { candleChartData, loadCandleChartData } from '../../controllers/Bittrex';
+import { candleChartData, loadCandleChartData } from '../../controllers/Exchange';
 import StorageUtils from '../../utils/StorageUtils';
 import { Container } from '../../components/Generics';
 import { H2 } from '../../components/Hs';

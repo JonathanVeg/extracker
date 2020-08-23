@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { cancelOrder } from '../controllers/Bittrex';
+import { cancelOrder } from '../controllers/Exchange';
 
 export default class MyOrder {
   canceling = false;

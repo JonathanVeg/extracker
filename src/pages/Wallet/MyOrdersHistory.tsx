@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { TouchableWithoutFeedback, View, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { loadMyOrders, loadClosedOrders } from '../../controllers/Bittrex';
+import { loadMyOrders, loadClosedOrders } from '../../controllers/Exchange';
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import MyOrder from '../../models/MyOrder';

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, FlatList, Text, TouchableOpacity } from 'react-native';
 import Coin from '../../models/Coin';
 import OrderHistory from '../../models/OrderHistory';
-import { loadMarketHistory } from '../../controllers/Bittrex';
+import { loadMarketHistory } from '../../controllers/Exchange';
 
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';

@@ -7,7 +7,7 @@ import MyInput from '../../components/MyInput';
 import FiatBlock from '../../components/FiatBlock';
 import { Row } from '../../components/Generics';
 import { colors } from '../../style/globals';
-import { loadSummary } from '../../controllers/Bittrex';
+import { loadSummary } from '../../controllers/Exchange';
 import { useFiats } from '../../hooks/FiatContext';
 import { useSummaries } from '../../hooks/SummaryContext';
 

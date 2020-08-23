@@ -11,7 +11,7 @@ import OrderHistory from '../models/OrderHistory';
 import ChartData from '../models/ChartData';
 import StorageUtils from '../utils/StorageUtils';
 
-export function sign(url: string, secret: string) {
+function sign(url: string, secret: string) {
   const sha512 = require('js-sha512');
 
   const hash = sha512.hmac.create(secret);

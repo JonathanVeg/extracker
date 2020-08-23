@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import Coin from '../models/Coin';
-import { loadMarketSummaries } from '../controllers/Bittrex';
+import { loadMarketSummaries } from '../controllers/Exchange';
 
 interface SummaryContextProps {
   coins: Coin[];

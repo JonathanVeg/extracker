@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, RefreshControl, SectionList } from 'react-native';
-import { loadSummary, loadBalance } from '../../controllers/Bittrex';
+import { loadSummary, loadBalance } from '../../controllers/Exchange';
 import Coin from '../../models/Coin';
 import LabelValueBlock from '../../components/LabelValueBlock';
 import MyCoin from '../../models/MyCoin';

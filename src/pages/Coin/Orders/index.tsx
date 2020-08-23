@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, FlatList } from 'react-native';
 import Coin from '../../../models/Coin';
 import { H1 } from '../../../components/Hs';
-import { loadOrderBook, loadMyOrders } from '../../../controllers/Bittrex';
+import { loadOrderBook, loadMyOrders } from '../../../controllers/Exchange';
 import Order from '../../../models/Order';
 import MyOrder from '../../../models/MyOrder';
 import { Container } from '../../../components/Generics';

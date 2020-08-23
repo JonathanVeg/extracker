@@ -17,7 +17,7 @@ import MyCoin from '../../models/MyCoin';
 import StorageUtils from '../../utils/StorageUtils';
 import { Container } from '../../components/Generics';
 import { H1 } from '../../components/Hs';
-import { loadBalances, loadMarketSummaries } from '../../controllers/Bittrex';
+import { loadBalances, loadMarketSummaries } from '../../controllers/Exchange';
 import { sortArrayByKey } from '../../utils/utils';
 import { useFiats } from '../../hooks/FiatContext';
 import { useKeys } from '../../hooks/KeysContext';

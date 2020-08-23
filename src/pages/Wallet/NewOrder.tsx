@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Coin from '../../models/Coin';
 import MyAlert from '../../models/Alert';
-import { loadBalances, loadSummary, execOrder } from '../../controllers/Bittrex';
+import { loadBalances, loadSummary, execOrder } from '../../controllers/Exchange';
 import MyCoin from '../../models/MyCoin';
 import { H1 } from '../../components/Hs';
 import { Spacer } from '../../components/Spacer';
@@ -16,7 +16,6 @@ import { Container } from '../../components/Generics';
 import { useToast } from '../../hooks/ToastContext';
 import CoinSelector from '../../components/CoinSelector';
 import AlertsAPI from '../../controllers/Alerts';
-import Order from '../../models/Order';
 
 function usePrevious(value) {
   const ref = useRef();
