@@ -54,7 +54,6 @@ export default function CoinPageOrders(props) {
   }
 
   async function refresh(changeRefreshing = true) {
-    // console.log('AQUI', type);
     try {
       loadOrders(changeRefreshing).finally(() => {
         loadMOrders();
