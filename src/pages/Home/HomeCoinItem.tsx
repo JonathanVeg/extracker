@@ -30,6 +30,8 @@ const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
     return <></>;
   }
 
+  console.log(coin);
+
   return (
     <CoinContainer>
       <CoinName>

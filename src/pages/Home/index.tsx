@@ -18,6 +18,7 @@ import StorageUtils from '../../utils/StorageUtils';
 import { Container } from '../../components/Generics';
 import { H1 } from '../../components/Hs';
 import { loadBalances, loadMarketSummaries } from '../../controllers/Exchange';
+import { loadMarketSummaries as pLoad } from '../../controllers/Poloniex';
 import { sortArrayByKey } from '../../utils/utils';
 import { useFiats } from '../../hooks/FiatContext';
 import { useKeys } from '../../hooks/KeysContext';
@@ -88,6 +89,8 @@ export default function Home({ navigation }) {
       refresh();
 
       if (hasKeys) loadMyCoins();
+
+      pLoad();
     }
 
     run();
