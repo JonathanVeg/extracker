@@ -26,11 +26,7 @@ const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
   const { fiats } = useFiats();
   const { allCoinsInBtc } = useSummaries();
 
-  if (!coin.last) {
-    return <></>;
-  }
-
-  console.log(coin);
+  if (!coin.last) return <></>;
 
   return (
     <CoinContainer>

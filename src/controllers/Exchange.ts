@@ -11,7 +11,7 @@ import {
   execOrder,
   loadCandleChartData,
   loadMarketSummaries,
-} from './Poloniex';
+} from './Bittrex';
 
 export {
   candleChartData,
