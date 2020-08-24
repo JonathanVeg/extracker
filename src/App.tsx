@@ -29,6 +29,9 @@ declare global {
   interface Number {
     idealDecimalPlaces: () => string;
   }
+  interface String {
+    idealDecimalPlaces: () => string;
+  }
 }
 
 const Drawer = createDrawerNavigator();

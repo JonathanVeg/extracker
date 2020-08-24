@@ -53,7 +53,10 @@ export async function loadMarketSummaries(): Promise<[Coin[], string[]]> {
       coin.bid = data.highestBid;
       coin.ask = data.lowestAsk;
       coin.high = data.high24hr;
-      coin.low = data.lowh24hr;
+      coin.low = data.low24hr;
+      coin.volume = data.quoteVolume;
+      coin.baseVolume = data.baseVolume;
+      coin.change = parseFloat(data.percentChange) * 100;
 
       listCoins.push(coin);
       if (listMarkets.indexOf(market) === -1) listMarkets.push(market);
@@ -62,7 +65,7 @@ export async function loadMarketSummaries(): Promise<[Coin[], string[]]> {
     await AsyncStorage.setItem('@extracker:coins', JSON.stringify(listCoins));
     await AsyncStorage.setItem('@extracker:markets', JSON.stringify(listMarkets));
 
-    return [[], listMarkets];
+    return [listCoins, listMarkets];
   } catch (err) {
     console.log(err);
 
@@ -90,7 +93,26 @@ export async function loadOrderBook(coin: Coin, type): Promise<Order[]> {
   return [];
 }
 
-export async function loadSummary(coin: Coin): Promise<Coin> {}
+export async function loadSummary(coin: Coin): Promise<Coin> {
+  const url = 'https://poloniex.com/public?command=returnTicker';
+
+  const response = await Axios.get(url, { method: 'get' });
+  const json = response.data;
+  const pairs = Object.keys(json);
+
+  const data = pairs[`${coin.market.toUpperCase()}_${coin.name.toUpperCase()}`];
+
+  coin.last = data.last;
+  coin.bid = data.highestBid;
+  coin.ask = data.lowestAsk;
+  coin.high = data.high24hr;
+  coin.low = data.low24hr;
+  coin.volume = data.quoteVolume;
+  coin.baseVolume = data.baseVolume;
+  coin.change = parseFloat(data.percentChange) * 100;
+
+  return coin;
+}
 
 export async function loadMarketHistory(coin: Coin) {}
 
