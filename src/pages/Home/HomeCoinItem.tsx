@@ -18,7 +18,7 @@ interface HomeCoinItemProps {
   myCoins: MyCoin[];
 }
 
-const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
+function HomeCoinItem(props: HomeCoinItemProps) {
   const { onClick, onLongClick, coin, market, myCoins, onToggleFavorite } = props;
 
   const myCoin = myCoins.find(it => it.name === coin.name);
@@ -61,7 +61,7 @@ const HomeCoinItem: React.FC = (props: HomeCoinItemProps) => {
       </CoinPercent>
     </CoinContainer>
   );
-};
+}
 
 export default HomeCoinItem;
 

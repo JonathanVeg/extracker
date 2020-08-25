@@ -301,7 +301,7 @@ export default function Home({ navigation }) {
           <FA name={compactMode ? 'list' : 'table'} size={20} style={{ margin: 3 }} />
         </TouchableOpacity>
         <TouchableOpacity onPress={changeSortMode}>
-          <FA name={'sort'} size={20} style={{ margin: 3 }} />
+          <FA name="sort" size={20} style={{ margin: 3 }} />
         </TouchableOpacity>
       </View>
     </Header>
@@ -309,12 +309,27 @@ export default function Home({ navigation }) {
 
   const MarketSelectorBlock = () => (
     <MarketSelectorBlockContainer>
-      {markets.map(it => (
-        <TouchableOpacity key={`selectmarket${it}`} style={{ flex: 1, padding: 8 }} onPress={() => setMarket(it)}>
-          <Text style={{ textAlign: 'center', fontWeight: market === it ? 'bold' : 'normal' }}>{it}</Text>
-        </TouchableOpacity>
-      ))}
+      <FlatList
+        keyExtractor={() => Math.random()}
+        horizontal
+        style={{ padding: 8 }}
+        data={markets}
+        renderItem={({ item }) => {
+          return (
+            <TouchableOpacity key={`selectmarket${item}`} style={{ padding: 8 }} onPress={() => setMarket(item)}>
+              <Text style={{ textAlign: 'center', fontWeight: market === item ? 'bold' : 'normal' }}>{item}</Text>
+            </TouchableOpacity>
+          );
+        }}
+      />
     </MarketSelectorBlockContainer>
+    // <MarketSelectorBlockContainer>
+    //   {markets.map(it => (
+    //     <TouchableOpacity key={`selectmarket${it}`} style={{ padding: 8 }} onPress={() => setMarket(it)}>
+    //       <Text style={{ textAlign: 'center', fontWeight: market === it ? 'bold' : 'normal' }}>{it}</Text>
+    //     </TouchableOpacity>
+    //   ))}
+    // </MarketSelectorBlockContainer>
   );
 
   const SearchBlock = () =>
