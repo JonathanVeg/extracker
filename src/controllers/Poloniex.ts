@@ -114,10 +114,26 @@ export async function loadSummary(coin: Coin): Promise<Coin> {
   return coin;
 }
 
-export async function loadMarketHistory(coin: Coin) {}
+export async function loadMarketHistory(coin: Coin) {
+  const url = `https://poloniex.com/public?command=returnTradeHistory&currencyPair=${coin.market.toUpperCase()}_${coin.name.toUpperCase()}`;
+
+  const response = await Axios.get(url, { method: 'get' });
+
+  const json = await response.data;
+
+  return json.map(it => new OrderHistory(it.amount, it.rate, it.total, it.type.toLowerCase(), it.date));
+}
+
+export async function loadCandleChartData(coin: Coin, chartCandle = 'ThirtyMin', chartZoom = 0): Promise<ChartData[]> {
+  const url = `https://poloniex.com/public?command=returnChartData&currencyPair=${coin.market.toUpperCase()}_${coin.name.toUpperCase()}&start=1546300800&end=1546646400&period=14400`;
+  const response = await Axios.get(url, { method: 'get' });
+
+  const json = await response.data;
+
+  console.log(json);
+
+  return [];
+}
 
 export async function cancelOrder(order: MyOrder) {}
-
 export async function execOrder(type, market, coin, quantity, price) {}
-
-export async function loadCandleChartData(coin: Coin, chartCandle = 'ThirtyMin', chartZoom = 0): Promise<ChartData[]> {}

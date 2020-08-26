@@ -310,7 +310,7 @@ export default function Home({ navigation }) {
   const MarketSelectorBlock = () => (
     <MarketSelectorBlockContainer>
       <FlatList
-        keyExtractor={() => Math.random()}
+        keyExtractor={it => it}
         horizontal
         style={{ padding: 8 }}
         data={markets}
