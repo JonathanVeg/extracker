@@ -1,3 +1,4 @@
+import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
 import Axios from 'axios';
 import MyCoin from '../models/MyCoin';
@@ -90,7 +91,22 @@ export async function loadMyOrders(coin: Coin = null): Promise<MyOrder[]> {
 }
 
 export async function loadOrderBook(coin: Coin, type): Promise<Order[]> {
-  return [];
+  const url = `https://poloniex.com/public?command=returnOrderBook&currencyPair=${coin.market}_${coin.name}&depth=100`;
+  const response = await Axios.get(url, { method: 'get' });
+  const json = response.data;
+
+  const data = type === 'buy' ? json.bids : json.asks;
+
+  let quantity = 0.0;
+  let total = 0.0;
+
+  return data.map(it => {
+    console.log(it, it[0], it[1]);
+    quantity += parseFloat(it[1]);
+    total += parseFloat(it[0]) * parseFloat(it[1]);
+
+    return new Order(coin.name, coin.market, it[1], it[0], it[0] * it[1], total, quantity, type);
+  });
 }
 
 export async function loadSummary(coin: Coin): Promise<Coin> {
@@ -124,16 +140,51 @@ export async function loadMarketHistory(coin: Coin) {
   return json.map(it => new OrderHistory(it.amount, it.rate, it.total, it.type.toLowerCase(), it.date));
 }
 
-export async function loadCandleChartData(coin: Coin, chartCandle = 'ThirtyMin', chartZoom = 0): Promise<ChartData[]> {
-  const url = `https://poloniex.com/public?command=returnChartData&currencyPair=${coin.market.toUpperCase()}_${coin.name.toUpperCase()}&start=1546300800&end=1546646400&period=14400`;
+export async function loadCandleChartData(coin: Coin, chartCandle = `${30 * 60}`, chartZoom = 0): Promise<ChartData[]> {
+  const end = moment().unix();
+  const start = end - 24 * 60 * 60;
+
+  const url = `https://poloniex.com/public?command=returnChartData&currencyPair=${coin.market.toUpperCase()}_${coin.name.toUpperCase()}&start=${start}&end=${end}&period=${chartCandle}`;
   const response = await Axios.get(url, { method: 'get' });
 
-  const json = await response.data;
+  const data = await response.data;
 
-  console.log(json);
+  console.log(data);
 
-  return [];
+  const ret: ChartData[] = [];
+
+  for (let i = 0; i < data.length; i++) {
+    const it = data[i];
+
+    ret.push(new ChartData(it.high, it.low, it.open, it.close, it.quoteVolume, it.volume));
+
+    console.log(it);
+  }
+
+  return ret;
 }
 
 export async function cancelOrder(order: MyOrder) {}
 export async function execOrder(type, market, coin, quantity, price) {}
+
+export function candleChartData() {
+  const zoomItems = [
+    { label: '3h', value: (3).toString() },
+    { label: '6h', value: (6).toString() },
+    { label: '24h', value: (24).toString() },
+    { label: '2d', value: (24 * 2).toString() },
+    { label: '1w', value: (24 * 7).toString() },
+    { label: '2w', value: (24 * 7 * 2).toString() },
+    { label: '1m', value: (24 * 30).toString() },
+  ];
+
+  const candleItems = [
+    { label: '5 min', value: 5 * 60 },
+    { label: '15 min', value: 15 * 60 },
+    { label: '30 min', value: 30 * 60 },
+    { label: '120 min', value: 120 * 60 },
+    { label: '240 min', value: 240 * 60 },
+  ];
+
+  return { zoom: zoomItems, candle: candleItems };
+}
