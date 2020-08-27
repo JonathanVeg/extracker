@@ -46,6 +46,14 @@ export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
   }, []);
 
   useEffect(() => {
+    console.log('zoom:', zoom);
+  }, [zoom]);
+
+  useEffect(() => {
+    console.log('candle:', candle);
+  }, [candle]);
+
+  useEffect(() => {
     refresh();
   }, [pCoin]);
 
