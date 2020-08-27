@@ -11,6 +11,8 @@ import OrderHistory from '../models/OrderHistory';
 import ChartData from '../models/ChartData';
 import StorageUtils from '../utils/StorageUtils';
 
+const baseURL = 'https://bittrex.com';
+
 function sign(url: string, secret: string) {
   const sha512 = require('js-sha512');
 
@@ -41,7 +43,7 @@ export async function loadBalances(includeZeros = false): Promise<MyCoin[]> {
     const { key } = s;
     const { secret } = s;
 
-    const url = `https://bittrex.com/api/v1.1/account/getbalances?apikey=${key}&nonce=${nonce()}`;
+    const url = `${baseURL}/api/v1.1/account/getbalances?apikey=${key}&nonce=${nonce()}`;
 
     const response = await axios.get(url, prepareOptions(url, secret));
 
@@ -65,7 +67,7 @@ export async function loadBalance(currency: string): Promise<MyCoin | null> {
     const { key } = s;
     const { secret } = s;
 
-    const url = `https://bittrex.com/api/v1.1/account/getbalance?currency=${currency}&apikey=${key}&nonce=${nonce()}`;
+    const url = `${baseURL}/api/v1.1/account/getbalance?currency=${currency}&apikey=${key}&nonce=${nonce()}`;
 
     const response = await axios.get(url, prepareOptions(url, secret));
 
@@ -88,7 +90,7 @@ export async function loadClosedOrders(coin: Coin = null): Promise<MyOrder[]> {
     const s = await StorageUtils.getKeys();
     const { key } = s;
     const { secret } = s;
-    const url = `https://bittrex.com/api/v1.1/account/getorderhistory?apikey=${key}&nonce=${nonce()}`;
+    const url = `${baseURL}/api/v1.1/account/getorderhistory?apikey=${key}&nonce=${nonce()}`;
 
     const response = await axios.get(url, prepareOptions(url, secret));
 
@@ -129,7 +131,7 @@ export async function loadMyOrders(coin: Coin = null): Promise<MyOrder[]> {
     const { key } = s;
     const { secret } = s;
 
-    const url = `https://bittrex.com/api/v1.1/market/getopenorders?apikey=${key}&nonce=${nonce()}`;
+    const url = `${baseURL}/api/v1.1/market/getopenorders?apikey=${key}&nonce=${nonce()}`;
 
     const response = await axios.get(url, prepareOptions(url, secret));
 
@@ -236,7 +238,7 @@ export async function cancelOrder(order: MyOrder) {
   const { key } = s;
   const { secret } = s;
 
-  const url = `https://bittrex.com/api/v1.1/market/cancel?apikey=${key}&nonce=${nonce()}&uuid=${order.id}`;
+  const url = `${baseURL}/api/v1.1/market/cancel?apikey=${key}&nonce=${nonce()}&uuid=${order.id}`;
 
   await axios.get(url, prepareOptions(url, secret));
 }
@@ -248,7 +250,7 @@ export async function execOrder(type, market, coin, quantity, price) {
 
   const trextype = type.toLowerCase() === 'sell' ? 'selllimit' : 'buylimit';
 
-  const url = `https://bittrex.com/api/v1.1/market/${trextype}?apikey=${key}&nonce=${nonce()}&market=${market.toUpperCase()}-${coin.toUpperCase()}&quantity=${quantity}&rate=${price}`;
+  const url = `${baseURL}/api/v1.1/market/${trextype}?apikey=${key}&nonce=${nonce()}&market=${market.toUpperCase()}-${coin.toUpperCase()}&quantity=${quantity}&rate=${price}`;
 
   const response = await axios.get(url, prepareOptions(url, secret));
 
@@ -287,7 +289,7 @@ export function candleChartData() {
 export async function loadCandleChartData(coin: Coin, chartCandle = 'ThirtyMin', chartZoom = 0): Promise<ChartData[]> {
   const tickInterval = chartCandle;
 
-  const url = `https://bittrex.com/Api/v2.0/pub/market/GetTicks?marketName=${coin.market}-${coin.name}&tickInterval=${tickInterval}`;
+  const url = `${baseURL}/Api/v2.0/pub/market/GetTicks?marketName=${coin.market}-${coin.name}&tickInterval=${tickInterval}`;
 
   const response = await axios.get(url);
 

@@ -74,22 +74,6 @@ export async function loadMarketSummaries(): Promise<[Coin[], string[]]> {
   }
 }
 
-export async function loadBalances(includeZeros = false): Promise<MyCoin[]> {
-  return [];
-}
-
-export async function loadBalance(currency: string): Promise<MyCoin | null> {
-  return null;
-}
-
-export async function loadClosedOrders(coin: Coin = null): Promise<MyOrder[]> {
-  return [];
-}
-
-export async function loadMyOrders(coin: Coin = null): Promise<MyOrder[]> {
-  return [];
-}
-
 export async function loadOrderBook(coin: Coin, type): Promise<Order[]> {
   const url = `https://poloniex.com/public?command=returnOrderBook&currencyPair=${coin.market}_${coin.name}&depth=100`;
   const response = await Axios.get(url, { method: 'get' });
@@ -142,14 +126,12 @@ export async function loadMarketHistory(coin: Coin) {
 
 export async function loadCandleChartData(coin: Coin, chartCandle = `${30 * 60}`, chartZoom = 0): Promise<ChartData[]> {
   const end = moment().unix();
-  const start = end - 24 * 60 * 60;
+  const start = end - chartZoom * 60 * 60;
 
   const url = `https://poloniex.com/public?command=returnChartData&currencyPair=${coin.market.toUpperCase()}_${coin.name.toUpperCase()}&start=${start}&end=${end}&period=${chartCandle}`;
   const response = await Axios.get(url, { method: 'get' });
 
   const data = await response.data;
-
-  console.log(data);
 
   const ret: ChartData[] = [];
 
@@ -164,9 +146,6 @@ export async function loadCandleChartData(coin: Coin, chartCandle = `${30 * 60}`
   return ret;
 }
 
-export async function cancelOrder(order: MyOrder) {}
-export async function execOrder(type, market, coin, quantity, price) {}
-
 export function candleChartData() {
   const zoomItems = [
     { label: '3h', value: (3).toString() },
@@ -178,13 +157,28 @@ export function candleChartData() {
     { label: '1m', value: (24 * 30).toString() },
   ];
 
-  const candleItems = [
-    { label: '5 min', value: 5 * 60 },
-    { label: '15 min', value: 15 * 60 },
-    { label: '30 min', value: 30 * 60 },
-    { label: '120 min', value: 120 * 60 },
-    { label: '240 min', value: 240 * 60 },
-  ];
+  const candleItems = [300, 900, 1800, 7200, 14400, 86400].map(sec =>
+    sec / 60 < 60 ? { label: `${sec / 60} min`, value: sec } : { label: `${sec / 60 / 60} h`, value: sec },
+  );
 
   return { zoom: zoomItems, candle: candleItems };
+}
+
+export async function cancelOrder(order: MyOrder) {}
+export async function execOrder(type, market, coin, quantity, price) {}
+
+export async function loadBalances(includeZeros = false): Promise<MyCoin[]> {
+  return [];
+}
+
+export async function loadBalance(currency: string): Promise<MyCoin | null> {
+  return null;
+}
+
+export async function loadClosedOrders(coin: Coin = null): Promise<MyOrder[]> {
+  return [];
+}
+
+export async function loadMyOrders(coin: Coin = null): Promise<MyOrder[]> {
+  return [];
 }
