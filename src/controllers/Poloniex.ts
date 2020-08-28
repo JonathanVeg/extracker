@@ -7,30 +7,38 @@ import Order from '../models/Order';
 import MyOrder from '../models/MyOrder';
 import OrderHistory from '../models/OrderHistory';
 import ChartData from '../models/ChartData';
-import StorageUtils from '../utils/StorageUtils';
 
-function sign(url: string, secret: string) {
+const baseTradingURL = 'https://poloniex.com/tradingApi';
+
+function sign(data: string, secret: string) {
   const sha512 = require('js-sha512');
 
   const hash = sha512.hmac.create(secret);
 
-  hash.update(url);
+  hash.update(data);
 
   return hash.hex();
 }
 
-function nonce(): number {
-  return new Date().getTime();
-}
+const nonce = () => `${new Date().getTime() * 100}`;
 
-function prepareOptions(url: string, secret: string) {
-  const myHeaders = { apisign: '' };
+function prepareOptions(params: object) {
+  const secret = 'sss';
 
-  myHeaders.apisign = sign(url, secret);
+  const postData = Object.keys(params)
+    .map(param => encodeURIComponent(param) + '=' + encodeURIComponent(params[param]))
+    .join('&');
 
-  return {
-    headers: myHeaders,
+  const key = 'kkk';
+
+  const h = {
+    Key: key,
+    Sign: sign(postData, secret),
   };
+  console.log(postData);
+  console.log(h);
+
+  return h;
 }
 
 export async function loadMarketSummaries(): Promise<[Coin[], string[]]> {
@@ -68,8 +76,6 @@ export async function loadMarketSummaries(): Promise<[Coin[], string[]]> {
 
     return [listCoins, listMarkets];
   } catch (err) {
-    console.log(err);
-
     return [[], []];
   }
 }
@@ -85,7 +91,6 @@ export async function loadOrderBook(coin: Coin, type): Promise<Order[]> {
   let total = 0.0;
 
   return data.map(it => {
-    console.log(it, it[0], it[1]);
     quantity += parseFloat(it[1]);
     total += parseFloat(it[0]) * parseFloat(it[1]);
 
@@ -139,8 +144,6 @@ export async function loadCandleChartData(coin: Coin, chartCandle = `${30 * 60}`
     const it = data[i];
 
     ret.push(new ChartData(it.high, it.low, it.open, it.close, it.quoteVolume, it.volume));
-
-    console.log(it);
   }
 
   return ret;
@@ -165,9 +168,27 @@ export function candleChartData() {
 }
 
 export async function cancelOrder(order: MyOrder) {}
+
 export async function execOrder(type, market, coin, quantity, price) {}
 
 export async function loadBalances(includeZeros = false): Promise<MyCoin[]> {
+  const url = `${baseTradingURL}`;
+  const aNonce = nonce();
+
+  const params = {
+    nonce: aNonce,
+    command: 'returnCompleteBalances',
+  };
+
+  const options = {
+    params,
+    ...prepareOptions(params),
+  };
+
+  const { data } = await Axios.post(url, options);
+
+  console.log(data);
+
   return [];
 }
 
