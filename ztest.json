@@ -1,28 +1,85 @@
 {
-  "notification": {
-    "displayType": 2,
-    "isAppInFocus": true,
-    "payload": {
-      "rawPayload": {
-        "custom": { "i": "79ccc475-643e-4154-9aca-e57878f4aa1c" },
-        "aps": {
-          "alert": {
-            "body": "DCR is greater than 0.00010000",
-            "title": "DCR alert fired",
-            "subtitle": "Your DCR/BTC alert was fired on Bittrex"
-          },
-          "mutable-content": 1,
-          "sound": "default"
-        }
-      },
-      "subtitle": "Your DCR/BTC alert was fired on Bittrex",
-      "title": "DCR alert fired",
-      "actionButtons": [],
-      "sound": "default",
-      "body": "DCR is greater than 0.00010000",
-      "notificationID": "79ccc475-643e-4154-9aca-e57878f4aa1c"
-    },
-    "shown": true
+  "data": { "error": "Invalid command." },
+  "status": 200,
+  "headers": {
+    "cf-ray": "5ca9005d9b26db78-GIG",
+    "expect-ct": "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
+    "cf-cache-status": "DYNAMIC",
+    "date": "Sat, 29 Aug 2020 20:25:28 GMT",
+    "cf-request-id": "04dd7e8e820000db7891241200000001",
+    "content-type": "application/json",
+    "server": "cloudflare",
+    "content-encoding": "gzip",
+    "cache-control": "private"
   },
-  "action": {}
+  "config": {
+    "url": "https://poloniex.com/tradingApi",
+    "method": "post",
+    "data": "{\"nonce\":\"159873272789700\",\"command\":\"returnCompleteBalances\"}",
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/json;charset=utf-8",
+      "Key": "MX9LLTE6-PSEH2FKJ-SL3C8DA4-ZTU2HV5U",
+      "Sign": "5b3d88b2b019b9bf740b1397350f8aacd27df0508ca50135b33aebfbfc22d05d4bbd98205ec461ae55abc74239b0ea41c650b8b7a049b166023b07c4650a3d80"
+    },
+    "transformRequest": [null],
+    "transformResponse": [null],
+    "timeout": 0,
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+    "maxContentLength": -1
+  },
+  "request": {
+    "UNSENT": 0,
+    "OPENED": 1,
+    "HEADERS_RECEIVED": 2,
+    "LOADING": 3,
+    "DONE": 4,
+    "readyState": 4,
+    "status": 200,
+    "timeout": 0,
+    "withCredentials": true,
+    "upload": {},
+    "_aborted": false,
+    "_hasError": false,
+    "_method": "POST",
+    "_response": "{\"error\":\"Invalid command.\"}",
+    "_url": "https://poloniex.com/tradingApi",
+    "_timedOut": false,
+    "_trackingName": "unknown",
+    "_incrementalEvents": false,
+    "responseHeaders": {
+      "cf-ray": "5ca9005d9b26db78-GIG",
+      "expect-ct": "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
+      "cf-cache-status": "DYNAMIC",
+      "Date": "Sat, 29 Aug 2020 20:25:28 GMT",
+      "cf-request-id": "04dd7e8e820000db7891241200000001",
+      "Content-Type": "application/json",
+      "Server": "cloudflare",
+      "Content-Encoding": "gzip",
+      "Cache-Control": "private"
+    },
+    "_requestId": null,
+    "_headers": {
+      "accept": "application/json, text/plain, */*",
+      "content-type": "application/json;charset=utf-8",
+      "key": "MX9LLTE6-PSEH2FKJ-SL3C8DA4-ZTU2HV5U",
+      "sign": "5b3d88b2b019b9bf740b1397350f8aacd27df0508ca50135b33aebfbfc22d05d4bbd98205ec461ae55abc74239b0ea41c650b8b7a049b166023b07c4650a3d80"
+    },
+    "_responseType": "",
+    "_sent": true,
+    "_lowerCaseResponseHeaders": {
+      "cf-ray": "5ca9005d9b26db78-GIG",
+      "expect-ct": "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
+      "cf-cache-status": "DYNAMIC",
+      "date": "Sat, 29 Aug 2020 20:25:28 GMT",
+      "cf-request-id": "04dd7e8e820000db7891241200000001",
+      "content-type": "application/json",
+      "server": "cloudflare",
+      "content-encoding": "gzip",
+      "cache-control": "private"
+    },
+    "_subscriptions": [],
+    "responseURL": "https://poloniex.com/tradingApi"
+  }
 }

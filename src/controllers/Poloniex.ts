@@ -35,8 +35,10 @@ function prepareOptions(params: object) {
     Key: key,
     Sign: sign(postData, secret),
   };
-  console.log(postData);
-  console.log(h);
+
+  console.log('postData', postData);
+  console.log('h', h);
+  console.log('');
 
   return h;
 }
@@ -176,18 +178,21 @@ export async function loadBalances(includeZeros = false): Promise<MyCoin[]> {
   const aNonce = nonce();
 
   const params = {
-    nonce: aNonce,
     command: 'returnCompleteBalances',
+    nonce: aNonce,
   };
 
   const options = {
     params,
-    ...prepareOptions(params),
+    headers: { ...prepareOptions(params), 'Content-Type': 'application/x-www-form-urlencoded' },
   };
 
-  const { data } = await Axios.post(url, options);
+  console.log(options);
 
-  console.log(data);
+  const response = await Axios.post(url, null, options);
+
+  console.log(response.data);
+  // console.log(data);
 
   return [];
 }
