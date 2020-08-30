@@ -1,3 +1,4 @@
+import querystring from 'querystring';
 import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
 import Axios from 'axios';
@@ -22,25 +23,20 @@ function sign(data: string, secret: string) {
 
 const nonce = () => `${new Date().getTime() * 100}`;
 
-function prepareOptions(params: object) {
+function prepareHeaders(params: object) {
   const secret = 'sss';
 
   const postData = Object.keys(params)
-    .map(param => encodeURIComponent(param) + '=' + encodeURIComponent(params[param]))
+    .map(param => `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`)
     .join('&');
 
   const key = 'kkk';
 
-  const h = {
+  return {
     Key: key,
     Sign: sign(postData, secret),
+    'Content-Type': 'application/x-www-form-urlencoded',
   };
-
-  console.log('postData', postData);
-  console.log('h', h);
-  console.log('');
-
-  return h;
 }
 
 export async function loadMarketSummaries(): Promise<[Coin[], string[]]> {
@@ -107,7 +103,7 @@ export async function loadSummary(coin: Coin): Promise<Coin> {
   const json = response.data;
   const pairs = Object.keys(json);
 
-  const data = pairs[`${coin.market.toUpperCase()}_${coin.name.toUpperCase()}`];
+  const data = pairs[`${coin.market}_${coin.name}`.toUpperCase()];
 
   coin.last = data.last;
   coin.bid = data.highestBid;
@@ -169,9 +165,22 @@ export function candleChartData() {
   return { zoom: zoomItems, candle: candleItems };
 }
 
-export async function cancelOrder(order: MyOrder) {}
+export async function cancelOrder(order: MyOrder) {
+  const url = `${baseTradingURL}`;
+  const aNonce = nonce();
 
-export async function execOrder(type, market, coin, quantity, price) {}
+  const params = {
+    command: 'cancelOrder',
+    nonce: aNonce,
+    orderNumber: `${order.id}`,
+  };
+
+  const options = {
+    headers: { ...prepareHeaders(params) },
+  };
+
+  await Axios.post(url, querystring.stringify(params), options);
+}
 
 export async function loadBalances(includeZeros = false): Promise<MyCoin[]> {
   const url = `${baseTradingURL}`;
@@ -183,28 +192,153 @@ export async function loadBalances(includeZeros = false): Promise<MyCoin[]> {
   };
 
   const options = {
-    params,
-    headers: { ...prepareOptions(params), 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: { ...prepareHeaders(params) },
   };
 
-  console.log(options);
+  const { data } = await Axios.post(url, querystring.stringify(params), options);
 
-  const response = await Axios.post(url, null, options);
+  const withBalances = Object.keys(data).filter(it => parseFloat(data[it].available) !== 0.0);
 
-  console.log(response.data);
-  // console.log(data);
+  const ret: MyCoin[] = [];
+  for (let i = 0; i < withBalances.length; i++) {
+    const coin = withBalances[i];
 
-  return [];
+    ret.push(
+      new MyCoin(
+        coin,
+        data[coin].available,
+        parseFloat(data[coin].available) - parseFloat(data[coin].onOrders),
+        0,
+        '---',
+      ),
+    );
+  }
+
+  return ret;
 }
 
 export async function loadBalance(currency: string): Promise<MyCoin | null> {
-  return null;
+  const balances = await loadBalances();
+
+  return balances.find(it => it.name === currency);
 }
 
 export async function loadClosedOrders(coin: Coin = null): Promise<MyOrder[]> {
-  return [];
+  const url = `${baseTradingURL}`;
+  const aNonce = nonce();
+
+  const params = {
+    command: 'returnTradeHistory',
+    nonce: aNonce,
+    currencyPair: 'all',
+  };
+
+  const options = {
+    headers: { ...prepareHeaders(params) },
+  };
+
+  const { data } = await Axios.post(url, querystring.stringify(params), options);
+
+  const ret: MyOrder[] = [];
+
+  let pairs = Object.keys(data);
+
+  if (coin) pairs = pairs.filter(it => it.toLowerCase() === `${coin.market}_${coin.name}`.toLowerCase());
+
+  for (let i = 0; i < pairs.length; i++) {
+    const pair = data[pairs[i]];
+
+    for (let j = 0; j < pair.length; j++) {
+      const order = pair[j];
+
+      ret.push(
+        new MyOrder(
+          order.globalTradeID,
+          order.type,
+          pairs[i].split('_')[1],
+          pairs[i].split('_')[0],
+          parseFloat(order.amount),
+          0,
+          parseFloat(order.rate),
+          order.date,
+          order.date,
+        ),
+      );
+    }
+  }
+
+  return ret;
 }
 
 export async function loadMyOrders(coin: Coin = null): Promise<MyOrder[]> {
-  return [];
+  const url = `${baseTradingURL}`;
+  const aNonce = nonce();
+
+  const params = {
+    command: 'returnOpenOrders',
+    nonce: aNonce,
+    currencyPair: 'all',
+  };
+
+  const options = {
+    headers: { ...prepareHeaders(params) },
+  };
+
+  const { data } = await Axios.post(url, querystring.stringify(params), options);
+
+  const ret: MyOrder[] = [];
+
+  let pairs = Object.keys(data);
+
+  if (coin) pairs = pairs.filter(it => it.toLowerCase() === `${coin.market}_${coin.name}`.toLowerCase());
+
+  for (let i = 0; i < pairs.length; i++) {
+    const pair = data[pairs[i]];
+
+    for (let j = 0; j < pair.length; j++) {
+      const order = pair[j];
+
+      ret.push(
+        new MyOrder(
+          order.orderNumber,
+          order.type,
+          pairs[i].split('_')[1],
+          pairs[i].split('_')[0],
+          parseFloat(order.startingAmount),
+          parseFloat(order.amount),
+          parseFloat(order.rate),
+          order.date,
+          order.date,
+        ),
+      );
+    }
+  }
+
+  return ret;
+}
+
+export async function execOrder(type, market, coin, quantity, price) {
+  const url = `${baseTradingURL}`;
+  const aNonce = nonce();
+
+  const params = {
+    command: type.toLowerCase(),
+    currencyPair: `${coin.market}_${coin.name}`.toUpperCase(),
+    rate: price.toString(),
+    amount: quantity.toString(),
+    nonce: aNonce,
+  };
+
+  const options = {
+    headers: { ...prepareHeaders(params) },
+  };
+
+  try {
+    await Axios.post(url, querystring.stringify(params), options);
+
+    return { success: true };
+  } catch (err) {
+    console.log('AQUI', err);
+    return { success: false };
+  }
 }
