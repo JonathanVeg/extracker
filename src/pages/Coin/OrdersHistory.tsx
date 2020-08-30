@@ -3,11 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { View, FlatList, Text, TouchableOpacity } from 'react-native';
 import Coin from '../../models/Coin';
 import OrderHistory from '../../models/OrderHistory';
-import { loadMarketHistory } from '../../controllers/Exchange';
-
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import { Container } from '../../components/Generics';
+import Exchange from '../../controllers/exchanges/Exchange';
 
 export default function CoinPageOrdersHistory(props) {
   const coin: Coin = props.coin || new Coin('DCR', 'BTC');
@@ -20,7 +19,7 @@ export default function CoinPageOrdersHistory(props) {
     try {
       setRefreshing(true);
 
-      const orders = await loadMarketHistory(coin);
+      const orders = await Exchange.loadMarketHistory(coin);
 
       setOrders(orders);
     } finally {

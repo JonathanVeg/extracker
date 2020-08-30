@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, RefreshControl, SectionList } from 'react-native';
-import { loadSummary, loadBalance } from '../../controllers/Exchange';
+import { ScrollView, RefreshControl } from 'react-native';
 import Coin from '../../models/Coin';
 import LabelValueBlock from '../../components/LabelValueBlock';
 import MyCoin from '../../models/MyCoin';
@@ -11,6 +10,7 @@ import { Container } from '../../components/Generics';
 import { useFiats } from '../../hooks/FiatContext';
 import { useSummaries } from '../../hooks/SummaryContext';
 import { useKeys } from '../../hooks/KeysContext';
+import Exchange from '../../controllers/exchanges/Exchange';
 
 interface CoinPageSummaryInterface {
   coin: Coin | null;
@@ -26,16 +26,16 @@ export default function CoinPageSummary(props: CoinPageSummaryInterface) {
   const [myCoin, setMyCoin] = useState<MyCoin | null>(null);
 
   async function loadMyData() {
-    const data = await loadBalance(coin.name);
+    const data = await Exchange.loadBalance(coin.name);
 
-    if (data.available !== null) setMyCoin(data);
+    if (data && data.available !== null) setMyCoin(data);
   }
 
   async function load() {
     try {
       setRefreshing(true);
 
-      await loadSummary(coin);
+      await Exchange.loadSummary(coin);
 
       const clone = Object.assign(Object.create(Object.getPrototypeOf(coin)), coin);
 

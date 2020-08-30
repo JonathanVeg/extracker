@@ -7,9 +7,9 @@ import MyInput from '../../components/MyInput';
 import FiatBlock from '../../components/FiatBlock';
 import { Row } from '../../components/Generics';
 import { colors } from '../../style/globals';
-import { loadSummary } from '../../controllers/Exchange';
 import { useFiats } from '../../hooks/FiatContext';
 import { useSummaries } from '../../hooks/SummaryContext';
+import Exchange from '../../controllers/exchanges/Exchange';
 
 export default function CoinPageCalculator(props) {
   const { allCoinsInBtc } = useSummaries();
@@ -23,7 +23,7 @@ export default function CoinPageCalculator(props) {
 
   async function loadData() {
     await loadFiats();
-    loadSummary(coin).then(setCoin);
+    Exchange.loadSummary(coin).then(setCoin);
   }
 
   useEffect(() => {

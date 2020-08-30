@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { cancelOrder } from '../controllers/Exchange';
+import Exchange from '../controllers/exchanges/Exchange';
 
 export default class MyOrder {
   canceling = false;
@@ -75,6 +75,6 @@ export default class MyOrder {
   }
 
   async cancel() {
-    await cancelOrder(this);
+    await Exchange.cancelOrder(this);
   }
 }

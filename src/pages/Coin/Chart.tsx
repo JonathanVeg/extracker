@@ -4,20 +4,20 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, processColor } from 'react-native';
 import { colors } from '../../style/globals';
 import Coin from '../../models/Coin';
-import { candleChartData, loadCandleChartData } from '../../controllers/Exchange';
 import StorageUtils from '../../utils/StorageUtils';
 import { Container } from '../../components/Generics';
 import { H2 } from '../../components/Hs';
+import Exchange from '../../controllers/exchanges/Exchange';
 
 export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
   const coin: Coin = pCoin || new Coin('DCR', 'BTC');
   // const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
-  const [zoom, setZoom] = useState(candleChartData().zoom[2]);
-  const [candle, setCandle] = useState(candleChartData().candle[2]);
+  const [zoom, setZoom] = useState(Exchange.candleChartData().zoom[2]);
+  const [candle, setCandle] = useState(Exchange.candleChartData().candle[2]);
   const [values, setValues] = useState([]);
 
   async function load() {
-    const data = await loadCandleChartData(coin, candle.value, parseFloat(zoom.value));
+    const data = await Exchange.loadCandleChartData(coin, candle.value.toString(), parseFloat(zoom.value));
 
     setValues(prepareChartData(data));
   }
@@ -44,14 +44,6 @@ export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
 
     readChartDefaults();
   }, []);
-
-  useEffect(() => {
-    console.log('zoom:', zoom);
-  }, [zoom]);
-
-  useEffect(() => {
-    console.log('candle:', candle);
-  }, [candle]);
 
   useEffect(() => {
     refresh();
@@ -128,7 +120,7 @@ export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
         <Text style={{ alignSelf: 'stretch', textAlign: 'center' }}>Zoom</Text>
         <ModalSelector
           key={Math.random()}
-          data={candleChartData().zoom}
+          data={Exchange.candleChartData().zoom}
           initValue={zoom.label}
           style={{ marginHorizontal: 8, alignSelf: 'stretch' }}
           onChange={item => {
@@ -141,7 +133,7 @@ export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
         <Text style={{ alignSelf: 'stretch', textAlign: 'center' }}>Candle</Text>
         <ModalSelector
           key={Math.random()}
-          data={candleChartData().candle}
+          data={Exchange.candleChartData().candle}
           initValue={candle.label}
           style={{ marginHorizontal: 8, alignSelf: 'stretch' }}
           onChange={item => {

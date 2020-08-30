@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { TouchableWithoutFeedback, View, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { loadMyOrders, loadClosedOrders } from '../../controllers/Exchange';
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import MyOrder from '../../models/MyOrder';
 import { Container } from '../../components/Generics';
 import { useToast } from '../../hooks/ToastContext';
+import Exchange from '../../controllers/exchanges/Exchange';
 
 export default function CoinPageMyOrdersHistory(props) {
   const { coin } = props;
@@ -24,7 +24,7 @@ export default function CoinPageMyOrdersHistory(props) {
     try {
       if (toggleRefreshing) setRefreshing(true);
 
-      const orders = await (showOpened ? loadMyOrders(coin) : loadClosedOrders(coin));
+      const orders = await (showOpened ? Exchange.loadMyOrders(coin) : Exchange.loadClosedOrders(coin));
 
       setOrders(orders);
     } finally {

@@ -3,13 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { Text, FlatList } from 'react-native';
 import Coin from '../../../models/Coin';
 import { H1 } from '../../../components/Hs';
-import { loadOrderBook, loadMyOrders } from '../../../controllers/Exchange';
 import Order from '../../../models/Order';
 import MyOrder from '../../../models/MyOrder';
 import { Container } from '../../../components/Generics';
 import Item from './Item';
 import AlertsAPI from '../../../controllers/Alerts';
 import { readOneSignalUserId } from '../../../controllers/OneSignal';
+import Exchange from '../../../controllers/exchanges/Exchange';
 
 export default function CoinPageOrders(props) {
   const { type } = props;
@@ -29,7 +29,7 @@ export default function CoinPageOrders(props) {
       const uid = await readOneSignalUserId();
       const alerts = await AlertsAPI.getAlerts(uid);
 
-      const orders = await loadOrderBook(coin, type);
+      const orders = await Exchange.loadOrderBook(coin, type);
 
       orders.map(order => {
         order.alerts = alerts.filter(it => {
@@ -48,7 +48,7 @@ export default function CoinPageOrders(props) {
   }
 
   async function loadMOrders() {
-    const myOrders = await loadMyOrders(coin);
+    const myOrders = await Exchange.loadMyOrders(coin);
 
     setMyOrders(myOrders);
   }

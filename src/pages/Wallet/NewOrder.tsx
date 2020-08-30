@@ -5,7 +5,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Coin from '../../models/Coin';
 import MyAlert from '../../models/Alert';
-import { loadBalances, loadSummary, execOrder } from '../../controllers/Exchange';
 import MyCoin from '../../models/MyCoin';
 import { H1 } from '../../components/Hs';
 import { Spacer } from '../../components/Spacer';
@@ -16,6 +15,7 @@ import { Container } from '../../components/Generics';
 import { useToast } from '../../hooks/ToastContext';
 import CoinSelector from '../../components/CoinSelector';
 import AlertsAPI from '../../controllers/Alerts';
+import Exchange from '../../controllers/exchanges/Exchange';
 
 function usePrevious(value) {
   const ref = useRef();
@@ -194,7 +194,7 @@ export default function NewOrder({ route, navigation }) {
 
   async function callExecOrder() {
     try {
-      const ret = await execOrder(type, coin.market, coin.name, quantity, price);
+      const ret = await Exchange.execOrder(type, coin.market, coin.name, quantity, price);
 
       if (ret.success) {
         showToast('Order created');
@@ -214,7 +214,7 @@ export default function NewOrder({ route, navigation }) {
   }
 
   async function loadMyData() {
-    const data = await loadBalances();
+    const data = await Exchange.loadBalances();
 
     setMyCoin(data.find(it => it.name === coin.name));
     setMyMarket(data.find(it => it.name === coin.market));
@@ -224,7 +224,7 @@ export default function NewOrder({ route, navigation }) {
     try {
       if (showRefreshing) setRefreshing(true);
 
-      await loadSummary(coin);
+      await Exchange.loadSummary(coin);
 
       const clone = Object.assign(Object.create(Object.getPrototypeOf(coin)), coin);
 

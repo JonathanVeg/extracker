@@ -17,8 +17,6 @@ import MyCoin from '../../models/MyCoin';
 import StorageUtils from '../../utils/StorageUtils';
 import { Container } from '../../components/Generics';
 import { H1 } from '../../components/Hs';
-import { loadBalances, loadMarketSummaries } from '../../controllers/Exchange';
-import { loadMarketSummaries as pLoad } from '../../controllers/Poloniex';
 import { sortArrayByKey } from '../../utils/utils';
 import { useFiats } from '../../hooks/FiatContext';
 import { useKeys } from '../../hooks/KeysContext';
@@ -26,7 +24,7 @@ import { useSummaries } from '../../hooks/SummaryContext';
 import { colors } from '../../style/globals';
 import HomeCoinItemCompact from './HomeCoinItemCompact';
 import CoinPageChart from '../Coin/Chart';
-import { sort } from 'core-js/fn/array';
+import Exchange from '../../controllers/exchanges/Exchange';
 
 export default function Home({ navigation }) {
   const { usingKeys, hasKeys } = useKeys();
@@ -90,7 +88,7 @@ export default function Home({ navigation }) {
 
       if (hasKeys) loadMyCoins();
 
-      pLoad();
+      Exchange.loadMarketSummaries();
     }
 
     run();
@@ -146,7 +144,7 @@ export default function Home({ navigation }) {
   }
 
   async function loadMyCoins() {
-    const myCoins = await loadBalances();
+    const myCoins = await Exchange.loadBalances();
 
     setMyCoins(myCoins);
   }
@@ -198,7 +196,7 @@ export default function Home({ navigation }) {
 
       await loadDataFromLocalStorage();
 
-      const data = await loadMarketSummaries();
+      const data = await Exchange.loadMarketSummaries();
 
       const favs = await loadFavorites();
 

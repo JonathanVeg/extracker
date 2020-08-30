@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import Coin from '../../models/Coin';
 import { colors } from '../../style/globals';
 import MyCoin from '../../models/MyCoin';

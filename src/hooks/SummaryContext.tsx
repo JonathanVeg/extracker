@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import Coin from '../models/Coin';
-import { loadMarketSummaries } from '../controllers/Exchange';
+import Exchange from '../controllers/exchanges/Exchange';
 
 interface SummaryContextProps {
   coins: Coin[];
@@ -36,7 +36,7 @@ const SummaryProvider = ({ children }) => {
   }
 
   async function reloadSummary() {
-    const [coins, markets] = await loadMarketSummaries();
+    const [coins, markets] = await Exchange.loadMarketSummaries();
 
     setCoins(coins);
     setMarkets(markets);
