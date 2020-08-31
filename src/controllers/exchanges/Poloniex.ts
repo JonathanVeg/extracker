@@ -9,11 +9,14 @@ import MyOrder from '../../models/MyOrder';
 import OrderHistory from '../../models/OrderHistory';
 import ChartData from '../../models/ChartData';
 import { sign, nonce } from './utils';
+import ExchangeInterface from './ExchangeInterface';
 
-export default class Poloniex {
-  static baseTradingURL = 'https://poloniex.com/tradingApi';
+class Poloniex implements ExchangeInterface {
+  baseURL = 'https://poloniex.com/public';
+  baseTradingURL = 'https://poloniex.com/tradingApi';
+  name = () => 'Poloniex';
 
-  static prepareHeaders(params: object) {
+  prepareHeaders(params: object) {
     const secret = 'sss';
 
     const postData = Object.keys(params)
@@ -29,9 +32,9 @@ export default class Poloniex {
     };
   }
 
-  static async loadMarketSummaries(): Promise<[Coin[], string[]]> {
+  async loadMarketSummaries(): Promise<[Coin[], string[]]> {
     try {
-      const url = 'https://poloniex.com/public?command=returnTicker';
+      const url = `${this.baseURL}?command=returnTicker`;
 
       const response = await Axios.get(url);
       const json = response.data;
@@ -68,8 +71,8 @@ export default class Poloniex {
     }
   }
 
-  static async loadOrderBook(coin: Coin, type): Promise<Order[]> {
-    const url = `https://poloniex.com/public?command=returnOrderBook&currencyPair=${coin.market}_${coin.name}&depth=100`;
+  async loadOrderBook(coin: Coin, type): Promise<Order[]> {
+    const url = `${this.baseURL}?command=returnOrderBook&currencyPair=${coin.market}_${coin.name}&depth=100`;
     const response = await Axios.get(url);
     const json = response.data;
 
@@ -86,7 +89,7 @@ export default class Poloniex {
     });
   }
 
-  static async loadSummary(coin: Coin): Promise<Coin> {
+  async loadSummary(coin: Coin): Promise<Coin> {
     const [coins] = await this.loadMarketSummaries();
 
     const data = coins.find(it => it.market === coin.market && it.name === coin.name);
@@ -102,8 +105,10 @@ export default class Poloniex {
     return coin;
   }
 
-  static async loadMarketHistory(coin: Coin) {
-    const url = `https://poloniex.com/public?command=returnTradeHistory&currencyPair=${coin.market.toUpperCase()}_${coin.name.toUpperCase()}`;
+  async loadMarketHistory(coin: Coin): Promise<OrderHistory[]> {
+    const url = `${
+      this.baseURL
+    }?command=returnTradeHistory&currencyPair=${coin.market.toUpperCase()}_${coin.name.toUpperCase()}`;
 
     const response = await Axios.get(url);
 
@@ -112,11 +117,13 @@ export default class Poloniex {
     return json.map(it => new OrderHistory(it.amount, it.rate, it.total, it.type.toLowerCase(), it.date));
   }
 
-  static async loadCandleChartData(coin: Coin, chartCandle = `${30 * 60}`, chartZoom = 0): Promise<ChartData[]> {
+  async loadCandleChartData(coin: Coin, chartCandle = `${30 * 60}`, chartZoom = 0): Promise<ChartData[]> {
     const end = moment().unix();
     const start = end - chartZoom * 60 * 60;
 
-    const url = `https://poloniex.com/public?command=returnChartData&currencyPair=${coin.market.toUpperCase()}_${coin.name.toUpperCase()}&start=${start}&end=${end}&period=${chartCandle}`;
+    const url = `${
+      this.baseURL
+    }?command=returnChartData&currencyPair=${coin.market.toUpperCase()}_${coin.name.toUpperCase()}&start=${start}&end=${end}&period=${chartCandle}`;
     const response = await Axios.get(url);
 
     const data = await response.data;
@@ -132,7 +139,7 @@ export default class Poloniex {
     return ret;
   }
 
-  static candleChartData() {
+  candleChartData() {
     const zoomItems = [
       { label: '3h', value: (3).toString() },
       { label: '6h', value: (6).toString() },
@@ -150,7 +157,7 @@ export default class Poloniex {
     return { zoom: zoomItems, candle: candleItems };
   }
 
-  static async cancelOrder(order: MyOrder) {
+  async cancelOrder(order: MyOrder): Promise<void> {
     const url = `${this.baseTradingURL}`;
     const aNonce = nonce();
 
@@ -167,7 +174,7 @@ export default class Poloniex {
     await Axios.post(url, querystring.stringify(params), options);
   }
 
-  static async loadBalances(includeZeros = false): Promise<MyCoin[]> {
+  async loadBalances(includeZeros = false): Promise<MyCoin[]> {
     const url = `${this.baseTradingURL}`;
     const aNonce = nonce();
 
@@ -202,7 +209,7 @@ export default class Poloniex {
     return ret;
   }
 
-  static async loadBalance(currency: string): Promise<MyCoin | null> {
+  async loadBalance(currency: string): Promise<MyCoin | null> {
     const balances = await this.loadBalances();
 
     const ret = balances.find(it => it.name === currency);
@@ -210,7 +217,7 @@ export default class Poloniex {
     return ret;
   }
 
-  static async loadClosedOrders(coin: Coin = null): Promise<MyOrder[]> {
+  async loadClosedOrders(coin: Coin = null): Promise<MyOrder[]> {
     const url = `${this.baseTradingURL}`;
     const aNonce = nonce();
 
@@ -257,7 +264,7 @@ export default class Poloniex {
     return ret;
   }
 
-  static async loadMyOrders(coin: Coin = null): Promise<MyOrder[]> {
+  async loadMyOrders(coin: Coin = null): Promise<MyOrder[]> {
     const url = `${this.baseTradingURL}`;
     const aNonce = nonce();
 
@@ -304,7 +311,7 @@ export default class Poloniex {
     return ret;
   }
 
-  static async execOrder(type, market, coin, quantity, price) {
+  async execOrder(type: string, market: string, coin: string, quantity: number, price: number): Promise<object> {
     const url = `${this.baseTradingURL}`;
     const aNonce = nonce();
 
@@ -330,3 +337,5 @@ export default class Poloniex {
     }
   }
 }
+
+export default new Poloniex();

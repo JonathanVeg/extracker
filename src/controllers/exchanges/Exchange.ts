@@ -1,4 +1,7 @@
 import Poloniex from './Poloniex';
 import Bittrex from './Bittrex';
+import ExchangeInterface from './ExchangeInterface';
 
-export default Bittrex;
+const exchange: ExchangeInterface = Bittrex;
+
+export default exchange;

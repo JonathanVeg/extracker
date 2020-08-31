@@ -11,11 +11,13 @@ import OrderHistory from '../../models/OrderHistory';
 import ChartData from '../../models/ChartData';
 import StorageUtils from '../../utils/StorageUtils';
 import { sign, nonce } from './utils';
+import ExchangeInterface from './ExchangeInterface';
 
-export default class Bittrex {
-  static baseURL = 'https://bittrex.com';
+class Bittrex implements ExchangeInterface {
+  baseURL = 'https://bittrex.com';
+  name = () => 'Bittrex';
 
-  static prepareOptions(url: string, secret: string) {
+  prepareOptions(url: string, secret: string) {
     const myHeaders = { apisign: '' };
 
     myHeaders.apisign = sign(url, secret);
@@ -25,7 +27,11 @@ export default class Bittrex {
     };
   }
 
-  static async loadBalances(includeZeros = false): Promise<MyCoin[]> {
+  coinToPair(coin: Coin) {
+    return `${coin.name}-${coin.market}`.toUpperCase();
+  }
+
+  async loadBalances(includeZeros = false): Promise<MyCoin[]> {
     try {
       const s = await StorageUtils.getKeys();
       const { key } = s;
@@ -51,7 +57,7 @@ export default class Bittrex {
     }
   }
 
-  static async loadBalance(currency: string): Promise<MyCoin | null> {
+  async loadBalance(currency: string): Promise<MyCoin | null> {
     try {
       const s = await StorageUtils.getKeys();
       const { key } = s;
@@ -73,7 +79,7 @@ export default class Bittrex {
     }
   }
 
-  static async loadClosedOrders(coin: Coin = null): Promise<MyOrder[]> {
+  async loadClosedOrders(coin: Coin = null): Promise<MyOrder[]> {
     let orders: MyOrder[] = [];
 
     try {
@@ -116,7 +122,7 @@ export default class Bittrex {
     }
   }
 
-  static async loadMyOrders(coin: Coin = null): Promise<MyOrder[]> {
+  async loadMyOrders(coin: Coin = null): Promise<MyOrder[]> {
     try {
       const s = await StorageUtils.getKeys();
       const { key } = s;
@@ -163,8 +169,8 @@ export default class Bittrex {
     }
   }
 
-  static async loadOrderBook(coin: Coin, type): Promise<Order[]> {
-    const url = `https://api.bittrex.com/api/v1.1/public/getorderbook?market=${coin.market.toUpperCase()}-${coin.name.toUpperCase()}&type=${type}`;
+  async loadOrderBook(coin: Coin, type): Promise<Order[]> {
+    const url = `${this.baseURL}/api/v1.1/public/getorderbook?market=${this.coinToPair(coin)}&type=${type}`;
 
     const response = await axios.get(url, { method: 'get' });
 
@@ -183,8 +189,8 @@ export default class Bittrex {
     });
   }
 
-  static async loadSummary(coin: Coin): Promise<Coin> {
-    const url = `https://api.bittrex.com/api/v1.1/public/getmarketsummary?market=${coin.market.toLowerCase()}-${coin.name.toLowerCase()}`;
+  async loadSummary(coin: Coin): Promise<Coin> {
+    const url = `${this.baseURL}/api/v1.1/public/getmarketsummary?market=${this.coinToPair(coin)}`;
 
     const response = await axios.get(url, { method: 'get' });
 
@@ -211,8 +217,8 @@ export default class Bittrex {
     return coin;
   }
 
-  static async loadMarketHistory(coin: Coin) {
-    const url = `https://api.bittrex.com/api/v1.1/public/getmarkethistory?market=${coin.market.toUpperCase()}-${coin.name.toUpperCase()}`;
+  async loadMarketHistory(coin: Coin) {
+    const url = `${this.baseURL}/api/v1.1/public/getmarkethistory?market=${this.coinToPair(coin)}`;
 
     const response = await axios.get(url, { method: 'get' });
 
@@ -225,7 +231,7 @@ export default class Bittrex {
     );
   }
 
-  static async cancelOrder(order: MyOrder) {
+  async cancelOrder(order: MyOrder) {
     const s = await StorageUtils.getKeys();
     const { key } = s;
     const { secret } = s;
@@ -235,7 +241,7 @@ export default class Bittrex {
     await axios.get(url, this.prepareOptions(url, secret));
   }
 
-  static async execOrder(type, market, coin, quantity, price) {
+  async execOrder(type, market, coin, quantity, price) {
     const s = await StorageUtils.getKeys();
     const { key } = s;
     const { secret } = s;
@@ -253,7 +259,7 @@ export default class Bittrex {
     return data;
   }
 
-  static candleChartData() {
+  candleChartData() {
     const zoomItems = [
       { label: '3h', value: (3).toString() },
       { label: '6h', value: (6).toString() },
@@ -280,7 +286,7 @@ export default class Bittrex {
     return { zoom: zoomItems, candle: candleItems };
   }
 
-  static async loadCandleChartData(coin: Coin, chartCandle = 'ThirtyMin', chartZoom = 0): Promise<ChartData[]> {
+  async loadCandleChartData(coin: Coin, chartCandle = 'ThirtyMin', chartZoom = 0): Promise<ChartData[]> {
     const tickInterval = chartCandle;
 
     const url = `${this.baseURL}/Api/v2.0/pub/market/GetTicks?marketName=${coin.market}-${coin.name}&tickInterval=${tickInterval}`;
@@ -312,8 +318,8 @@ export default class Bittrex {
     return ret;
   }
 
-  static async loadMarketSummaries(): Promise<[Coin[], string[]]> {
-    const url = 'https://api.bittrex.com/api/v1.1/public/getmarketsummaries';
+  async loadMarketSummaries(): Promise<[Coin[], string[]]> {
+    const url = `${this.baseURL}/api/v1.1/public/getmarketsummaries`;
 
     const response = await axios.get(url, { method: 'get' });
 
@@ -357,3 +363,5 @@ export default class Bittrex {
     return [listCoins, listMarkets];
   }
 }
+
+export default new Bittrex();
