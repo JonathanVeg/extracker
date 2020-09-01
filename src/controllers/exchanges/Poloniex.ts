@@ -71,7 +71,7 @@ class Poloniex implements ExchangeInterface {
     }
   }
 
-  async loadOrderBook(coin: Coin, type): Promise<Order[]> {
+  async loadOrderBook(coin: Coin, type: string): Promise<Order[]> {
     const url = `${this.baseURL}?command=returnOrderBook&currencyPair=${coin.market}_${coin.name}&depth=100`;
     const response = await Axios.get(url);
     const json = response.data;

@@ -28,7 +28,7 @@ class Bittrex implements ExchangeInterface {
   }
 
   coinToPair(coin: Coin) {
-    return `${coin.name}-${coin.market}`.toUpperCase();
+    return `${coin.market}-${coin.name}`.toLowerCase();
   }
 
   async loadBalances(includeZeros = false): Promise<MyCoin[]> {
@@ -169,7 +169,7 @@ class Bittrex implements ExchangeInterface {
     }
   }
 
-  async loadOrderBook(coin: Coin, type): Promise<Order[]> {
+  async loadOrderBook(coin: Coin, type: string): Promise<Order[]> {
     const url = `${this.baseURL}/api/v1.1/public/getorderbook?market=${this.coinToPair(coin)}&type=${type}`;
 
     const response = await axios.get(url, { method: 'get' });

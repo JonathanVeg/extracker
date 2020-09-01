@@ -8,7 +8,7 @@ import OrderHistory from '../../models/OrderHistory';
 export default interface ExchangeInterface {
   name(): string;
   loadMarketSummaries(): Promise<[Coin[], string[]]>;
-  loadOrderBook(coin: Coin, type): Promise<Order[]>;
+  loadOrderBook(coin: Coin, type: string): Promise<Order[]>;
   loadSummary(coin: Coin): Promise<Coin>;
   loadMarketHistory(coin: Coin): Promise<OrderHistory[]>;
   loadCandleChartData(coin: Coin, chartCandle: string, chartZoom: number): Promise<ChartData[]>;

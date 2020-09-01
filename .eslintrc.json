@@ -58,7 +58,8 @@
         "extensions": [".tsx"]
       }
     ],
-    "no-useless-constructor": "off"
+    "no-useless-constructor": "off",
+    "no-unused-expressions": "off"
   },
   "settings": {
     "import/resolver": {

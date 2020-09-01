@@ -25,6 +25,7 @@ import { useKeys } from './hooks/KeysContext';
 import AlertPage from './pages/Alert';
 import OneSignalWrapper from './controllers/OneSignal';
 import moment from 'moment';
+import ContactPage from './pages/Contact';
 
 declare global {
   interface Number {
@@ -81,6 +82,12 @@ const AlertPageStack = () => (
   </Stack.Navigator>
 );
 
+const ContactPageStack = () => (
+  <Stack.Navigator screenOptions={screenOptions} initialRouteName="Contact">
+    <Stack.Screen name="Contact" component={ContactPage} />
+  </Stack.Navigator>
+);
+
 const AboutPageStack = () => (
   <Stack.Navigator screenOptions={screenOptions} initialRouteName="About">
     <Stack.Screen name="About" component={AboutPage} />
@@ -122,6 +129,11 @@ function CustomDrawerContent({ usingKeys, drawerPosition, navigation }): ReactEl
           onPress={() => navigation.navigate('Settings')}
         />
         <DrawerItem
+          icon={() => <Icon name="message" size={20} />}
+          label="Contact"
+          onPress={() => navigation.navigate('Contact')}
+        />
+        <DrawerItem
           icon={() => <Icon name="bell" size={20} />}
           label="Alert"
           onPress={() => navigation.navigate('Alert')}
@@ -159,6 +171,7 @@ const GlobalNavigator = () => {
       {usingKeys && <Drawer.Screen name="Wallets" component={WalletPageStack} />}
       <Drawer.Screen name="Settings" component={SettingsPageStack} />
       <Drawer.Screen name="Alert" component={AlertPageStack} />
+      <Drawer.Screen name="Contact" component={ContactPageStack} />
       <Drawer.Screen name="Donate" component={DonatePageStack} />
       <Drawer.Screen name="About" component={AboutPageStack} />
     </Drawer.Navigator>
