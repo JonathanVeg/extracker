@@ -28,6 +28,16 @@ const ContactPage = ({ navigation }) => {
     headerLeft: () => <HamburgerIcon navigationProps={navigation} />,
   });
 
+  const validateEmail = (text: string) => {
+    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!reg.test(text)) {
+      console.log('Email is Not Correct');
+
+      return false;
+    }
+    return true;
+  };
+
   async function handleSendMessage() {
     try {
       if (sending) return;
@@ -37,8 +47,15 @@ const ContactPage = ({ navigation }) => {
 
         return;
       }
+
       if (!email) {
         showToast({ text: 'Please fill the email', type: 'error' });
+
+        return;
+      }
+
+      if (!validateEmail(email)) {
+        showToast({ text: 'Please enter a valid email address', type: 'error' });
 
         return;
       }

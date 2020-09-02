@@ -8,6 +8,7 @@ import StorageUtils from '../../utils/StorageUtils';
 import { Container } from '../../components/Generics';
 import { H2 } from '../../components/Hs';
 import Exchange from '../../controllers/exchanges/Exchange';
+import exchange from '../../controllers/exchanges/Exchange';
 
 export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
   const coin: Coin = pCoin || new Coin('DCR', 'BTC');
@@ -29,14 +30,14 @@ export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
   useEffect(() => {
     load();
 
-    StorageUtils.setItem('@extracker:chartZoom', JSON.stringify(zoom));
-    StorageUtils.setItem('@extracker:chartCandle', JSON.stringify(candle));
+    StorageUtils.setItem(`@extracker@${exchange.name}:chartZoom`, JSON.stringify(zoom));
+    StorageUtils.setItem(`@extracker@${exchange.name}:chartCandle`, JSON.stringify(candle));
   }, [zoom, candle]);
 
   useEffect(() => {
     async function readChartDefaults() {
-      const chartZoom = await StorageUtils.getItem('@extracker:chartZoom');
-      const chartCandle = await StorageUtils.getItem('@extracker:chartCandle');
+      const chartZoom = await StorageUtils.getItem(`@extracker@${exchange.name}:chartZoom`);
+      const chartCandle = await StorageUtils.getItem(`@extracker@${exchange.name}:chartCandle`);
 
       if (chartZoom) setZoom(JSON.parse(chartZoom));
       if (chartCandle) setCandle(JSON.parse(chartCandle));

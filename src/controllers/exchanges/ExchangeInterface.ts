@@ -6,7 +6,7 @@ import ChartData from '../../models/ChartData';
 import OrderHistory from '../../models/OrderHistory';
 
 export default interface ExchangeInterface {
-  name(): string;
+  name: string;
   loadMarketSummaries(): Promise<[Coin[], string[]]>;
   loadOrderBook(coin: Coin, type: string): Promise<Order[]>;
   loadSummary(coin: Coin): Promise<Coin>;

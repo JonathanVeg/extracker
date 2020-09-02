@@ -1,3 +1,4 @@
+import * as Keychain from 'react-native-keychain';
 import { BlurView } from '@react-native-community/blur';
 import AsyncStorage from '@react-native-community/async-storage';
 import React, { useEffect, useState } from 'react';
@@ -25,6 +26,7 @@ import { colors } from '../../style/globals';
 import HomeCoinItemCompact from './HomeCoinItemCompact';
 import CoinPageChart from '../Coin/Chart';
 import Exchange from '../../controllers/exchanges/Exchange';
+import exchange from '../../controllers/exchanges/Exchange';
 
 export default function Home({ navigation }) {
   const { usingKeys, hasKeys } = useKeys();
@@ -79,7 +81,7 @@ export default function Home({ navigation }) {
 
   useEffect(() => {
     async function run() {
-      let sortCoinsBy = await AsyncStorage.getItem('@extracker:sortCoinsBy');
+      let sortCoinsBy = await AsyncStorage.getItem(`@extracker@${exchange.name}:sortCoinsBy`);
       sortCoinsBy = sortCoinsBy || 'baseVolume';
 
       setSortCoinsBy(sortCoinsBy);
@@ -100,7 +102,7 @@ export default function Home({ navigation }) {
 
   useEffect(() => {
     async function saveIt() {
-      await AsyncStorage.setItem('@extracker:sortCoinsBy', sortCoinsBy);
+      await AsyncStorage.setItem(`@extracker@${exchange.name}:sortCoinsBy`, sortCoinsBy);
     }
 
     saveIt();
@@ -114,7 +116,7 @@ export default function Home({ navigation }) {
 
   async function loadFavorites(): Promise<string[]> {
     try {
-      const value = await AsyncStorage.getItem('@extracker:favs');
+      const value = await AsyncStorage.getItem(`@extracker@${exchange.name}:favs`);
       return value !== null ? JSON.parse(value) : [];
     } catch (e) {
       return [];
@@ -132,7 +134,7 @@ export default function Home({ navigation }) {
       if (c.favorite) favs.add(c.name);
       else favs.delete(c.name);
 
-      await AsyncStorage.setItem('@extracker:favs', JSON.stringify(Array.from(favs)));
+      await AsyncStorage.setItem(`@extracker@${exchange.name}:favs`, JSON.stringify(Array.from(favs)));
 
       setCoins(cc);
 
@@ -150,19 +152,19 @@ export default function Home({ navigation }) {
   }
 
   async function loadDataFromLocalStorage() {
-    const coinsFromStorage = await AsyncStorage.getItem('@extracker:coins');
+    const coinsFromStorage = await AsyncStorage.getItem(`@extracker@${exchange.name}:coins`);
 
     if (coinsFromStorage) setCoins(JSON.parse(coinsFromStorage));
   }
 
   async function loadCompactModeFromLocalStorage() {
-    const compactModeFromStorage = await AsyncStorage.getItem('@extracker:compactMode');
+    const compactModeFromStorage = await AsyncStorage.getItem(`@extracker@${exchange.name}:compactMode`);
 
     if (compactModeFromStorage) setCompactMode(!!compactModeFromStorage);
   }
 
   async function toggleCompactMode() {
-    await AsyncStorage.setItem('@extracker:compactMode', !compactMode ? 'true' : '');
+    await AsyncStorage.setItem(`@extracker@${exchange.name}:compactMode`, !compactMode ? 'true' : '');
 
     setCompactMode(!compactMode);
   }

@@ -15,16 +15,23 @@ import ExchangeInterface from './ExchangeInterface';
 
 class Bittrex implements ExchangeInterface {
   baseURL = 'https://bittrex.com';
-  name = () => 'Bittrex';
+  name = 'Bittrex';
+  key = '';
+  secret = '';
 
-  prepareOptions(url: string, secret: string) {
-    const myHeaders = { apisign: '' };
+  async loadKeys() {
+    const { key, secret } = await StorageUtils.getKeys();
 
-    myHeaders.apisign = sign(url, secret);
+    this.key = key;
+    this.secret = secret;
+  }
 
-    return {
-      headers: myHeaders,
-    };
+  async prepareOptions(url: string) {
+    const headers = { apisign: '' };
+
+    headers.apisign = sign(url, this.secret);
+
+    return { headers };
   }
 
   coinToPair(coin: Coin) {
@@ -33,13 +40,10 @@ class Bittrex implements ExchangeInterface {
 
   async loadBalances(includeZeros = false): Promise<MyCoin[]> {
     try {
-      const s = await StorageUtils.getKeys();
-      const { key } = s;
-      const { secret } = s;
-
-      const url = `${this.baseURL}/api/v1.1/account/getbalances?apikey=${key}&nonce=${nonce()}`;
-
-      const response = await axios.get(url, this.prepareOptions(url, secret));
+      if (!this.key) await this.loadKeys();
+      const url = `${this.baseURL}/api/v1.1/account/getbalances?apikey=${this.key}&nonce=${nonce()}`;
+      const headers = await this.prepareOptions(url);
+      const response = await axios.get(url, headers);
 
       const data = await response.data;
 
@@ -59,13 +63,12 @@ class Bittrex implements ExchangeInterface {
 
   async loadBalance(currency: string): Promise<MyCoin | null> {
     try {
-      const s = await StorageUtils.getKeys();
-      const { key } = s;
-      const { secret } = s;
+      const url = `${this.baseURL}/api/v1.1/account/getbalance?currency=${currency}&apikey=${
+        this.key
+      }&nonce=${nonce()}`;
 
-      const url = `${this.baseURL}/api/v1.1/account/getbalance?currency=${currency}&apikey=${key}&nonce=${nonce()}`;
-
-      const response = await axios.get(url, this.prepareOptions(url, secret));
+      const headers = await this.prepareOptions(url);
+      const response = await axios.get(url, headers);
 
       const data = await response.data;
 
@@ -83,12 +86,10 @@ class Bittrex implements ExchangeInterface {
     let orders: MyOrder[] = [];
 
     try {
-      const s = await StorageUtils.getKeys();
-      const { key } = s;
-      const { secret } = s;
-      const url = `${this.baseURL}/api/v1.1/account/getorderhistory?apikey=${key}&nonce=${nonce()}`;
-
-      const response = await axios.get(url, this.prepareOptions(url, secret));
+      if (!this.key) await this.loadKeys();
+      const url = `${this.baseURL}/api/v1.1/account/getorderhistory?apikey=${this.key}&nonce=${nonce()}`;
+      const headers = await this.prepareOptions(url);
+      const response = await axios.get(url, headers);
 
       const data = await response.data;
 
@@ -124,13 +125,10 @@ class Bittrex implements ExchangeInterface {
 
   async loadMyOrders(coin: Coin = null): Promise<MyOrder[]> {
     try {
-      const s = await StorageUtils.getKeys();
-      const { key } = s;
-      const { secret } = s;
-
-      const url = `${this.baseURL}/api/v1.1/market/getopenorders?apikey=${key}&nonce=${nonce()}`;
-
-      const response = await axios.get(url, this.prepareOptions(url, secret));
+      if (!this.key) await this.loadKeys();
+      const url = `${this.baseURL}/api/v1.1/market/getopenorders?apikey=${this.key}&nonce=${nonce()}`;
+      const headers = await this.prepareOptions(url);
+      const response = await axios.get(url, headers);
 
       const data = await response.data;
 
@@ -236,9 +234,10 @@ class Bittrex implements ExchangeInterface {
     const { key } = s;
     const { secret } = s;
 
-    const url = `${this.baseURL}/api/v1.1/market/cancel?apikey=${key}&nonce=${nonce()}&uuid=${order.id}`;
-
-    await axios.get(url, this.prepareOptions(url, secret));
+    if (!this.key) await this.loadKeys();
+    const url = `${this.baseURL}/api/v1.1/market/cancel?apikey=${this.key}&nonce=${nonce()}&uuid=${order.id}`;
+    const headers = await this.prepareOptions(url);
+    await axios.get(url, headers);
   }
 
   async execOrder(type, market, coin, quantity, price) {
@@ -248,11 +247,12 @@ class Bittrex implements ExchangeInterface {
 
     const trextype = type.toLowerCase() === 'sell' ? 'selllimit' : 'buylimit';
 
-    const url = `${
-      this.baseURL
-    }/api/v1.1/market/${trextype}?apikey=${key}&nonce=${nonce()}&market=${market.toUpperCase()}-${coin.toUpperCase()}&quantity=${quantity}&rate=${price}`;
+    const url = `${this.baseURL}/api/v1.1/market/${trextype}?apikey=${
+      this.key
+    }&nonce=${nonce()}&market=${market.toUpperCase()}-${coin.toUpperCase()}&quantity=${quantity}&rate=${price}`;
 
-    const response = await axios.get(url, this.prepareOptions(url, secret));
+    const headers = await this.prepareOptions(url);
+    const response = await axios.get(url, headers);
 
     const data = await response.data;
 
@@ -357,8 +357,8 @@ class Bittrex implements ExchangeInterface {
       listCoins.push(coin);
     });
 
-    await AsyncStorage.setItem('@extracker:coins', JSON.stringify(listCoins));
-    await AsyncStorage.setItem('@extracker:markets', JSON.stringify(listMarkets));
+    await AsyncStorage.setItem('@extracker@Bittrex:coins', JSON.stringify(listCoins));
+    await AsyncStorage.setItem('@extracker@Bittrex:markets', JSON.stringify(listMarkets));
 
     return [listCoins, listMarkets];
   }

@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useState, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import Coin from '../models/Coin';
 import Exchange from '../controllers/exchanges/Exchange';
+import exchange from '../controllers/exchanges/Exchange';
 
 interface SummaryContextProps {
   coins: Coin[];
@@ -28,10 +29,10 @@ const SummaryProvider = ({ children }) => {
   }
 
   async function loadDataFromLocalStorage() {
-    const coinsFromStorage = await AsyncStorage.getItem('@extracker:coins');
+    const coinsFromStorage = await AsyncStorage.getItem(`@extracker@${exchange.name}:coins`);
     if (coinsFromStorage) setCoins(JSON.parse(coinsFromStorage));
 
-    const marketsFromStorage = await AsyncStorage.getItem('@extracker:markets');
+    const marketsFromStorage = await AsyncStorage.getItem(`@extracker@${exchange.name}:markets`);
     if (marketsFromStorage) setMarkets(JSON.parse(marketsFromStorage));
   }
 

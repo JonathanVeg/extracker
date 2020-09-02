@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import * as Keychain from 'react-native-keychain';
+import exchange from '../controllers/exchanges/Exchange';
 
 interface KeysInterface {
   key: string;
@@ -14,7 +15,9 @@ class StorageUtils {
   }
 
   static async saveKeys(key: string, secret: string): Promise<false | Keychain.Result> {
-    const r = await Keychain.setGenericPassword('@extracker:keys', `${key} ${secret}`);
+    const r = await Keychain.setGenericPassword('@extracker:keys', `${key} ${secret}`, {
+      service: `@extracker:@${exchange.name}`,
+    });
 
     return r;
   }
@@ -22,11 +25,14 @@ class StorageUtils {
   static async getKeys(): Promise<KeysInterface> {
     try {
       // Retrieve the credentials
-      const credentials = await Keychain.getGenericPassword();
+      const credentials = await Keychain.getGenericPassword({ service: `@extracker:@${exchange.name}` });
+
       if (credentials) {
         const s = credentials.password.split(' ');
 
-        return { key: s[0], secret: s[1] };
+        const ret = { key: s[0], secret: s[1] };
+
+        return ret;
       }
 
       return { key: '', secret: '' };
