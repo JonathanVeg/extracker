@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { H1 } from './Hs';
 import { sortArrayByKey } from '../utils/utils';
 import Coin from '../models/Coin';
+import exchange from '../controllers/exchanges/Exchange';
 
 // import { Container } from './styles';
 
@@ -16,10 +17,10 @@ const CoinSelector: React.FC = ({ sMarket, setSMarket, sCoin, setSCoin }) => {
 
   useEffect(() => {
     async function loadDataFromLocalStorage() {
-      const coinsFromStorage = await AsyncStorage.getItem('@extracker:coins');
+      const coinsFromStorage = await AsyncStorage.getItem(`@extracker@${exchange.name}:coins`);
       const coins = JSON.parse(coinsFromStorage);
 
-      const marketsFromStorage = await AsyncStorage.getItem('@extracker:markets');
+      const marketsFromStorage = await AsyncStorage.getItem(`@extracker@${exchange.name}:markets`);
       if (marketsFromStorage) setMarkets(JSON.parse(marketsFromStorage));
 
       const coinsNames = [];

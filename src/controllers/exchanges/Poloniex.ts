@@ -10,20 +10,21 @@ import OrderHistory from '../../models/OrderHistory';
 import ChartData from '../../models/ChartData';
 import { sign, nonce } from './utils';
 import ExchangeInterface from './ExchangeInterface';
+import StorageUtils from '../../utils/StorageUtils';
 
 class Poloniex implements ExchangeInterface {
   baseURL = 'https://poloniex.com/public';
   baseTradingURL = 'https://poloniex.com/tradingApi';
-  name = () => 'Poloniex';
+  name = 'Poloniex';
 
-  prepareHeaders(params: object) {
-    const secret = 'sss';
+  async prepareHeaders(params: object) {
+    const s = await StorageUtils.getKeys();
+    const { key } = s;
+    const { secret } = s;
 
     const postData = Object.keys(params)
       .map(param => `${encodeURIComponent(param)}=${encodeURIComponent(params[param])}`)
       .join('&');
-
-    const key = 'kkk';
 
     return {
       Key: key,
@@ -62,8 +63,8 @@ class Poloniex implements ExchangeInterface {
         if (listMarkets.indexOf(market) === -1) listMarkets.push(market);
       }
 
-      await AsyncStorage.setItem('@extracker:coins', JSON.stringify(listCoins));
-      await AsyncStorage.setItem('@extracker:markets', JSON.stringify(listMarkets));
+      await AsyncStorage.setItem('@extracker@Poloniex:coins', JSON.stringify(listCoins));
+      await AsyncStorage.setItem('@extracker@Poloniex:markets', JSON.stringify(listMarkets));
 
       return [listCoins, listMarkets];
     } catch (err) {
@@ -167,9 +168,8 @@ class Poloniex implements ExchangeInterface {
       orderNumber: `${order.id}`,
     };
 
-    const options = {
-      headers: { ...this.prepareHeaders(params) },
-    };
+    const headers = await this.prepareHeaders(params);
+    const options = { headers };
 
     await Axios.post(url, querystring.stringify(params), options);
   }
@@ -183,30 +183,36 @@ class Poloniex implements ExchangeInterface {
       nonce: aNonce,
     };
 
-    const options = {
-      headers: { ...this.prepareHeaders(params) },
-    };
-
-    const { data } = await Axios.post(url, querystring.stringify(params), options);
-
-    const dataToReturn = includeZeros ? data : Object.keys(data).filter(it => parseFloat(data[it].available) !== 0.0);
+    const headers = await this.prepareHeaders(params);
+    const options = { headers };
 
     const ret: MyCoin[] = [];
-    for (let i = 0; i < dataToReturn.length; i++) {
-      const coin = dataToReturn[i];
 
-      ret.push(
-        new MyCoin(
-          coin,
-          parseFloat(data[coin].available) + parseFloat(data[coin].onOrders),
-          data[coin].available,
-          0,
-          '---',
-        ),
-      );
+    try {
+      const { data } = await Axios.post(url, querystring.stringify(params), options);
+
+      const dataToReturn = includeZeros
+        ? data
+        : Object.keys(data).filter(it => parseFloat(data[it].available) + parseFloat(data[it].onOrders) !== 0.0);
+
+      for (let i = 0; i < dataToReturn.length; i++) {
+        const coin = dataToReturn[i];
+
+        // TODO load deposit address
+        ret.push(
+          new MyCoin(
+            coin,
+            parseFloat(data[coin].available) + parseFloat(data[coin].onOrders),
+            data[coin].available,
+            0,
+            '---',
+          ),
+        );
+      }
+      return ret;
+    } catch (err) {
+      return [];
     }
-
-    return ret;
   }
 
   async loadBalance(currency: string): Promise<MyCoin | null> {
@@ -227,9 +233,8 @@ class Poloniex implements ExchangeInterface {
       currencyPair: 'all',
     };
 
-    const options = {
-      headers: { ...this.prepareHeaders(params) },
-    };
+    const headers = await this.prepareHeaders(params);
+    const options = { headers };
 
     const { data } = await Axios.post(url, querystring.stringify(params), options);
 
@@ -274,9 +279,8 @@ class Poloniex implements ExchangeInterface {
       currencyPair: 'all',
     };
 
-    const options = {
-      headers: { ...this.prepareHeaders(params) },
-    };
+    const headers = await this.prepareHeaders(params);
+    const options = { headers };
 
     const { data } = await Axios.post(url, querystring.stringify(params), options);
 
@@ -323,9 +327,8 @@ class Poloniex implements ExchangeInterface {
       nonce: aNonce,
     };
 
-    const options = {
-      headers: { ...this.prepareHeaders(params) },
-    };
+    const headers = await this.prepareHeaders(params);
+    const options = { headers };
 
     try {
       await Axios.post(url, querystring.stringify(params), options);

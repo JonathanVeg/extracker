@@ -10,6 +10,7 @@ import { colors } from '../../style/globals';
 import { useFiats } from '../../hooks/FiatContext';
 import { useSummaries } from '../../hooks/SummaryContext';
 import Exchange from '../../controllers/exchanges/Exchange';
+import exchange from '../../controllers/exchanges/Exchange';
 
 export default function CoinPageCalculator(props) {
   const { allCoinsInBtc } = useSummaries();
@@ -56,8 +57,8 @@ export default function CoinPageCalculator(props) {
       <View>
         <H2>{`Value in ${coin.name}`}</H2>
         <MyInput
-          autoSave={true}
-          autoSaveKey={`@extracker:${coin.name}CalculatorValueIn${coin.name}`}
+          autoSave
+          autoSaveKey={`@extracker@${exchange.name}:${coin.name}CalculatorValueIn${coin.name}`}
           value={valInCoin}
           onChangeText={text => {
             setValInCoin(text);
@@ -80,7 +81,7 @@ export default function CoinPageCalculator(props) {
         <H2>{`Value in ${coin.market}`}</H2>
         <MyInput
           autoSave={true}
-          autoSaveKey={`@extracker:${coin.name}CalculatorValueIn${coin.market}`}
+          autoSaveKey={`@extracker@${exchange.name}:${coin.name}CalculatorValueIn${coin.market}`}
           value={valInMarket}
           onChangeText={text => {
             setValInMarket(text);
@@ -96,7 +97,7 @@ export default function CoinPageCalculator(props) {
           <H2>{`Value in ${fiat.name}`}</H2>
           <MyInput
             autoSave={true}
-            autoSaveKey={`@extracker:${coin.name}CalculatorValueIn${fiat.name}`}
+            autoSaveKey={`@extracker@${exchange.name}:${coin.name}CalculatorValueIn${fiat.name}`}
             value={valInFiats[index]}
             onChangeText={text => {
               const vif = [...valInFiats];
