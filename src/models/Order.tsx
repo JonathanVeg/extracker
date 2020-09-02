@@ -8,7 +8,7 @@ export default class Order {
 
   constructor(
     public coin: string,
-    public marker: string,
+    public market: string,
     public quantity: number,
     public rate: number,
     public total: number,

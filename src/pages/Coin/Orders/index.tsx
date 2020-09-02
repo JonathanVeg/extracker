@@ -35,7 +35,7 @@ export default function CoinPageOrders(props) {
         order.alerts = alerts.filter(it => {
           return (
             it.coin === order.coin &&
-            it.market === order.marker &&
+            it.market === order.market &&
             parseFloat(it.price.toString()) === parseFloat(order.rate.toString())
           );
         });

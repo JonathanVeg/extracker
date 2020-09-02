@@ -118,6 +118,8 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
     ? colors.sellBackground
     : colors.sellBackground2;
 
+  const fontWeight = order.market.toLowerCase() === 'btc' && order.total > 2 ? 'bold' : 'normal';
+
   return (
     <TouchableOpacity onLongPress={offerOptions}>
       <RowContainer backgroundColor={backgroundColor}>
@@ -134,6 +136,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
 
         <Text
           style={{
+            fontWeight,
             flex: 1,
             textAlign: 'left',
             fontVariant: ['tabular-nums'],
@@ -143,6 +146,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
         </Text>
         <Text
           style={{
+            fontWeight,
             flex: 1,
             textAlign: 'center',
             fontVariant: ['tabular-nums'],
@@ -152,6 +156,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
         </Text>
         <Text
           style={{
+            fontWeight,
             flex: 1,
             textAlign: 'right',
             fontVariant: ['tabular-nums'],
