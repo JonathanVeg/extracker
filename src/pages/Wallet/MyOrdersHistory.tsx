@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import CheckBox from '@react-native-community/checkbox';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components/native';
 import { TouchableWithoutFeedback, View, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -12,6 +13,7 @@ import Exchange from '../../controllers/exchanges/Exchange';
 export default function CoinPageMyOrdersHistory(props) {
   const { coin } = props;
 
+  const [selecteds, setSelecteds] = useState<MyOrder[]>([]);
   const [showOpened, setShowOpened] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [orders, setOrders] = useState<MyOrder[]>([]);
@@ -19,6 +21,12 @@ export default function CoinPageMyOrdersHistory(props) {
   const [showQuantity, setShowQuantity] = useState(true);
 
   const { showToast } = useToast();
+
+  const handleSelectItem = (item: MyOrder) => {
+    const exists = selecteds.filter(it => it.id === item.id).length > 0;
+    const newSelecteds = !exists ? [...selecteds, item] : selecteds.filter(it => it.id !== item.id);
+    setSelecteds(newSelecteds);
+  };
 
   async function loadOrders(toggleRefreshing = true) {
     try {
@@ -36,15 +44,15 @@ export default function CoinPageMyOrdersHistory(props) {
     loadOrders(toggleRefreshing);
   }
 
-  async function cancelAllOrders() {
+  async function cancelSelectedOrders() {
     try {
-      for (let i = 0; i < orders.length; i++) {
+      for (let i = 0; i < selecteds.length; i++) {
         await orders[i].cancel();
       }
-      showToast({ text: 'All orders cancelled', type: 'success' });
+      showToast(`${selecteds.length} order(s) cancelled`);
       refresh(false);
     } catch (e) {
-      Alert.alert(`Error while cancelling order:\n\n${e.toString()}`);
+      Alert.alert(`Error while cancelling orders:\n\n${e.toString()}`);
     }
   }
 
@@ -52,7 +60,7 @@ export default function CoinPageMyOrdersHistory(props) {
     try {
       await order.cancel();
 
-      showToast({ text: 'Order cancelled', type: 'success' });
+      showToast('Order cancelled');
 
       refresh(false);
     } catch (e) {
@@ -90,7 +98,8 @@ export default function CoinPageMyOrdersHistory(props) {
   }
 
   function handleCancelAllOrders() {
-    const line = 'Are you sure you want to cancel ALL OPENED order(s)?\n';
+    if (selecteds.length === 0) return;
+    const line = `Are you sure you want to cancel ${selecteds.length} order(s)?\nIt can not be undone!`;
 
     Alert.alert(
       'Cancel order',
@@ -99,7 +108,7 @@ export default function CoinPageMyOrdersHistory(props) {
         { text: 'No', style: 'cancel' },
         {
           text: 'Yes',
-          onPress: () => cancelAllOrders(),
+          onPress: () => cancelSelectedOrders(),
         },
       ],
       { cancelable: false },
@@ -129,10 +138,15 @@ export default function CoinPageMyOrdersHistory(props) {
             {showUnit ? order.price.idealDecimalPlaces() : order.total.idealDecimalPlaces()}
           </Text>
 
-          {showOpened && (
+          {/* {showOpened && (
             <TouchableOpacity style={{ flex: 0.6, alignItems: 'flex-end' }} onPress={() => askCancelOrder(order)}>
               <Icon name="trash-alt" size={20} />
             </TouchableOpacity>
+          )} */}
+          {showOpened && (
+            <TouchableWithoutFeedback style={{ flex: 0.6 }} onPress={() => handleSelectItem(order)}>
+              <MyCheckbox checked={selecteds.indexOf(item) !== -1} />
+            </TouchableWithoutFeedback>
           )}
         </OrderItemContainer>
       </TouchableWithoutFeedback>
@@ -160,7 +174,7 @@ export default function CoinPageMyOrdersHistory(props) {
 
         {showOpened && (
           <TouchableOpacity style={{ flex: 0.6, alignItems: 'flex-end' }} onPress={handleCancelAllOrders}>
-            <Icon name="trash-alt" size={20} />
+            <Icon name="trash-alt" size={20} color={selecteds.length === 0 ? 'transparent' : 'black'} />
           </TouchableOpacity>
         )}
       </View>
@@ -230,8 +244,20 @@ export default function CoinPageMyOrdersHistory(props) {
   );
 }
 
-export const OrderItemContainer = styled.View`
+const OrderItemContainer = styled.View`
   flex-direction: row;
+  align-items: center;
   padding: 5px;
   background-color: ${({ type }) => (type === 'buy' ? colors.buyBackground : colors.sellBackground)};
+`;
+
+const MyCheckbox = styled.View`
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 5px;
+  border-color: black;
+  background-color: ${({ checked }) => (checked ? 'black' : 'transparent')};
+  border-width: 1px;
 `;

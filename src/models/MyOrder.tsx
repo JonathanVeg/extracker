@@ -2,6 +2,7 @@ import moment from 'moment';
 import Exchange from '../controllers/exchanges/Exchange';
 
 export default class MyOrder {
+  selected = false;
   canceling = false;
   total = 0.0;
 

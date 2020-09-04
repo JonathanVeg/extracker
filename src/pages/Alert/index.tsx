@@ -12,7 +12,6 @@ import MyInput from '../../components/MyInput';
 import AlertsAPI from '../../controllers/Alerts';
 import { readOneSignalUserId } from '../../controllers/OneSignal';
 import { useToast } from '../../hooks/ToastContext';
-import Coin from '../../models/Coin';
 import CoinSelector from '../../components/CoinSelector';
 
 const AlertPage = ({ navigation }) => {
