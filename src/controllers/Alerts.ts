@@ -17,7 +17,8 @@ export default class AlertsAPI {
       return;
     }
 
-    await axios.post(`${baseURL}`, { ...alert.toJSON(), uid });
+    const exchangeName = exchange.name.toLowerCase();
+    await axios.post(`${baseURL}`, { ...alert.toJSON(), uid, exchange: exchangeName });
   }
 
   static async getAlerts(uid: string): Promise<Alert[]> {
