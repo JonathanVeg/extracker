@@ -1,10 +1,11 @@
 import axios from 'axios';
-import Alert from '../models/Alert';
 import { Alert as RNAlert } from 'react-native';
+import Alert from '../models/Alert';
 import { readOneSignalUserId } from './OneSignal';
+import exchange from './exchanges/Exchange';
 
-const baseURL = 'https://trextracker.jonathanveg.dev/alerts';
-// const baseURL = 'http://localhost:3333/alerts';
+// const baseURL = 'https://trextracker.jonathanveg.dev/alerts';
+const baseURL = 'http://localhost:3333/alerts';
 
 export default class AlertsAPI {
   static async createAlert(alert: Alert) {
@@ -20,7 +21,7 @@ export default class AlertsAPI {
   }
 
   static async getAlerts(uid: string): Promise<Alert[]> {
-    const response = await axios.get(`${baseURL}?uid=${uid}`);
+    const response = await axios.get(`${baseURL}?uid=${uid}&exchange=${exchange.name.toLowerCase()}`);
 
     return response.data;
   }
