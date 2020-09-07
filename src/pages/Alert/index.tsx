@@ -13,12 +13,14 @@ import AlertsAPI from '../../controllers/Alerts';
 import { readOneSignalUserId } from '../../controllers/OneSignal';
 import { useToast } from '../../hooks/ToastContext';
 import CoinSelector from '../../components/CoinSelector';
+import { useExchange } from '../../hooks/ExchangeContext';
 
 const AlertPage = ({ navigation }) => {
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [saving, setSaving] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const { showToast } = useToast();
+  const { exchange } = useExchange();
 
   navigation?.setOptions({
     title: 'Alerts',
@@ -35,7 +37,7 @@ const AlertPage = ({ navigation }) => {
       if (showRefreshing) setRefreshing(true);
 
       const uid = await readOneSignalUserId();
-      const alerts = await AlertsAPI.getAlerts(uid);
+      const alerts = await AlertsAPI.getAlerts(exchange, uid);
 
       setAlerts(alerts);
     } finally {
@@ -55,7 +57,7 @@ const AlertPage = ({ navigation }) => {
 
       const newAlert = new Alert(`${Math.random()}`, coin, market, when, parseFloat(price));
 
-      await AlertsAPI.createAlert(newAlert);
+      await AlertsAPI.createAlert(exchange, newAlert);
 
       readAlerts(false);
     } catch (err) {
@@ -80,7 +82,7 @@ const AlertPage = ({ navigation }) => {
       for (let i = 0; i < alerts.length; i++) {
         const alert = alerts[i];
 
-        await AlertsAPI.deleteAlert(alert, uid);
+        await AlertsAPI.deleteAlert(exchange, alert, uid);
       }
 
       readAlerts(false);
@@ -103,7 +105,7 @@ const AlertPage = ({ navigation }) => {
   async function deleteAlert(alert: Alert) {
     const uid = await readOneSignalUserId();
 
-    await AlertsAPI.deleteAlert(alert, uid);
+    await AlertsAPI.deleteAlert(exchange, alert, uid);
 
     readAlerts(false);
   }

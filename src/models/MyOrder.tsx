@@ -1,5 +1,5 @@
 import moment from 'moment';
-import Exchange from '../controllers/exchanges/Exchange';
+import ExchangeInterface from '../controllers/exchanges/ExchangeInterface';
 
 export default class MyOrder {
   selected = false;
@@ -16,6 +16,7 @@ export default class MyOrder {
     public price: number,
     public openedAt: string,
     public closedAt: string,
+    public exchange: ExchangeInterface,
   ) {
     this.total = price * quantity;
   }
@@ -76,6 +77,6 @@ export default class MyOrder {
   }
 
   async cancel() {
-    await Exchange.cancelOrder(this);
+    await this.exchange.cancelOrder(this);
   }
 }

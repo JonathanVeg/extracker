@@ -6,9 +6,10 @@ import OrderHistory from '../../models/OrderHistory';
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import { Container } from '../../components/Generics';
-import Exchange from '../../controllers/exchanges/Exchange';
+import { useExchange } from '../../hooks/ExchangeContext';
 
 export default function CoinPageOrdersHistory(props) {
+  const { exchange } = useExchange();
   const coin: Coin = props.coin || new Coin('DCR', 'BTC');
   const [refreshing, setRefreshing] = useState(false);
   const [showWhen, setShowWhen] = useState(false);
@@ -19,7 +20,7 @@ export default function CoinPageOrdersHistory(props) {
     try {
       setRefreshing(true);
 
-      const orders = await Exchange.loadMarketHistory(coin);
+      const orders = await exchange.loadMarketHistory(coin);
 
       setOrders(orders);
     } finally {

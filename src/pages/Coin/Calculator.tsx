@@ -9,10 +9,10 @@ import { Row } from '../../components/Generics';
 import { colors } from '../../style/globals';
 import { useFiats } from '../../hooks/FiatContext';
 import { useSummaries } from '../../hooks/SummaryContext';
-import Exchange from '../../controllers/exchanges/Exchange';
-import exchange from '../../controllers/exchanges/Exchange';
+import { useExchange } from '../../hooks/ExchangeContext';
 
 export default function CoinPageCalculator(props) {
+  const { exchange } = useExchange();
   const { allCoinsInBtc } = useSummaries();
   const { fiats } = useFiats();
 
@@ -24,7 +24,7 @@ export default function CoinPageCalculator(props) {
 
   async function loadData() {
     await loadFiats();
-    Exchange.loadSummary(coin).then(setCoin);
+    exchange.loadSummary(coin).then(setCoin);
   }
 
   useEffect(() => {

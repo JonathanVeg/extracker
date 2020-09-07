@@ -18,7 +18,7 @@ class Poloniex implements ExchangeInterface {
   name = 'Poloniex';
 
   async prepareHeaders(params: object) {
-    const s = await StorageUtils.getKeys();
+    const s = await StorageUtils.getKeys(this);
     const { key } = s;
     const { secret } = s;
 
@@ -261,6 +261,7 @@ class Poloniex implements ExchangeInterface {
             parseFloat(order.rate),
             order.date,
             order.date,
+            this,
           ),
         );
       }
@@ -307,6 +308,7 @@ class Poloniex implements ExchangeInterface {
             parseFloat(order.rate),
             order.date,
             order.date,
+            this,
           ),
         );
       }

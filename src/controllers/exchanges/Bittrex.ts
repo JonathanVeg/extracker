@@ -20,7 +20,7 @@ class Bittrex implements ExchangeInterface {
   secret = '';
 
   async loadKeys() {
-    const { key, secret } = await StorageUtils.getKeys();
+    const { key, secret } = await StorageUtils.getKeys(this);
 
     this.key = key;
     this.secret = secret;
@@ -105,6 +105,7 @@ class Bittrex implements ExchangeInterface {
             it.Limit,
             it.Opened,
             it.Closed,
+            this,
           ),
         ),
       );
@@ -149,6 +150,7 @@ class Bittrex implements ExchangeInterface {
             it.Limit,
             it.Opened,
             it.Closed,
+            this,
           ),
         ),
       );
@@ -232,7 +234,7 @@ class Bittrex implements ExchangeInterface {
   }
 
   async cancelOrder(order: MyOrder) {
-    const s = await StorageUtils.getKeys();
+    const s = await StorageUtils.getKeys(this);
     const { key } = s;
     const { secret } = s;
 
@@ -243,7 +245,7 @@ class Bittrex implements ExchangeInterface {
   }
 
   async execOrder(type, market, coin, quantity, price) {
-    const s = await StorageUtils.getKeys();
+    const s = await StorageUtils.getKeys(this);
     const { key } = s;
     const { secret } = s;
 

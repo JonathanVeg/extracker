@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">extracker</string>
+    <string name="app_name">Extracker</string>
     <string moduleConfig="true" name="CodePushDeploymentKey">e8891fae-0b03-4f71-9181-71ca9c553b5f</string>
     <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
     <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>

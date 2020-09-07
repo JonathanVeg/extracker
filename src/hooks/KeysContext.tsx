@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState, useContext } from 'react';
 import StorageUtils from '../utils/StorageUtils';
+import { useExchange } from './ExchangeContext';
 
 interface KeysContextProps {
   usingKeys: boolean;
@@ -14,12 +15,13 @@ const initialValue = { usingKeys: false, key: '', secret: '', hasKeys: false, re
 const KeysContext = createContext<KeysContextProps>(initialValue);
 
 const KeysProvider = ({ children }) => {
+  const { exchange } = useExchange();
   const usingKeys = true;
   const [key, setKey] = useState('');
   const [secret, setSecret] = useState('');
 
   function reloadKeys() {
-    StorageUtils.getKeys().then(s => {
+    StorageUtils.getKeys(exchange).then(s => {
       setKey(s.key);
       setSecret(s.secret);
     });

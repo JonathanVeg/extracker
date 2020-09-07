@@ -17,7 +17,7 @@ import { colors } from './style/globals';
 import './utils/prototypes';
 import CoinPageMyOrdersHistory from './pages/Wallet/MyOrdersHistory';
 import CoinPageCalculator from './pages/Coin/Calculator';
-import { H1 } from './components/Hs';
+import { H1, H3 } from './components/Hs';
 import AppProvider from './hooks';
 import SecurityPage from './pages/Security';
 import DonatePage from './pages/Donate';
@@ -25,6 +25,9 @@ import { useKeys } from './hooks/KeysContext';
 import AlertPage from './pages/Alert';
 import OneSignalWrapper from './controllers/OneSignal';
 import ContactPage from './pages/Contact';
+import { useExchange } from './hooks/ExchangeContext';
+import Poloniex from './controllers/exchanges/Poloniex';
+import Bittrex from './controllers/exchanges/Bittrex';
 
 declare global {
   interface Number {
@@ -93,7 +96,7 @@ const AboutPageStack = () => (
   </Stack.Navigator>
 );
 
-function CustomDrawerContent({ usingKeys, drawerPosition, navigation }): ReactElement {
+function CustomDrawerContent({ exchange, changeExchange, usingKeys, drawerPosition, navigation }): ReactElement {
   const insets = useSafeArea();
 
   return (
@@ -107,7 +110,8 @@ function CustomDrawerContent({ usingKeys, drawerPosition, navigation }): ReactEl
       }}
     >
       <View style={{ flex: 1 }}>
-        <H1 center>TREXTRACKER</H1>
+        <H1 center>EXTRACKER</H1>
+        <H3 center>({exchange.name})</H3>
 
         <DrawerItem
           icon={() => <Icon name="home" size={20} />}
@@ -148,6 +152,13 @@ function CustomDrawerContent({ usingKeys, drawerPosition, navigation }): ReactEl
           onPress={() => navigation.navigate('About')}
         />
       </View>
+      <TouchableOpacity
+        onPress={() => {
+          changeExchange(exchange === Bittrex ? Poloniex : Bittrex);
+        }}
+      >
+        <H3 center>Change exchange to {exchange === Bittrex ? 'Poloniex' : 'Bittrex'} </H3>
+      </TouchableOpacity>
       <DivisionLine />
       <View>
         <TouchableOpacity onPress={() => Linking.openURL('https://twitter.com/JonathanVeg2')}>
@@ -160,11 +171,14 @@ function CustomDrawerContent({ usingKeys, drawerPosition, navigation }): ReactEl
 
 const GlobalNavigator = () => {
   const { usingKeys } = useKeys();
+  const { exchange, changeExchange } = useExchange();
 
   return (
     <Drawer.Navigator
       initialRouteName="Home"
-      drawerContent={(props): ReactElement => <CustomDrawerContent usingKeys={usingKeys} {...props} />}
+      drawerContent={(props): ReactElement => (
+        <CustomDrawerContent exchange={exchange} changeExchange={changeExchange} usingKeys={usingKeys} {...props} />
+      )}
     >
       <Drawer.Screen name="Home" component={HomeStack} />
       {usingKeys && <Drawer.Screen name="Wallets" component={WalletPageStack} />}

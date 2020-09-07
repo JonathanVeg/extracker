@@ -9,9 +9,10 @@ import { Container } from '../../../components/Generics';
 import Item from './Item';
 import AlertsAPI from '../../../controllers/Alerts';
 import { readOneSignalUserId } from '../../../controllers/OneSignal';
-import Exchange from '../../../controllers/exchanges/Exchange';
+import { useExchange } from '../../../hooks/ExchangeContext';
 
 export default function CoinPageOrders(props) {
+  const { exchange } = useExchange();
   const { type } = props;
 
   const coin = props.coin || new Coin('DCR', 'BTC');
@@ -27,9 +28,9 @@ export default function CoinPageOrders(props) {
       if (changeRefreshing) setRefreshing(true);
 
       const uid = await readOneSignalUserId();
-      const alerts = await AlertsAPI.getAlerts(uid);
+      const alerts = await AlertsAPI.getAlerts(exchange, uid);
 
-      const orders = await Exchange.loadOrderBook(coin, type);
+      const orders = await exchange.loadOrderBook(coin, type);
 
       orders.map(order => {
         order.alerts = alerts.filter(it => {
@@ -50,7 +51,7 @@ export default function CoinPageOrders(props) {
   }
 
   async function loadMOrders() {
-    const myOrders = await Exchange.loadMyOrders(coin);
+    const myOrders = await exchange.loadMyOrders(coin);
 
     setMyOrders(myOrders);
   }

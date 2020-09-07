@@ -16,6 +16,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
   const order: Order = item;
 
   const { showToast } = useToast();
+  const { exchange } = useExchange();
   const { usingKeys } = useKeys();
 
   async function createAlert() {
@@ -28,7 +29,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
         parseFloat(item.rate),
       );
 
-      await AlertsAPI.createAlert(newAlert);
+      await AlertsAPI.createAlert(exchange, newAlert);
 
       showToast('Alert created');
 
@@ -42,7 +43,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
     try {
       const uid = await readOneSignalUserId();
       for (let i = 0; i < item.alerts.length; i++) {
-        await AlertsAPI.deleteAlert(item.alerts[i], uid);
+        await AlertsAPI.deleteAlert(exchange, item.alerts[i], uid);
       }
 
       showToast('Alert cancelled');

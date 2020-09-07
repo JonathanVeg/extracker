@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import { default as FA } from 'react-native-vector-icons/FontAwesome';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { default as AD } from 'react-native-vector-icons/AntDesign';
+import { Alert, FlatList, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Coin from '../../models/Coin';
 import HamburgerIcon from '../../components/HamburgerIcon';
@@ -14,7 +15,9 @@ import Keys from '../Settings/Keys';
 import { useFiats } from '../../hooks/FiatContext';
 import { useKeys } from '../../hooks/KeysContext';
 import { useSummaries } from '../../hooks/SummaryContext';
-import Exchange from '../../controllers/exchanges/Exchange';
+import StorageUtils from '../../utils/StorageUtils';
+import { useToast } from '../../hooks/ToastContext';
+import { useExchange } from '../../hooks/ExchangeContext';
 
 interface WalletListItem {
   myCoin: MyCoin;
@@ -22,7 +25,9 @@ interface WalletListItem {
 }
 
 export default function WalletPage({ navigation }) {
-  const { hasKeys } = useKeys();
+  const { exchange } = useExchange();
+  const { hasKeys, reloadKeys } = useKeys();
+  const { showToast } = useToast();
 
   const headerLeft = () => <HamburgerIcon navigationProps={navigation} />;
   const headerRight = () => (
@@ -32,6 +37,9 @@ export default function WalletPage({ navigation }) {
       </TouchableOpacity>
       <TouchableOpacity onPress={gotoNewOrder}>
         <FA name="cart-plus" size={25} style={{ marginEnd: 15 }} />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={deleteKeys}>
+        <AD name="deleteuser" size={25} style={{ marginEnd: 15 }} />
       </TouchableOpacity>
     </View>
   );
@@ -52,17 +60,38 @@ export default function WalletPage({ navigation }) {
     refresh();
   }, [hasKeys]);
 
-  const refresh = async () => {
-    if (hasKeys) {
-      load();
+  async function deleteKeys() {
+    async function deleteIt() {
+      await StorageUtils.saveKeys(exchange, '', '');
+
+      showToast({ text: 'Keys removed', type: 'success' });
+
+      reloadKeys();
     }
+
+    Alert.alert(
+      'Clear keys',
+      'Are you sure you want delete your keys?',
+      [
+        { text: 'No', style: 'cancel' },
+        {
+          text: 'Yes',
+          onPress: deleteIt,
+        },
+      ],
+      { cancelable: false },
+    );
+  }
+
+  const refresh = async () => {
+    if (hasKeys) load();
   };
 
   async function load() {
     try {
       setRefreshing(true);
 
-      const data = await Exchange.loadBalances();
+      const data = await exchange.loadBalances();
 
       setMyCoins(data);
     } finally {

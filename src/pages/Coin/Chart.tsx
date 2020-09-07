@@ -7,18 +7,18 @@ import Coin from '../../models/Coin';
 import StorageUtils from '../../utils/StorageUtils';
 import { Container } from '../../components/Generics';
 import { H2 } from '../../components/Hs';
-import Exchange from '../../controllers/exchanges/Exchange';
-import exchange from '../../controllers/exchanges/Exchange';
+import { useExchange } from '../../hooks/ExchangeContext';
 
 export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
+  const { exchange } = useExchange();
   const coin: Coin = pCoin || new Coin('DCR', 'BTC');
   // const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
-  const [zoom, setZoom] = useState(Exchange.candleChartData().zoom[2]);
-  const [candle, setCandle] = useState(Exchange.candleChartData().candle[2]);
+  const [zoom, setZoom] = useState(exchange.candleChartData().zoom[2]);
+  const [candle, setCandle] = useState(exchange.candleChartData().candle[2]);
   const [values, setValues] = useState([]);
 
   async function load() {
-    const data = await Exchange.loadCandleChartData(coin, candle.value.toString(), parseFloat(zoom.value));
+    const data = await exchange.loadCandleChartData(coin, candle.value.toString(), parseFloat(zoom.value));
 
     setValues(prepareChartData(data));
   }
@@ -121,7 +121,7 @@ export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
         <Text style={{ alignSelf: 'stretch', textAlign: 'center' }}>Zoom</Text>
         <ModalSelector
           key={Math.random()}
-          data={Exchange.candleChartData().zoom}
+          data={exchange.candleChartData().zoom}
           initValue={zoom.label}
           style={{ marginHorizontal: 8, alignSelf: 'stretch' }}
           onChange={item => {
@@ -134,7 +134,7 @@ export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
         <Text style={{ alignSelf: 'stretch', textAlign: 'center' }}>Candle</Text>
         <ModalSelector
           key={Math.random()}
-          data={Exchange.candleChartData().candle}
+          data={exchange.candleChartData().candle}
           initValue={candle.label}
           style={{ marginHorizontal: 8, alignSelf: 'stretch' }}
           onChange={item => {

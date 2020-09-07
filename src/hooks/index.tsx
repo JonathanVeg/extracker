@@ -4,15 +4,18 @@ import { FiatProvider } from './FiatContext';
 import { KeysProvider } from './KeysContext';
 import { ToastProvider } from './ToastContext';
 import { SummaryProvider } from './SummaryContext';
+import { ExchangeProvider } from './ExchangeContext';
 
 export default function AppProvider({ children }) {
   return (
-    <ToastProvider>
-      <SummaryProvider>
-        <KeysProvider>
-          <FiatProvider>{children}</FiatProvider>
-        </KeysProvider>
-      </SummaryProvider>
-    </ToastProvider>
+    <ExchangeProvider>
+      <ToastProvider>
+        <SummaryProvider>
+          <KeysProvider>
+            <FiatProvider>{children}</FiatProvider>
+          </KeysProvider>
+        </SummaryProvider>
+      </ToastProvider>
+    </ExchangeProvider>
   );
 }

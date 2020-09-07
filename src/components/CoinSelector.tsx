@@ -7,11 +7,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { H1 } from './Hs';
 import { sortArrayByKey } from '../utils/utils';
 import Coin from '../models/Coin';
-import exchange from '../controllers/exchanges/Exchange';
-
-// import { Container } from './styles';
+import { useExchange } from '../hooks/ExchangeContext';
 
 const CoinSelector: React.FC = ({ sMarket, setSMarket, sCoin, setSCoin }) => {
+  const { exchange } = useExchange();
   const [markets, setMarkets] = useState<string[]>([]);
   const [coinsNames, setCoinsNames] = useState<object[]>([]);
 

@@ -13,7 +13,7 @@ export default interface ExchangeInterface {
   loadMarketHistory(coin: Coin): Promise<OrderHistory[]>;
   loadCandleChartData(coin: Coin, chartCandle: string, chartZoom: number): Promise<ChartData[]>;
   cancelOrder(order: MyOrder): Promise<void>;
-  loadBalances(includeZeros: boolean): Promise<MyCoin[]>;
+  loadBalances(includeZeros?: boolean): Promise<MyCoin[]>;
   loadBalance(currency: string): Promise<MyCoin | null>;
   loadClosedOrders(coin: Coin): Promise<MyOrder[]>;
   loadMyOrders(coin: Coin): Promise<MyOrder[]>;

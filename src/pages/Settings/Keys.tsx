@@ -8,8 +8,10 @@ import MyInput from '../../components/MyInput';
 import StorageUtils from '../../utils/StorageUtils';
 import { useKeys } from '../../hooks/KeysContext';
 import { useToast } from '../../hooks/ToastContext';
+import { useExchange } from '../../hooks/ExchangeContext';
 
 export default function Keys() {
+  const { exchange } = useExchange();
   const { hasKeys, key, secret, reloadKeys } = useKeys();
 
   const [newKey, setNewKey] = useState('');
@@ -35,7 +37,7 @@ export default function Keys() {
 
   async function saveKeys() {
     try {
-      await StorageUtils.saveKeys(newKey, newSecret);
+      await StorageUtils.saveKeys(exchange, newKey, newSecret);
 
       showToast({ text: 'Keys saved', type: 'success' });
 

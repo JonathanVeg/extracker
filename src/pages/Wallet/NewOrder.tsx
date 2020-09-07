@@ -15,7 +15,7 @@ import { Container } from '../../components/Generics';
 import { useToast } from '../../hooks/ToastContext';
 import CoinSelector from '../../components/CoinSelector';
 import AlertsAPI from '../../controllers/Alerts';
-import Exchange from '../../controllers/exchanges/Exchange';
+import { useExchange } from '../../hooks/ExchangeContext';
 
 function usePrevious(value) {
   const ref = useRef();
@@ -26,6 +26,8 @@ function usePrevious(value) {
 }
 
 export default function NewOrder({ route, navigation }) {
+  const { exchange } = useExchange();
+
   function adjustHeader() {
     const headerRight = () => (
       <View style={{ marginStart: 5, flexDirection: 'row' }}>
@@ -194,7 +196,7 @@ export default function NewOrder({ route, navigation }) {
 
   async function callExecOrder() {
     try {
-      const ret = await Exchange.execOrder(type, coin.market, coin.name, quantity, price);
+      const ret = await exchange.execOrder(type, coin.market, coin.name, quantity, price);
 
       if (ret.success) {
         showToast('Order created');
@@ -214,7 +216,7 @@ export default function NewOrder({ route, navigation }) {
   }
 
   async function loadMyData() {
-    const data = await Exchange.loadBalances();
+    const data = await exchange.loadBalances();
 
     setMyCoin(data.find(it => it.name === coin.name));
     setMyMarket(data.find(it => it.name === coin.market));
@@ -224,7 +226,7 @@ export default function NewOrder({ route, navigation }) {
     try {
       if (showRefreshing) setRefreshing(true);
 
-      await Exchange.loadSummary(coin);
+      await exchange.loadSummary(coin);
 
       const clone = Object.assign(Object.create(Object.getPrototypeOf(coin)), coin);
 

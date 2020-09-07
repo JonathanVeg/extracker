@@ -1,8 +1,7 @@
 import React, { createContext, useEffect, useState, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import Coin from '../models/Coin';
-import Exchange from '../controllers/exchanges/Exchange';
-import exchange from '../controllers/exchanges/Exchange';
+import { useExchange } from './ExchangeContext';
 
 interface SummaryContextProps {
   coins: Coin[];
@@ -15,6 +14,7 @@ const initialValue = { coins: [], reloadSummary: null, allCoinsInBtc: {}, market
 const SummaryContext = createContext<SummaryContextProps>(initialValue);
 
 const SummaryProvider = ({ children }) => {
+  const { exchange } = useExchange();
   const [coins, setCoins] = useState<Coin[]>([]);
   const [markets, setMarkets] = useState<string[]>([]);
   const [allCoinsInBtc, setAllCoinsInBtc] = useState<object>({});
@@ -37,7 +37,7 @@ const SummaryProvider = ({ children }) => {
   }
 
   async function reloadSummary() {
-    const [coins, markets] = await Exchange.loadMarketSummaries();
+    const [coins, markets] = await exchange.loadMarketSummaries();
 
     setCoins(coins);
     setMarkets(markets);

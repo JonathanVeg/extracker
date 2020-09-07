@@ -8,9 +8,10 @@ import { colors } from '../../style/globals';
 import MyOrder from '../../models/MyOrder';
 import { Container } from '../../components/Generics';
 import { useToast } from '../../hooks/ToastContext';
-import Exchange from '../../controllers/exchanges/Exchange';
+import { useExchange } from '../../hooks/ExchangeContext';
 
 export default function CoinPageMyOrdersHistory(props) {
+  const { exchange } = useExchange();
   const { coin } = props;
 
   const [selecteds, setSelecteds] = useState<MyOrder[]>([]);
@@ -32,7 +33,7 @@ export default function CoinPageMyOrdersHistory(props) {
     try {
       if (toggleRefreshing) setRefreshing(true);
 
-      const orders = await (showOpened ? Exchange.loadMyOrders(coin) : Exchange.loadClosedOrders(coin));
+      const orders = await (showOpened ? exchange.loadMyOrders(coin) : exchange.loadClosedOrders(coin));
 
       setOrders(orders);
     } finally {

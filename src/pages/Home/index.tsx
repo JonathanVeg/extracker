@@ -1,4 +1,3 @@
-import * as Keychain from 'react-native-keychain';
 import { BlurView } from '@react-native-community/blur';
 import AsyncStorage from '@react-native-community/async-storage';
 import React, { useEffect, useState } from 'react';
@@ -25,15 +24,15 @@ import { useSummaries } from '../../hooks/SummaryContext';
 import { colors } from '../../style/globals';
 import HomeCoinItemCompact from './HomeCoinItemCompact';
 import CoinPageChart from '../Coin/Chart';
-import Exchange from '../../controllers/exchanges/Exchange';
-import exchange from '../../controllers/exchanges/Exchange';
+import { useExchange } from '../../hooks/ExchangeContext';
 
 export default function Home({ navigation }) {
+  const { exchange } = useExchange();
   const { usingKeys, hasKeys } = useKeys();
   const [sortCoinsBy, setSortCoinsBy] = useState('baseVolume');
 
   navigation.setOptions({
-    title: 'Trextracker',
+    title: `Extracker (${exchange.name})`,
     headerLeft: () => <HamburgerIcon navigationProps={navigation} />,
     headerRight: () => headerRight,
   });
@@ -83,6 +82,7 @@ export default function Home({ navigation }) {
     console.log('AQUI', showSearch, 'search:', search);
     if (showSearch) {
       setShowSearch(false);
+
       return true;
     }
 
@@ -102,13 +102,13 @@ export default function Home({ navigation }) {
 
       if (hasKeys) loadMyCoins();
 
-      Exchange.loadMarketSummaries();
+      exchange.loadMarketSummaries();
     }
 
     run();
 
     return () => backHandler.remove();
-  }, []);
+  }, [exchange]);
 
   useEffect(() => {
     if (hasKeys) loadMyCoins();
@@ -160,7 +160,7 @@ export default function Home({ navigation }) {
   }
 
   async function loadMyCoins() {
-    const myCoins = await Exchange.loadBalances();
+    const myCoins = await exchange.loadBalances();
 
     setMyCoins(myCoins);
   }
@@ -212,7 +212,7 @@ export default function Home({ navigation }) {
 
       await loadDataFromLocalStorage();
 
-      const data = await Exchange.loadMarketSummaries();
+      const data = await exchange.loadMarketSummaries();
 
       const favs = await loadFavorites();
 
@@ -337,13 +337,6 @@ export default function Home({ navigation }) {
         }}
       />
     </MarketSelectorBlockContainer>
-    // <MarketSelectorBlockContainer>
-    //   {markets.map(it => (
-    //     <TouchableOpacity key={`selectmarket${it}`} style={{ padding: 8 }} onPress={() => setMarket(it)}>
-    //       <Text style={{ textAlign: 'center', fontWeight: market === it ? 'bold' : 'normal' }}>{it}</Text>
-    //     </TouchableOpacity>
-    //   ))}
-    // </MarketSelectorBlockContainer>
   );
 
   const SearchBlock = () =>

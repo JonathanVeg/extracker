@@ -10,13 +10,14 @@ import { Container } from '../../components/Generics';
 import { useFiats } from '../../hooks/FiatContext';
 import { useSummaries } from '../../hooks/SummaryContext';
 import { useKeys } from '../../hooks/KeysContext';
-import Exchange from '../../controllers/exchanges/Exchange';
+import { useExchange } from '../../hooks/ExchangeContext';
 
 interface CoinPageSummaryInterface {
   coin: Coin | null;
 }
 
 export default function CoinPageSummary(props: CoinPageSummaryInterface) {
+  const { exchange } = useExchange();
   const { fiats } = useFiats();
   const { allCoinsInBtc } = useSummaries();
 
@@ -26,7 +27,7 @@ export default function CoinPageSummary(props: CoinPageSummaryInterface) {
   const [myCoin, setMyCoin] = useState<MyCoin | null>(null);
 
   async function loadMyData() {
-    const data = await Exchange.loadBalance(coin.name);
+    const data = await exchange.loadBalance(coin.name);
 
     if (data && data.available !== null) setMyCoin(data);
   }
@@ -35,7 +36,7 @@ export default function CoinPageSummary(props: CoinPageSummaryInterface) {
     try {
       setRefreshing(true);
 
-      await Exchange.loadSummary(coin);
+      await exchange.loadSummary(coin);
 
       const clone = Object.assign(Object.create(Object.getPrototypeOf(coin)), coin);
 
