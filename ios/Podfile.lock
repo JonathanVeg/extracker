@@ -333,8 +333,6 @@ PODS:
     - ReactCommon/callinvoker (= 0.62.2)
   - RNCAsyncStorage (1.9.0):
     - React
-  - RNCCheckbox (0.5.1):
-    - React
   - RNCClipboard (1.2.2):
     - React
   - RNCharts (0.5.7):
@@ -416,7 +414,6 @@ DEPENDENCIES:
   - ReactCommon/callinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
-  - "RNCCheckbox (from `../node_modules/@react-native-community/checkbox`)"
   - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
   - RNCharts (from `../node_modules/react-native-charts-wrapper`)
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
@@ -517,8 +514,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
-  RNCCheckbox:
-    :path: "../node_modules/@react-native-community/checkbox"
   RNCClipboard:
     :path: "../node_modules/@react-native-community/clipboard"
   RNCharts:
@@ -589,7 +584,6 @@ SPEC CHECKSUMS:
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
   RNCAsyncStorage: 453cd7c335ec9ba3b877e27d02238956b76f3268
-  RNCCheckbox: 3e2d9e896be53e4ff56aac93fbd0f0dbf55d4e73
   RNCClipboard: 8148e21ac347c51fd6cd4b683389094c216bb543
   RNCharts: d364ca2085e24edb9ee0390d3fb7209257daa44c
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f

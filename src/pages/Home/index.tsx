@@ -6,7 +6,7 @@ import styled from 'styled-components/native';
 import { default as Icon } from 'react-native-vector-icons/MaterialIcons';
 import { default as MCI } from 'react-native-vector-icons/MaterialCommunityIcons';
 import { default as FA } from 'react-native-vector-icons/FontAwesome';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, Alert, BackHandler } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import BlackWhiteBlock from '../../components/BlackWhiteBlock';
 import Coin from '../../models/Coin';
@@ -79,7 +79,19 @@ export default function Home({ navigation }) {
     reloadFiats();
   }
 
+  function backAction() {
+    console.log('AQUI', showSearch, 'search:', search);
+    if (showSearch) {
+      setShowSearch(false);
+      return true;
+    }
+
+    return true;
+  }
+
   useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
     async function run() {
       let sortCoinsBy = await AsyncStorage.getItem(`@extracker@${exchange.name}:sortCoinsBy`);
       sortCoinsBy = sortCoinsBy || 'baseVolume';
@@ -94,6 +106,8 @@ export default function Home({ navigation }) {
     }
 
     run();
+
+    return () => backHandler.remove();
   }, []);
 
   useEffect(() => {

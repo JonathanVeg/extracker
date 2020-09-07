@@ -168,6 +168,7 @@ export default function CoinPageMyOrdersHistory(props) {
             {showQuantity ? 'Quantity' : showOpened ? 'Remaining' : 'Done'}
           </Text>
         </TouchableOpacity>
+
         <TouchableOpacity style={{ flex: 1 }} onPress={() => setShowUnit(!showUnit)}>
           <Text style={{ fontWeight: 'bold', flex: 1, textAlign: 'right' }}>{showUnit ? 'Unity Price' : 'Total'}</Text>
         </TouchableOpacity>
@@ -213,32 +214,13 @@ export default function CoinPageMyOrdersHistory(props) {
         />
       </View>
       <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-        <TouchableOpacity
-          style={{
-            paddingVertical: 3,
-            marginEnd: 2,
-            borderWidth: 1,
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onPress={() => setShowOpened(true)}
-        >
+        <ShowOpenedButton onPress={() => setShowOpened(true)}>
           <Text style={{ fontWeight: showOpened ? 'bold' : 'normal' }}>OPENED</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            paddingVertical: 3,
-            marginStart: 2,
-            borderWidth: 1,
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onPress={() => setShowOpened(false)}
-        >
+        </ShowOpenedButton>
+        <View style={{ width: 4 }} />
+        <ShowClosedButton onPress={() => setShowOpened(false)}>
           <Text style={{ fontWeight: !showOpened ? 'bold' : 'normal' }}>CLOSED</Text>
-        </TouchableOpacity>
+        </ShowClosedButton>
       </View>
     </Container>
   );
@@ -260,4 +242,22 @@ const MyCheckbox = styled.View`
   border-color: black;
   background-color: ${({ checked }) => (checked ? 'black' : 'transparent')};
   border-width: 1px;
+`;
+
+const ShowOpenedButton = styled.TouchableOpacity`
+  padding: 3px 0;
+  /* margin: 0 0 0 2px; */
+  border-width: 1px;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ShowClosedButton = styled.TouchableOpacity`
+  padding: 3px 0;
+  /* margin: 0 0 2px 0; */
+  border-width: 1px;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 `;

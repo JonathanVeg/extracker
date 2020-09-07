@@ -24,7 +24,6 @@ import DonatePage from './pages/Donate';
 import { useKeys } from './hooks/KeysContext';
 import AlertPage from './pages/Alert';
 import OneSignalWrapper from './controllers/OneSignal';
-import moment from 'moment';
 import ContactPage from './pages/Contact';
 
 declare global {

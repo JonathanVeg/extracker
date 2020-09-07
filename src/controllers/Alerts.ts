@@ -4,8 +4,8 @@ import Alert from '../models/Alert';
 import { readOneSignalUserId } from './OneSignal';
 import exchange from './exchanges/Exchange';
 
-// const baseURL = 'https://trextracker.jonathanveg.dev/alerts';
-const baseURL = 'http://localhost:3333/alerts';
+const baseURL = 'https://trextracker.jonathanveg.dev/alerts';
+// const baseURL = 'http://localhost:3333/alerts';
 
 export default class AlertsAPI {
   static async createAlert(alert: Alert) {

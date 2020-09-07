@@ -170,6 +170,8 @@ class Bittrex implements ExchangeInterface {
   async loadOrderBook(coin: Coin, type: string): Promise<Order[]> {
     const url = `${this.baseURL}/api/v1.1/public/getorderbook?market=${this.coinToPair(coin)}&type=${type}`;
 
+    console.log(url);
+
     const response = await axios.get(url, { method: 'get' });
 
     let json = await response.data;
