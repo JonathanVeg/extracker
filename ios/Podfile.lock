@@ -339,8 +339,6 @@ PODS:
     - Charts (= 3.3.0)
     - React
     - SwiftyJSON (= 5.0)
-  - RNCMaskedView (0.1.10):
-    - React
   - RNGestureHandler (1.6.1):
     - React
   - RNKeychain (6.0.0):
@@ -416,7 +414,6 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
   - RNCharts (from `../node_modules/react-native-charts-wrapper`)
-  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -518,8 +515,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/clipboard"
   RNCharts:
     :path: "../node_modules/react-native-charts-wrapper"
-  RNCMaskedView:
-    :path: "../node_modules/@react-native-community/masked-view"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNKeychain:
@@ -586,7 +581,6 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 453cd7c335ec9ba3b877e27d02238956b76f3268
   RNCClipboard: 8148e21ac347c51fd6cd4b683389094c216bb543
   RNCharts: d364ca2085e24edb9ee0390d3fb7209257daa44c
-  RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNKeychain: bf2d7e9a0ae7a073c07770dd2aa6d11c67581733
   RNReanimated: 955cf4068714003d2f1a6e2bae3fb1118f359aff
