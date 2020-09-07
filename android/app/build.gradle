@@ -14,7 +14,7 @@ apply plugin: "com.android.application"
 import com.android.build.OutputFile
 
 project.ext.react = [
-    enableHermes: false, 
+    enableHermes: true, 
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -22,7 +22,7 @@ apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 def enableSeparateBuildPerCPUArchitecture = false
 
-def enableProguardInReleaseBuilds = false
+def enableProguardInReleaseBuilds = true
 
 def jscFlavor = 'org.webkit:android-jsc:+'
 
@@ -58,6 +58,15 @@ android {
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
+        } 
+
+        release {
+             if (project.hasProperty('EXTRACKER_UPLOAD_STORE_FILE')) {
+                storeFile file(EXTRACKER_UPLOAD_STORE_FILE)
+                storePassword EXTRACKER_UPLOAD_STORE_PASSWORD
+                keyAlias EXTRACKER_UPLOAD_KEY_ALIAS
+                keyPassword EXTRACKER_UPLOAD_KEY_PASSWORD
+            }
         }
     }
     buildTypes {
@@ -65,7 +74,7 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
