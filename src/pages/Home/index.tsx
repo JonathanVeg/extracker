@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 import { default as Icon } from 'react-native-vector-icons/MaterialIcons';
 import { default as MCI } from 'react-native-vector-icons/MaterialCommunityIcons';
 import { default as FA } from 'react-native-vector-icons/FontAwesome';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View, Alert, BackHandler } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, Alert, BackHandler, AlertButton } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import BlackWhiteBlock from '../../components/BlackWhiteBlock';
 import Coin from '../../models/Coin';
@@ -49,7 +49,7 @@ export default function Home({ navigation }) {
 
   const [chartCoin, setChartCoin] = useState<Coin | null>(null);
   const [compactMode, setCompactMode] = useState(false);
-  const { allCoinsInBtc, markets } = useSummaries();
+  const { allCoinsInBtc, markets, reloadSummary } = useSummaries();
   const [coins, setCoins] = useState<Coin[]>([]);
   const { fiats, reloadFiats } = useFiats();
   const [showBalanceBlock, setShowBalanceBlock] = useState(false);
@@ -78,20 +78,7 @@ export default function Home({ navigation }) {
     reloadFiats();
   }
 
-  function backAction() {
-    console.log('AQUI', showSearch, 'search:', search);
-    if (showSearch) {
-      setShowSearch(false);
-
-      return true;
-    }
-
-    return true;
-  }
-
   useEffect(() => {
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
-
     async function run() {
       let sortCoinsBy = await AsyncStorage.getItem(`@extracker@${exchange.name}:sortCoinsBy`);
       sortCoinsBy = sortCoinsBy || 'baseVolume';
@@ -103,11 +90,11 @@ export default function Home({ navigation }) {
       if (hasKeys) loadMyCoins();
 
       exchange.loadMarketSummaries();
+
+      reloadSummary();
     }
 
     run();
-
-    return () => backHandler.remove();
   }, [exchange]);
 
   useEffect(() => {
@@ -184,7 +171,7 @@ export default function Home({ navigation }) {
   }
 
   async function changeSortMode() {
-    const options = [
+    const options: AlertButton[] = [
       {
         text: sortCoinsBy === 'baseVolume' ? 'Volume (current)' : 'Volume',
         onPress: () => setSortCoinsBy('baseVolume'),
@@ -212,11 +199,9 @@ export default function Home({ navigation }) {
 
       await loadDataFromLocalStorage();
 
-      const data = await exchange.loadMarketSummaries();
+      const { coins } = await reloadSummary();
 
       const favs = await loadFavorites();
-
-      const coins = data[0];
 
       coins
         .filter(it => favs.includes(it.name))

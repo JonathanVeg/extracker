@@ -3,11 +3,15 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Coin from '../models/Coin';
 import { useExchange } from './ExchangeContext';
 
+interface ReloadSummaryInterface {
+  coins: Coin[];
+  markets: string[];
+}
 interface SummaryContextProps {
   coins: Coin[];
   markets: string[];
   allCoinsInBtc: object;
-  reloadSummary(): void | null;
+  reloadSummary(): ReloadSummaryInterface;
 }
 
 const initialValue = { coins: [], reloadSummary: null, allCoinsInBtc: {}, markets: [] };
@@ -36,13 +40,15 @@ const SummaryProvider = ({ children }) => {
     if (marketsFromStorage) setMarkets(JSON.parse(marketsFromStorage));
   }
 
-  async function reloadSummary() {
+  async function reloadSummary(): Promise<ReloadSummaryInterface> {
     const [coins, markets] = await exchange.loadMarketSummaries();
 
     setCoins(coins);
     setMarkets(markets);
 
     setAllCoinsInBtc(calcAllCoinsInBtc(coins, markets));
+
+    return { coins, markets };
   }
 
   return (
