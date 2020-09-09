@@ -6,6 +6,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider, useSafeArea } from 'react-native-safe-area-context';
 import { StatusBar, Text, View, StyleSheet, Linking, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { default as Ionicons } from 'react-native-vector-icons/Ionicons';
+import { default as FA } from 'react-native-vector-icons/FontAwesome';
 import styled from 'styled-components/native';
 import AboutPage from './pages/About';
 import CoinPage from './pages/Coin';
@@ -127,7 +129,7 @@ function CustomDrawerContent({ exchange, changeExchange, usingKeys, drawerPositi
           />
         )}
         <DrawerItem
-          icon={() => <Icon name="settings" size={20} />}
+          icon={() => <Ionicons name="settings" size={20} />}
           label="Settings"
           onPress={() => navigation.navigate('Settings')}
         />
@@ -141,11 +143,11 @@ function CustomDrawerContent({ exchange, changeExchange, usingKeys, drawerPositi
           label="Alert"
           onPress={() => navigation.navigate('Alert')}
         />
-        {/* <DrawerItem
-          icon={() => <Icon name="home-currency-usd" size={20} />}
+        <DrawerItem
+          icon={() => <FA name="money" size={20} />}
           label="Donate"
           onPress={() => navigation.navigate('Donate')}
-        /> */}
+        />
         <DrawerItem
           icon={() => <Icon name="information" size={20} />}
           label="About"
