@@ -11,6 +11,7 @@ import { useToast } from '../../../hooks/ToastContext';
 import { useKeys } from '../../../hooks/KeysContext';
 import AlertsAPI from '../../../controllers/Alerts';
 import { readOneSignalUserId } from '../../../controllers/OneSignal';
+import { useExchange } from '../../../hooks/ExchangeContext';
 
 const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, refresh }) => {
   const order: Order = item;
