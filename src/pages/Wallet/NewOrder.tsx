@@ -186,7 +186,7 @@ export default function NewOrder({ route, navigation }) {
         parseFloat(price),
       );
 
-      await AlertsAPI.createAlert(newAlert);
+      await AlertsAPI.createAlert(exchange, newAlert);
 
       showToast('Alert created');
     } catch (err) {
