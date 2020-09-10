@@ -1,3 +1,4 @@
+import styled from 'styled-components/native';
 import IconFA from 'react-native-vector-icons/FontAwesome';
 import RNPickerSelect from 'react-native-picker-select';
 import React, { useEffect, useState } from 'react';
@@ -14,8 +15,10 @@ import { readOneSignalUserId } from '../../controllers/OneSignal';
 import { useToast } from '../../hooks/ToastContext';
 import CoinSelector from '../../components/CoinSelector';
 import { useExchange } from '../../hooks/ExchangeContext';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const AlertPage = ({ navigation }) => {
+  const [selecteds, setSelecteds] = useState<Alert[]>([]);
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [saving, setSaving] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -31,6 +34,12 @@ const AlertPage = ({ navigation }) => {
       </TouchableOpacity>
     ),
   });
+
+  const handleSelectItem = (item: Alert) => {
+    const exists = selecteds.filter(it => it.id === item.id).length > 0;
+    const newSelecteds = !exists ? [...selecteds, item] : selecteds.filter(it => it.id !== item.id);
+    setSelecteds(newSelecteds);
+  };
 
   async function readAlerts(showRefreshing = true) {
     try {
@@ -172,7 +181,10 @@ const AlertPage = ({ navigation }) => {
             deleteAlert(item);
           }}
         >
-          <Icon name="delete" size={20} />
+          {/* <Icon name="delete" size={20} /> */}
+          <TouchableWithoutFeedback style={{ flex: 0.6 }} onPress={() => handleSelectItem(alert)}>
+            <MyCheckbox checked={selecteds.indexOf(item) !== -1} />
+          </TouchableWithoutFeedback>
         </TouchableOpacity>
       </Row>
     );
@@ -183,14 +195,20 @@ const AlertPage = ({ navigation }) => {
       <CoinSelector sMarket="BTC" sCoin="DCR" setSMarket={setMarket} setSCoin={setCoin} />
       {inputs}
       {alerts.length > 0 ? (
-        <FlatList
-          onRefresh={readAlerts}
-          refreshing={refreshing}
-          style={{ alignSelf: 'stretch', margin: 8 }}
-          data={alerts}
-          keyExtractor={it => it.coin}
-          renderItem={renderItem}
-        />
+        <>
+          <TouchableOpacity style={{ flex: 0.6, alignItems: 'flex-end' }}>
+            <Icon name="trash-alt" size={20} color={selecteds.length === 0 ? 'transparent' : 'black'} />
+          </TouchableOpacity>
+
+          <FlatList
+            onRefresh={readAlerts}
+            refreshing={refreshing}
+            style={{ alignSelf: 'stretch', margin: 8 }}
+            data={alerts}
+            keyExtractor={it => it.coin}
+            renderItem={renderItem}
+          />
+        </>
       ) : (
         <Text>No alerts yet</Text>
       )}
@@ -223,3 +241,14 @@ const pickerStyle = {
     paddingBottom: 10,
   },
 };
+
+const MyCheckbox = styled.View`
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 5px;
+  border-color: black;
+  background-color: ${({ checked }) => (checked ? 'black' : 'transparent')};
+  border-width: 1px;
+`;

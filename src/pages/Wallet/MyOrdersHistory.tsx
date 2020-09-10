@@ -1,5 +1,4 @@
-import CheckBox from '@react-native-community/checkbox';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { TouchableWithoutFeedback, View, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -76,27 +75,6 @@ export default function CoinPageMyOrdersHistory(props) {
   const showDetails = (item: MyOrder) => {
     Alert.alert('Resume', item.toResumeString());
   };
-
-  function askCancelOrder(order) {
-    let line = 'Are you sure you want to cancel this order?\n';
-
-    line += `${order.type} ${order.quantity} ${order.coin} for ${order.price.idealDecimalPlaces()} ${
-      order.market
-    } each.`;
-
-    Alert.alert(
-      'Cancel order',
-      line,
-      [
-        { text: 'No', style: 'cancel' },
-        {
-          text: 'Yes',
-          onPress: () => cancelOrder(order),
-        },
-      ],
-      { cancelable: false },
-    );
-  }
 
   function handleCancelAllOrders() {
     if (selecteds.length === 0) return;
