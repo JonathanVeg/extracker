@@ -5,6 +5,16 @@ import MyOrder from '../../models/MyOrder';
 import ChartData from '../../models/ChartData';
 import OrderHistory from '../../models/OrderHistory';
 
+export interface CandleChartDataItem {
+  label: string;
+  value: string;
+}
+
+export interface CandleChartData {
+  zoom: CandleChartDataItem[];
+  candle: CandleChartDataItem[];
+}
+
 export default interface ExchangeInterface {
   name: string;
   loadMarketSummaries(): Promise<[Coin[], string[]]>;
@@ -18,4 +28,5 @@ export default interface ExchangeInterface {
   loadClosedOrders(coin: Coin): Promise<MyOrder[]>;
   loadMyOrders(coin: Coin): Promise<MyOrder[]>;
   execOrder(type: string, market: string, coin: string, quantity: number, price: number): Promise<object>;
+  candleChartData(): CandleChartData;
 }

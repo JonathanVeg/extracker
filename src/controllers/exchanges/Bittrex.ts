@@ -11,7 +11,7 @@ import OrderHistory from '../../models/OrderHistory';
 import ChartData from '../../models/ChartData';
 import StorageUtils from '../../utils/StorageUtils';
 import { sign, nonce } from './utils';
-import ExchangeInterface from './ExchangeInterface';
+import ExchangeInterface, { CandleChartData } from './ExchangeInterface';
 
 class Bittrex implements ExchangeInterface {
   baseURL = 'https://bittrex.com';
@@ -261,7 +261,7 @@ class Bittrex implements ExchangeInterface {
     return data;
   }
 
-  candleChartData() {
+  candleChartData(): CandleChartData {
     const zoomItems = [
       { label: '3h', value: (3).toString() },
       { label: '6h', value: (6).toString() },

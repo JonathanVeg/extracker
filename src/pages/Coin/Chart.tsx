@@ -12,12 +12,13 @@ import { useExchange } from '../../hooks/ExchangeContext';
 export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
   const { exchange } = useExchange();
   const coin: Coin = pCoin || new Coin('DCR', 'BTC');
-  // const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
-  const [zoom, setZoom] = useState(exchange.candleChartData().zoom[2]);
-  const [candle, setCandle] = useState(exchange.candleChartData().candle[2]);
+
+  const [zoom, setZoom] = useState(null);
+  const [candle, setCandle] = useState(null);
   const [values, setValues] = useState([]);
 
   async function load() {
+    if (!zoom || !candle) return;
     const data = await exchange.loadCandleChartData(coin, candle.value.toString(), parseFloat(zoom.value));
 
     setValues(prepareChartData(data));
@@ -28,6 +29,8 @@ export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
   }
 
   useEffect(() => {
+    if (!zoom || !candle) return;
+
     load();
 
     StorageUtils.setItem(`@extracker@${exchange.name}:chartZoom`, JSON.stringify(zoom));
@@ -36,8 +39,15 @@ export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
 
   useEffect(() => {
     async function readChartDefaults() {
-      const chartZoom = await StorageUtils.getItem(`@extracker@${exchange.name}:chartZoom`);
-      const chartCandle = await StorageUtils.getItem(`@extracker@${exchange.name}:chartCandle`);
+      let chartZoom = await StorageUtils.getItem(`@extracker@${exchange.name}:chartZoom`);
+      let chartCandle = await StorageUtils.getItem(`@extracker@${exchange.name}:chartCandle`);
+
+      if (!chartZoom || !chartCandle) {
+        chartZoom = exchange.candleChartData().zoom;
+        chartCandle = exchange.candleChartData().candle;
+      }
+
+      console.log(chartZoom, chartCandle);
 
       if (chartZoom) setZoom(JSON.parse(chartZoom));
       if (chartCandle) setCandle(JSON.parse(chartCandle));
@@ -67,6 +77,8 @@ export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
 
     return values;
   }
+
+  if (!zoom || !candle) return null;
 
   const candleChart = {
     legend: { enabled: false },

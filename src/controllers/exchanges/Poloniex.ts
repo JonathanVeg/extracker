@@ -9,7 +9,7 @@ import MyOrder from '../../models/MyOrder';
 import OrderHistory from '../../models/OrderHistory';
 import ChartData from '../../models/ChartData';
 import { sign, nonce } from './utils';
-import ExchangeInterface from './ExchangeInterface';
+import ExchangeInterface, { CandleChartData, CandleChartDataItem } from './ExchangeInterface';
 import StorageUtils from '../../utils/StorageUtils';
 
 class Poloniex implements ExchangeInterface {
@@ -140,7 +140,7 @@ class Poloniex implements ExchangeInterface {
     return ret;
   }
 
-  candleChartData() {
+  candleChartData(): CandleChartData {
     const zoomItems = [
       { label: '3h', value: (3).toString() },
       { label: '6h', value: (6).toString() },
@@ -151,7 +151,7 @@ class Poloniex implements ExchangeInterface {
       { label: '1m', value: (24 * 30).toString() },
     ];
 
-    const candleItems = [300, 900, 1800, 7200, 14400, 86400].map(sec =>
+    const candleItems: CandleChartDataItem = [300, 900, 1800, 7200, 14400, 86400].map(sec =>
       sec / 60 < 60 ? { label: `${sec / 60} min`, value: sec } : { label: `${sec / 60 / 60} h`, value: sec },
     );
 
