@@ -7,6 +7,7 @@ import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import { Container } from '../../components/Generics';
 import { useExchange } from '../../hooks/ExchangeContext';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default function CoinPageOrdersHistory(props) {
   const { exchange } = useExchange();
@@ -32,7 +33,14 @@ export default function CoinPageOrdersHistory(props) {
     loadOrders();
   }
 
+  async function loadShowWhen() {
+    const showWhen = await AsyncStorage.getItem(`@extracker@${exchange.name}:historyShowWhen`);
+
+    setShowWhen(showWhen === 'true');
+  }
+
   useEffect(() => {
+    loadShowWhen();
     refresh();
   }, []);
 
@@ -69,6 +77,12 @@ export default function CoinPageOrdersHistory(props) {
     return fromNow;
   };
 
+  async function toggleWhen() {
+    setShowWhen(!showWhen);
+
+    await AsyncStorage.setItem(`@extracker@${exchange.name}:historyShowWhen`, `${!showWhen}`);
+  }
+
   function parseISOString(s) {
     const b = s.split(/\D+/);
     return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
@@ -79,7 +93,7 @@ export default function CoinPageOrdersHistory(props) {
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ flex: 1, textAlign: 'left', fontWeight: 'bold' }}>Amount</Text>
         <Text style={{ flex: 1, textAlign: 'center', fontWeight: 'bold' }}>Unit Price</Text>
-        <TouchableOpacity style={{ flex: 1 }} onPress={() => setShowWhen(!showWhen)}>
+        <TouchableOpacity style={{ flex: 1 }} onPress={toggleWhen}>
           <Text style={{ textAlign: 'right', fontWeight: 'bold' }}>{showWhen ? 'When' : 'Total'}</Text>
         </TouchableOpacity>
       </View>

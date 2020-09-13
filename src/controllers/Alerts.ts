@@ -5,7 +5,7 @@ import { readOneSignalUserId } from './OneSignal';
 import ExchangeInterface from './exchanges/ExchangeInterface';
 
 const baseURL = 'https://trextracker.jonathanveg.dev/alerts';
-// const baseURL = 'http://localhost:3333/alerts';
+// const baseURL = 'http://192.168.67.107:3333/alerts';
 
 export default class AlertsAPI {
   static async createAlert(exchange: ExchangeInterface, alert: Alert) {
@@ -31,7 +31,11 @@ export default class AlertsAPI {
     await axios.put(`${baseURL}/${alert.id}?uid=${uid}`);
   }
 
-  static async deleteAlert(exchange: ExchangeInterface, alert: Alert, uid: string): Promise<void> {
+  static async deleteAlert(alert: Alert, uid: string): Promise<void> {
     await axios.delete(`${baseURL}/${alert.id}?uid=${uid}`);
+  }
+
+  static async deleteSeveralAlerts(alerts: Alert[], uid: string): Promise<void> {
+    await axios.delete(`${baseURL}/?uid=${uid}&ids=${alerts.map(it => it.id)}`);
   }
 }

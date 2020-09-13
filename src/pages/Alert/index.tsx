@@ -1,9 +1,12 @@
+/* eslint-disable no-await-in-loop */
 import styled from 'styled-components/native';
 import IconFA from 'react-native-vector-icons/FontAwesome';
 import RNPickerSelect from 'react-native-picker-select';
 import React, { useEffect, useState } from 'react';
 import { Alert as RNAlert, View, Text, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { default as FA } from 'react-native-vector-icons/FontAwesome5';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Row } from '../../components/Generics';
 import HamburgerIcon from '../../components/HamburgerIcon';
 import { H2 } from '../../components/Hs';
@@ -15,7 +18,6 @@ import { readOneSignalUserId } from '../../controllers/OneSignal';
 import { useToast } from '../../hooks/ToastContext';
 import CoinSelector from '../../components/CoinSelector';
 import { useExchange } from '../../hooks/ExchangeContext';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const AlertPage = ({ navigation }) => {
   const [selecteds, setSelecteds] = useState<Alert[]>([]);
@@ -41,6 +43,35 @@ const AlertPage = ({ navigation }) => {
     setSelecteds(newSelecteds);
   };
 
+  const handleSelectAll = () => {
+    setSelecteds(selecteds.length === alerts.length ? [] : [...alerts]);
+  };
+
+  async function handleCancelSeveralAlerts() {
+    async function run() {
+      AlertsAPI.deleteSeveralAlerts(selecteds, uid).then(() => {
+        readAlerts(false);
+      });
+    }
+
+    if (selecteds.length === 0) return;
+
+    const uid = await readOneSignalUserId();
+
+    RNAlert.alert(
+      'Delete several alerts',
+      `Do you want to delete all ${selecteds.length} selected alerts`,
+      [
+        { text: 'No', style: 'cancel' },
+        {
+          text: 'Yes',
+          onPress: run,
+        },
+      ],
+      { cancelable: true },
+    );
+  }
+
   async function readAlerts(showRefreshing = true) {
     try {
       if (showRefreshing) setRefreshing(true);
@@ -56,7 +87,7 @@ const AlertPage = ({ navigation }) => {
 
   async function handleCreateAlert() {
     try {
-      if (parseFloat(price) === 0.0) {
+      if (parseFloat(price) === 0.0 || isNaN(parseFloat(price))) {
         showToast({ text: 'Please fill the price', type: 'error' });
 
         return;
@@ -91,7 +122,7 @@ const AlertPage = ({ navigation }) => {
       for (let i = 0; i < alerts.length; i++) {
         const alert = alerts[i];
 
-        await AlertsAPI.deleteAlert(exchange, alert, uid);
+        await AlertsAPI.deleteAlert(alert, uid);
       }
 
       readAlerts(false);
@@ -111,15 +142,8 @@ const AlertPage = ({ navigation }) => {
     );
   }
 
-  async function deleteAlert(alert: Alert) {
-    const uid = await readOneSignalUserId();
-
-    await AlertsAPI.deleteAlert(exchange, alert, uid);
-
-    readAlerts(false);
-  }
-
   useEffect(() => {
+    setSelecteds([]);
     readAlerts();
   }, []);
 
@@ -175,17 +199,11 @@ const AlertPage = ({ navigation }) => {
         <Text style={{ flex: 4 }}>{`${alert.coin}/${alert.market}`}</Text>
         <Text style={{ flex: 1 }}>{alert.condition}</Text>
         <Text style={{ flex: 4, fontVariant: ['tabular-nums'] }}>{parseFloat(alert.price).idealDecimalPlaces()}</Text>
-        <TouchableOpacity
-          style={{ flex: 1 }}
-          onPress={() => {
-            deleteAlert(item);
-          }}
-        >
-          {/* <Icon name="delete" size={20} /> */}
-          <TouchableWithoutFeedback style={{ flex: 0.6 }} onPress={() => handleSelectItem(alert)}>
-            <MyCheckbox checked={selecteds.indexOf(item) !== -1} />
-          </TouchableWithoutFeedback>
-        </TouchableOpacity>
+
+        {/* <Icon name="delete" size={20} /> */}
+        <TouchableWithoutFeedback style={{ flex: 0.6 }} onPress={() => handleSelectItem(alert)}>
+          <MyCheckbox checked={selecteds.indexOf(item) !== -1} />
+        </TouchableWithoutFeedback>
       </Row>
     );
   };
@@ -196,21 +214,28 @@ const AlertPage = ({ navigation }) => {
       {inputs}
       {alerts.length > 0 ? (
         <>
-          <TouchableOpacity style={{ flex: 0.6, alignItems: 'flex-end' }}>
-            <Icon name="trash-alt" size={20} color={selecteds.length === 0 ? 'transparent' : 'black'} />
-          </TouchableOpacity>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
+            <TouchableWithoutFeedback style={{ flexDirection: 'row', alignItems: 'center' }} onPress={handleSelectAll}>
+              <Text>Select all</Text>
+              <MyCheckbox checked={selecteds.length === alerts.length} />
+            </TouchableWithoutFeedback>
+
+            <TouchableOpacity onPress={handleCancelSeveralAlerts}>
+              <FA name="trash-alt" size={20} color={selecteds.length === 0 ? 'transparent' : 'black'} />
+            </TouchableOpacity>
+          </View>
 
           <FlatList
             onRefresh={readAlerts}
             refreshing={refreshing}
-            style={{ alignSelf: 'stretch', margin: 8 }}
+            style={{ alignSelf: 'stretch', margin: 8, flex: 1 }}
             data={alerts}
             keyExtractor={it => it.coin}
             renderItem={renderItem}
           />
         </>
       ) : (
-        <Text>No alerts yet</Text>
+        <Text style={{ width: '100%', textAlign: 'center' }}>No alerts yet</Text>
       )}
     </View>
   );

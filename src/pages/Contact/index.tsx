@@ -76,7 +76,7 @@ Message: ${message}
     } catch (err) {
       showToast({ text: 'Error while sending message', type: 'error' });
 
-      console.log(err);
+      console.error(err);
     } finally {
       setSending(false);
     }

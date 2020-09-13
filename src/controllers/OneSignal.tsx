@@ -29,7 +29,7 @@ const OneSignalWrapper: React.FC = () => {
       const { isAppInFocus } = openResult.notification;
       const { coin, market, price } = openResult.notification.payload.additionalData;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 

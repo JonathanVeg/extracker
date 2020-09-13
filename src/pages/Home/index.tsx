@@ -140,14 +140,14 @@ export default function Home({ navigation }) {
       setCoins(cc);
 
       return true;
-    } catch (e) {
-      console.log(`ERROR ${e}`);
+    } catch (err) {
+      console.error(err);
       return false;
     }
   }
 
   async function loadMyCoins() {
-    const myCoins = await exchange.loadBalances();
+    const myCoins = await exchange.loadBalances(true);
 
     setMyCoins(myCoins);
   }

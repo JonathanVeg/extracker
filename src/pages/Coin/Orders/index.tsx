@@ -44,7 +44,7 @@ export default function CoinPageOrders(props) {
 
       setOrders(orders);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       setRefreshing(false);
     }
