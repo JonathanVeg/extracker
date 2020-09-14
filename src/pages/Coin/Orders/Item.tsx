@@ -132,7 +132,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
             name="bell"
             size={13}
             style={{ margin: 2 }}
-            color={item.alerts.length > 0 ? 'black' : 'transparent'}
+            color={item.alerts.filter(it => it.active).length > 0 ? 'black' : 'transparent'}
           />
         )}
 
