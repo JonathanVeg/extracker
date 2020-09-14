@@ -44,7 +44,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
     try {
       const uid = await readOneSignalUserId();
       for (let i = 0; i < item.alerts.length; i++) {
-        await AlertsAPI.deleteAlert(exchange, item.alerts[i], uid);
+        await AlertsAPI.deleteAlert(item.alerts[i], uid);
       }
 
       showToast('Alert cancelled');
