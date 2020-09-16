@@ -71,7 +71,10 @@ export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
         close: data.close,
         marker: `H: ${data.high.toFixed(8)}.\nL: ${data.low.toFixed(8)}.\nO: ${data.open.toFixed(
           8,
-        )}.\nC: ${data.close.toFixed(8)}.\nV: ${data.baseVolume.toFixed(8)} ${coin.market}.`,
+        )}.\nC: ${data.close.toFixed(8)}.\nV: ${data.baseVolume.toFixed(8)} ${coin.market}.\nSpread (H/L): ${(
+          (data.high / data.low - 1) *
+          100
+        ).toFixed(2)}%`,
       });
     });
 
