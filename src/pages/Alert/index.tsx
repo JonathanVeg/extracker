@@ -230,7 +230,7 @@ const AlertPage = ({ navigation }) => {
             refreshing={refreshing}
             style={{ alignSelf: 'stretch', margin: 8, flex: 1 }}
             data={alerts}
-            keyExtractor={it => it.coin}
+            keyExtractor={it => it.id}
             renderItem={renderItem}
           />
         </>

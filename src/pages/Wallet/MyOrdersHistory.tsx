@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { TouchableWithoutFeedback, View, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
@@ -47,24 +48,13 @@ export default function CoinPageMyOrdersHistory(props) {
   async function cancelSelectedOrders() {
     try {
       for (let i = 0; i < selecteds.length; i++) {
-        await orders[i].cancel();
+        await selecteds[i].cancel();
       }
+      setSelecteds([]);
       showToast(`${selecteds.length} order(s) cancelled`);
       refresh(false);
     } catch (e) {
       Alert.alert(`Error while cancelling orders:\n\n${e.toString()}`);
-    }
-  }
-
-  async function cancelOrder(order: MyOrder) {
-    try {
-      await order.cancel();
-
-      showToast('Order cancelled');
-
-      refresh(false);
-    } catch (e) {
-      Alert.alert(`Error while cancelling order:\n\n${e.toString()}`);
     }
   }
 
@@ -117,11 +107,6 @@ export default function CoinPageMyOrdersHistory(props) {
             {showUnit ? order.price.idealDecimalPlaces() : order.total.idealDecimalPlaces()}
           </Text>
 
-          {/* {showOpened && (
-            <TouchableOpacity style={{ flex: 0.6, alignItems: 'flex-end' }} onPress={() => askCancelOrder(order)}>
-              <Icon name="trash-alt" size={20} />
-            </TouchableOpacity>
-          )} */}
           {showOpened && (
             <TouchableWithoutFeedback style={{ flex: 0.6 }} onPress={() => handleSelectItem(order)}>
               <MyCheckbox checked={selecteds.indexOf(item) !== -1} />

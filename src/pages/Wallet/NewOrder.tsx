@@ -44,7 +44,7 @@ export default function NewOrder({ route, navigation }) {
 
   const defaultCoin: Coin = (route.params || {}).coin || new Coin('DCR', 'BTC');
   const defaultRate = (route.params || {}).rate || 0;
-  const defaultType = ((route.params || {}).type || '').toUpperCase();
+  const defaultType = (route.params || {}).type || '';
 
   const { showToast } = useToast();
 
