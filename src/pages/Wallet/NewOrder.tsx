@@ -1,4 +1,4 @@
-import { View, Text, Alert, RefreshControl } from 'react-native';
+import { View, Alert, RefreshControl } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { default as FA } from 'react-native-vector-icons/FontAwesome';
 import React, { useState, useEffect, useRef } from 'react';
@@ -16,6 +16,7 @@ import { useToast } from '../../hooks/ToastContext';
 import CoinSelector from '../../components/CoinSelector';
 import AlertsAPI from '../../controllers/Alerts';
 import { useExchange } from '../../hooks/ExchangeContext';
+import MyText from '../../components/MyText';
 
 function usePrevious(value) {
   const ref = useRef();
@@ -245,7 +246,7 @@ export default function NewOrder({ route, navigation }) {
     <TouchableOpacity onPress={() => setNewAlert(!newAlert)}>
       <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingVertical: 4 }}>
         <FA name={newAlert ? 'bell' : 'bell-o'} size={25} style={{ marginEnd: 15 }} />
-        <Text style={{ fontWeight: newAlert ? 'bold' : 'normal' }}>create alert</Text>
+        <MyText style={{ fontWeight: newAlert ? 'bold' : 'normal' }}>create alert</MyText>
       </View>
     </TouchableOpacity>
   );
@@ -332,7 +333,7 @@ export default function NewOrder({ route, navigation }) {
       <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
         {[1, 5, 10, 20].map(p => (
           <PercentButton more key={`+${p}`} onPress={() => changePrice((parseFloat(price) * (1 + p / 100)).toFixed(8))}>
-            <Text>{`+${p}%`}</Text>
+            <MyText>{`+${p}%`}</MyText>
           </PercentButton>
         ))}
       </View>
@@ -340,7 +341,7 @@ export default function NewOrder({ route, navigation }) {
       <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
         {[1, 5, 10, 20].map(p => (
           <PercentButton less key={`-${p}`} onPress={() => changePrice(parseFloat(price * (1 - p / 100)).toFixed(8))}>
-            <Text>{`-${p}%`}</Text>
+            <MyText>{`-${p}%`}</MyText>
           </PercentButton>
         ))}
       </View>
@@ -349,20 +350,22 @@ export default function NewOrder({ route, navigation }) {
 
   const inputs = (
     <>
-      <Text>{`Quantity (${((parseFloat(quantity) / (myCoin?.available || 1)) * 100).toFixed(2)}% of available)`}</Text>
+      <MyText>{`Quantity (${((parseFloat(quantity) / (myCoin?.available || 1)) * 100).toFixed(
+        2,
+      )}% of available)`}</MyText>
       <MyInput value={quantity} onChangeText={changeQuantity} />
 
-      <Text>{`Price (${((parseFloat(price) / coin.last) * 100).toFixed(2)}% of last price)`}</Text>
+      <MyText>{`Price (${((parseFloat(price) / coin.last) * 100).toFixed(2)}% of last price)`}</MyText>
       <MyInput value={price} onChangeText={changePrice} />
 
       <View style={{ flexDirection: 'row' }}>
-        <Text>Total</Text>
+        <MyText>Total</MyText>
         <TouchableOpacity onPress={() => setTotalChanges('price')} style={{ marginStart: 8, marginEnd: 2 }}>
-          <Text style={{ fontWeight: totalChanges === 'price' ? 'bold' : 'normal' }}>adjust price</Text>
+          <MyText style={{ fontWeight: totalChanges === 'price' ? 'bold' : 'normal' }}>adjust price</MyText>
         </TouchableOpacity>
-        <Text>|</Text>
+        <MyText>|</MyText>
         <TouchableOpacity onPress={() => setTotalChanges('quantity')} style={{ marginStart: 2 }}>
-          <Text style={{ fontWeight: totalChanges === 'quantity' ? 'bold' : 'normal' }}>adjust quantity</Text>
+          <MyText style={{ fontWeight: totalChanges === 'quantity' ? 'bold' : 'normal' }}>adjust quantity</MyText>
         </TouchableOpacity>
       </View>
       <MyInput value={total} onChangeText={changeTotal} />
@@ -382,9 +385,9 @@ export default function NewOrder({ route, navigation }) {
 
         {newAlertBlock}
         <ExecOrderButton onPress={handleCreateOrder} buying={isBuying()}>
-          <Text style={{ textAlign: 'center' }}>Create Order</Text>
+          <MyText style={{ textAlign: 'center' }}>Create Order</MyText>
         </ExecOrderButton>
-        <Text>{type !== '' && resume}</Text>
+        <MyText>{type !== '' && resume}</MyText>
       </KeyboardAwareScrollView>
     </Container>
   );

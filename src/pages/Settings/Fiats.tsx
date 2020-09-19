@@ -1,7 +1,7 @@
 import ModalSelector from 'react-native-modal-selector';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { Text, StyleSheet, Alert, View } from 'react-native';
+import { StyleSheet, Alert, View } from 'react-native';
 import { useFiats } from '../../hooks/FiatContext';
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
@@ -10,6 +10,7 @@ import Fiat from '../../controllers/fiats/Fiat';
 import allFiats from '../../controllers/fiats/ListFiats';
 import listFiats from '../../controllers/fiats/FiatsHelper';
 import { useToast } from '../../hooks/ToastContext';
+import MyText from '../../components/MyText';
 
 export default function Fiats() {
   const [fiats, setFiats] = useState<Fiat[]>([]);
@@ -56,7 +57,7 @@ export default function Fiats() {
       </View>
 
       <Button onPress={saveFiats}>
-        <Text>SALVAR</Text>
+        <MyText>SALVAR</MyText>
       </Button>
     </>
   );

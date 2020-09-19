@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
 import { useToast } from '../hooks/ToastContext';
+import MyText from './MyText';
 
 export default function CopiableText({ text, children, style }) {
   const { showToast } = useToast();
@@ -16,9 +17,9 @@ export default function CopiableText({ text, children, style }) {
 
   return (
     <TouchableOpacity onLongPress={onLongPressButton}>
-      <Text numberOfLines={1} ellipsizeMode="middle" style={style}>
+      <MyText numberOfLines={1} ellipsizeMode="middle" style={style}>
         {text || children}
-      </Text>
+      </MyText>
     </TouchableOpacity>
   );
 }

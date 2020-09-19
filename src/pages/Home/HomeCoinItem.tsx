@@ -1,13 +1,14 @@
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import Coin from '../../models/Coin';
 import { colors } from '../../style/globals';
 import MyCoin from '../../models/MyCoin';
 import { useFiats } from '../../hooks/FiatContext';
 import { useSummaries } from '../../hooks/SummaryContext';
 import { useKeys } from '../../hooks/KeysContext';
+import MyText from '../../components/MyText';
 
 interface HomeCoinItemProps {
   onToggleFavorite: void;
@@ -31,33 +32,33 @@ function HomeCoinItem(props: HomeCoinItemProps) {
   return (
     <CoinContainer>
       <CoinName>
-        <Text>{coin.name}</Text>
+        <MyText>{coin.name}</MyText>
         <TouchableOpacity onPress={onToggleFavorite}>
-          <Icon name={coin.favorite ? 'heart' : 'hearto'} size={32} color="#000" />
+          <Icon name={coin.favorite ? 'heart' : 'hearto'} size={32} color={colors.black} />
         </TouchableOpacity>
       </CoinName>
       <CoinData onPress={onClick} onLongPress={onLongClick}>
-        <Text>{`Last: ${coin.last.idealDecimalPlaces()}`}</Text>
-        <Text>{`High: ${coin.high.idealDecimalPlaces()}`}</Text>
-        <Text>{`Low: ${coin.low.idealDecimalPlaces()}`}</Text>
-        <Text>{`Vol: ${coin.volume.idealDecimalPlaces()}`}</Text>
-        <Text>{`Vol (${market}): ${coin.baseVolume.idealDecimalPlaces()}`}</Text>
+        <MyText>{`Last: ${coin.last.idealDecimalPlaces()}`}</MyText>
+        <MyText>{`High: ${coin.high.idealDecimalPlaces()}`}</MyText>
+        <MyText>{`Low: ${coin.low.idealDecimalPlaces()}`}</MyText>
+        <MyText>{`Vol: ${coin.volume.idealDecimalPlaces()}`}</MyText>
+        <MyText>{`Vol (${market}): ${coin.baseVolume.idealDecimalPlaces()}`}</MyText>
         {fiats.map(fiat => (
-          <Text key={`fiat${coin.name}${fiat.label}`}>
+          <MyText key={`fiat${coin.name}${fiat.label}`}>
             {`${fiat.label}: ${(coin.last * fiat.data.last * allCoinsInBtc[coin.market]).idealDecimalPlaces()}`}
-          </Text>
+          </MyText>
         ))}
         {usingKeys && myCoin && (
           <>
-            <Text>{`I Have: ${myCoin.balance}`}</Text>
-            <Text>{`I Have (${market}): ${(myCoin.balance * coin.last).idealDecimalPlaces()}`}</Text>
+            <MyText>{`I Have: ${myCoin.balance}`}</MyText>
+            <MyText>{`I Have (${market}): ${(myCoin.balance * coin.last).idealDecimalPlaces()}`}</MyText>
           </>
         )}
       </CoinData>
       <CoinPercent onPress={onClick}>
-        <Text style={{ color: coin.change > 0 ? colors.positive : colors.negative }}>
+        <MyText style={{ color: coin.change > 0 ? colors.positive : colors.negative }}>
           {`${coin.change.toFixed(1)}%`}
-        </Text>
+        </MyText>
       </CoinPercent>
     </CoinContainer>
   );

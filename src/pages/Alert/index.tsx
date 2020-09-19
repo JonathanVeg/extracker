@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import IconFA from 'react-native-vector-icons/FontAwesome';
 import RNPickerSelect from 'react-native-picker-select';
 import React, { useEffect, useState } from 'react';
-import { Alert as RNAlert, View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { Alert as RNAlert, View, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { default as FA } from 'react-native-vector-icons/FontAwesome5';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -13,11 +13,13 @@ import { H2 } from '../../components/Hs';
 import { Spacer } from '../../components/Spacer';
 import Alert from '../../models/Alert';
 import MyInput from '../../components/MyInput';
+import MyText from '../../components/MyText';
 import AlertsAPI from '../../controllers/Alerts';
 import { readOneSignalUserId } from '../../controllers/OneSignal';
 import { useToast } from '../../hooks/ToastContext';
 import CoinSelector from '../../components/CoinSelector';
 import { useExchange } from '../../hooks/ExchangeContext';
+import { colors } from '../../style/globals';
 
 const AlertPage = ({ navigation }) => {
   const [selecteds, setSelecteds] = useState<Alert[]>([]);
@@ -164,7 +166,7 @@ const AlertPage = ({ navigation }) => {
         itemKey={when}
         style={pickerStyle}
         Icon={() => {
-          return <IconFA name="chevron-down" size={17} color="#333" />;
+          return <IconFA name="chevron-down" size={17} color={colors.gray} />;
         }}
         onValueChange={value => setWhen(value)}
         items={[
@@ -196,9 +198,11 @@ const AlertPage = ({ navigation }) => {
         >
           <Icon name={alert.active ? 'bell' : 'bell-off'} size={20} />
         </TouchableOpacity>
-        <Text style={{ flex: 4 }}>{`${alert.coin}/${alert.market}`}</Text>
-        <Text style={{ flex: 1 }}>{alert.condition}</Text>
-        <Text style={{ flex: 4, fontVariant: ['tabular-nums'] }}>{parseFloat(alert.price).idealDecimalPlaces()}</Text>
+        <MyText style={{ flex: 4 }}>{`${alert.coin}/${alert.market}`}</MyText>
+        <MyText style={{ flex: 1 }}>{alert.condition}</MyText>
+        <MyText style={{ flex: 4, fontVariant: ['tabular-nums'] }}>
+          {parseFloat(alert.price).idealDecimalPlaces()}
+        </MyText>
 
         {/* <Icon name="delete" size={20} /> */}
         <TouchableWithoutFeedback style={{ flex: 0.6 }} onPress={() => handleSelectItem(alert)}>
@@ -216,12 +220,12 @@ const AlertPage = ({ navigation }) => {
         <>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
             <TouchableWithoutFeedback style={{ flexDirection: 'row', alignItems: 'center' }} onPress={handleSelectAll}>
-              <Text>Select all</Text>
+              <MyText>Select all</MyText>
               <MyCheckbox checked={selecteds.length === alerts.length} />
             </TouchableWithoutFeedback>
 
             <TouchableOpacity onPress={handleCancelSeveralAlerts}>
-              <FA name="trash-alt" size={20} color={selecteds.length === 0 ? 'transparent' : 'black'} />
+              <FA name="trash-alt" size={20} color={selecteds.length === 0 ? 'transparent' : colors.black} />
             </TouchableOpacity>
           </View>
 
@@ -235,7 +239,7 @@ const AlertPage = ({ navigation }) => {
           />
         </>
       ) : (
-        <Text style={{ width: '100%', textAlign: 'center' }}>No alerts yet</Text>
+        <MyText style={{ width: '100%', textAlign: 'center' }}>No alerts yet</MyText>
       )}
     </View>
   );
@@ -245,21 +249,21 @@ export default AlertPage;
 
 const pickerStyle = {
   iconContainer: {
-    borderColor: 'red',
+    borderColor: colors.red,
     borderRadius: 1,
     top: 10,
     right: 0,
   },
 
   inputIOS: {
-    color: '#333',
+    color: colors.gray,
     fontSize: 16,
     paddingLeft: 10,
     paddingTop: 12,
     paddingBottom: 10,
   },
   inputAndroid: {
-    color: '#333',
+    color: colors.gray,
     fontSize: 16,
     paddingLeft: 10,
     paddingTop: 12,

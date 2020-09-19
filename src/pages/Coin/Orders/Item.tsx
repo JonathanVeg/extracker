@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { default as MaterialCommunityIcons } from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { memo, useEffect } from 'react';
-import { Text, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Order from '../../../models/Order';
 import { default as MyAlert } from '../../../models/Alert';
@@ -12,6 +12,7 @@ import { useKeys } from '../../../hooks/KeysContext';
 import AlertsAPI from '../../../controllers/Alerts';
 import { readOneSignalUserId } from '../../../controllers/OneSignal';
 import { useExchange } from '../../../hooks/ExchangeContext';
+import MyText from '../../../components/MyText';
 
 const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, refresh }) => {
   const order: Order = item;
@@ -136,7 +137,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
           />
         )}
 
-        <Text
+        <MyText
           style={{
             fontWeight,
             flex: 1,
@@ -145,8 +146,8 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
           }}
         >
           {(showSumQuantity ? order.quantityTotal : order.quantity).idealDecimalPlaces()}
-        </Text>
-        <Text
+        </MyText>
+        <MyText
           style={{
             fontWeight,
             flex: 1,
@@ -155,8 +156,8 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
           }}
         >
           {order.rate.idealDecimalPlaces()}
-        </Text>
-        <Text
+        </MyText>
+        <MyText
           style={{
             fontWeight,
             flex: 1,
@@ -166,7 +167,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
           }}
         >
           {(showSumPrice ? order.totalTotal : order.total).idealDecimalPlaces()}
-        </Text>
+        </MyText>
       </RowContainer>
     </TouchableOpacity>
   );

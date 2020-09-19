@@ -1,13 +1,14 @@
 import ModalSelector from 'react-native-modal-selector';
 import { CandleStickChart } from 'react-native-charts-wrapper';
 import React, { useEffect, useState } from 'react';
-import { View, Text, processColor } from 'react-native';
+import { View, processColor } from 'react-native';
 import { colors } from '../../style/globals';
 import Coin from '../../models/Coin';
 import StorageUtils from '../../utils/StorageUtils';
 import { Container } from '../../components/Generics';
 import { H2 } from '../../components/Hs';
 import { useExchange } from '../../hooks/ExchangeContext';
+import MyText from '../../components/MyText';
 
 export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
   const { exchange } = useExchange();
@@ -133,7 +134,7 @@ export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
   const selectors = (
     <View style={{ flexDirection: 'row', marginVertical: 8 }}>
       <View style={{ flexDirection: 'column', marginVertical: 8, flex: 1 }}>
-        <Text style={{ alignSelf: 'stretch', textAlign: 'center' }}>Zoom</Text>
+        <MyText style={{ alignSelf: 'stretch', textAlign: 'center' }}>Zoom</MyText>
         <ModalSelector
           key={Math.random()}
           data={exchange.candleChartData().zoom}
@@ -146,7 +147,7 @@ export default function CoinPageChart({ coin: pCoin, showControllers = true }) {
       </View>
 
       <View style={{ flexDirection: 'column', marginVertical: 8, flex: 1 }}>
-        <Text style={{ alignSelf: 'stretch', textAlign: 'center' }}>Candle</Text>
+        <MyText style={{ alignSelf: 'stretch', textAlign: 'center' }}>Candle</MyText>
         <ModalSelector
           key={Math.random()}
           data={exchange.candleChartData().candle}

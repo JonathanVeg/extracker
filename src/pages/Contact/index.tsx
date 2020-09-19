@@ -2,7 +2,7 @@ import { SLACK_CONTACT_URL } from 'react-native-dotenv';
 import IconFA from 'react-native-vector-icons/FontAwesome';
 import RNPickerSelect from 'react-native-picker-select';
 import React, { useEffect, useState } from 'react';
-import { Alert as RNAlert, View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { Alert as RNAlert, View, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Row } from '../../components/Generics';
 import HamburgerIcon from '../../components/HamburgerIcon';

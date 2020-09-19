@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import { H1, H2 } from '../../components/Hs';
 import Coin from '../../models/Coin';
@@ -10,6 +10,7 @@ import { colors } from '../../style/globals';
 import { useFiats } from '../../hooks/FiatContext';
 import { useSummaries } from '../../hooks/SummaryContext';
 import { useExchange } from '../../hooks/ExchangeContext';
+import MyText from '../../components/MyText';
 
 export default function CoinPageCalculator(props) {
   const { exchange } = useExchange();
@@ -40,14 +41,14 @@ export default function CoinPageCalculator(props) {
   const MarketBlock = props => (
     <BlockContainer>
       <BlockText>{`${coin.market}`}</BlockText>
-      <Text style={{ padding: 3 }}>{props.amount.idealDecimalPlaces()}</Text>
+      <MyText style={{ padding: 3 }}>{props.amount.idealDecimalPlaces()}</MyText>
     </BlockContainer>
   );
 
   const CoinBlock = props => (
     <BlockContainer>
       <BlockText>{`${coin.name}`}</BlockText>
-      <Text style={{ padding: 3 }}>{props.amount.idealDecimalPlaces()}</Text>
+      <MyText style={{ padding: 3 }}>{props.amount.idealDecimalPlaces()}</MyText>
     </BlockContainer>
   );
 

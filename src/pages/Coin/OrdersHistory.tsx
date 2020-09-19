@@ -1,13 +1,14 @@
 import moment from 'moment';
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { View, FlatList, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Coin from '../../models/Coin';
 import OrderHistory from '../../models/OrderHistory';
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import { Container } from '../../components/Generics';
 import { useExchange } from '../../hooks/ExchangeContext';
-import AsyncStorage from '@react-native-community/async-storage';
+import MyText from '../../components/MyText';
 
 export default function CoinPageOrdersHistory(props) {
   const { exchange } = useExchange();
@@ -55,16 +56,16 @@ export default function CoinPageOrdersHistory(props) {
           paddingHorizontal: 5,
         }}
       >
-        <Text style={{ flex: 1, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
+        <MyText style={{ flex: 1, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
           {order.type === 'buy' ? '+ ' : '- '}
           {`${order.quantity.idealDecimalPlaces()}`}
-        </Text>
-        <Text style={{ flex: 1, textAlign: 'center', fontVariant: ['tabular-nums'] }}>
+        </MyText>
+        <MyText style={{ flex: 1, textAlign: 'center', fontVariant: ['tabular-nums'] }}>
           {order.rate.idealDecimalPlaces()}
-        </Text>
-        <Text style={{ flex: 1, textAlign: 'right', fontVariant: ['tabular-nums'] }}>
+        </MyText>
+        <MyText style={{ flex: 1, textAlign: 'right', fontVariant: ['tabular-nums'] }}>
           {showWhen ? formatDate(order.timestamp) : order.total.idealDecimalPlaces()}
-        </Text>
+        </MyText>
       </View>
     );
   }
@@ -91,10 +92,10 @@ export default function CoinPageOrdersHistory(props) {
   function Header() {
     return (
       <View style={{ flexDirection: 'row' }}>
-        <Text style={{ flex: 1, textAlign: 'left', fontWeight: 'bold' }}>Amount</Text>
-        <Text style={{ flex: 1, textAlign: 'center', fontWeight: 'bold' }}>Unit Price</Text>
+        <MyText style={{ flex: 1, textAlign: 'left', fontWeight: 'bold' }}>Amount</MyText>
+        <MyText style={{ flex: 1, textAlign: 'center', fontWeight: 'bold' }}>Unit Price</MyText>
         <TouchableOpacity style={{ flex: 1 }} onPress={toggleWhen}>
-          <Text style={{ textAlign: 'right', fontWeight: 'bold' }}>{showWhen ? 'When' : 'Total'}</Text>
+          <MyText style={{ textAlign: 'right', fontWeight: 'bold' }}>{showWhen ? 'When' : 'Total'}</MyText>
         </TouchableOpacity>
       </View>
     );

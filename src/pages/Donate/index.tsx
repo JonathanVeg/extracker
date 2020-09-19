@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
+import Axios from 'axios';
 import LabelValueBlock from '../../components/LabelValueBlock';
 import HamburgerIcon from '../../components/HamburgerIcon';
-import { H0, H1, H2 } from '../../components/Hs';
+import { H0, H2 } from '../../components/Hs';
 import ItemSeparator from '../../components/ItemSeparator';
 import { Spacer } from '../../components/Spacer';
 import { Container } from '../../components/Generics';
-import Axios from 'axios';
 
 const DonatePage = ({ navigation }) => {
   navigation.setOptions({

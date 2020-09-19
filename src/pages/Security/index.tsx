@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, Text, SafeAreaView, Image } from 'react-native';
+import { TouchableOpacity, SafeAreaView, Image } from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import styled from 'styled-components/native';
 import StorageUtils from '../../utils/StorageUtils';
 import { H1, H2 } from '../../components/Hs';
 import { Spacer } from '../../components/Spacer';
+import MyText from '../../components/MyText';
 
 export default function SecurityPage({ setRead }) {
   const [showTryAgain, setShowTryAgain] = useState(false);
@@ -51,7 +52,7 @@ export default function SecurityPage({ setRead }) {
       <H1>Authenticating</H1>
 
       <Spacer />
-      <Text>{error}</Text>
+      <MyText>{error}</MyText>
       <Spacer />
       {showTryAgain && (
         <TouchableOpacity onPress={readBiometrics}>

@@ -8,6 +8,7 @@ import { H1 } from './Hs';
 import { sortArrayByKey } from '../utils/utils';
 import Coin from '../models/Coin';
 import { useExchange } from '../hooks/ExchangeContext';
+import { colors } from '../style/globals';
 
 const CoinSelector: React.FC = ({ sMarket, setSMarket, sCoin, setSCoin }) => {
   const { exchange } = useExchange();
@@ -49,7 +50,7 @@ const CoinSelector: React.FC = ({ sMarket, setSMarket, sCoin, setSCoin }) => {
           itemKey={sMarket}
           style={pickerStyle}
           Icon={() => {
-            return <IconFA name="chevron-down" size={17} color="#333" />;
+            return <IconFA name="chevron-down" size={17} color={colors.gray} />;
           }}
           onValueChange={value => setSMarket(value)}
           items={sortArrayByKey(
@@ -69,7 +70,7 @@ const CoinSelector: React.FC = ({ sMarket, setSMarket, sCoin, setSCoin }) => {
           itemKey={sCoin}
           style={pickerStyle}
           Icon={() => {
-            return <IconFA name="chevron-down" size={17} color="#333" />;
+            return <IconFA name="chevron-down" size={17} color={colors.gray} />;
           }}
           onValueChange={value => setSCoin(value)}
           items={coinsNames}
@@ -88,21 +89,21 @@ const MarketPickersContainer = styled.View`
 `;
 const pickerStyle = {
   iconContainer: {
-    borderColor: 'red',
+    borderColor: colors.red,
     borderRadius: 1,
     top: 10,
     right: 0,
   },
 
   inputIOS: {
-    color: '#333',
+    color: colors.gray,
     fontSize: 16,
     paddingLeft: 10,
     paddingTop: 12,
     paddingBottom: 10,
   },
   inputAndroid: {
-    color: '#333',
+    color: colors.gray,
     fontSize: 16,
     paddingLeft: 10,
     paddingTop: 12,

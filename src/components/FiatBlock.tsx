@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { colors } from '../style/globals';
+import MyText from './MyText';
 
 export default function FiatBlock({ fiat, amount = 1 }) {
   if (!fiat) return <></>;
@@ -14,7 +15,7 @@ export default function FiatBlock({ fiat, amount = 1 }) {
         width: 'auto',
       }}
     >
-      <Text
+      <MyText
         style={{
           backgroundColor: colors.darker,
           color: colors.white,
@@ -23,8 +24,8 @@ export default function FiatBlock({ fiat, amount = 1 }) {
         }}
       >
         {`${fiat.label}`}
-      </Text>
-      <Text style={{ padding: 3 }}>{fiat.data ? `${(fiat.data.last * amount).toFixed(3)} ` : '...'}</Text>
+      </MyText>
+      <MyText style={{ padding: 3 }}>{fiat.data ? `${(fiat.data.last * amount).toFixed(3)} ` : '...'}</MyText>
     </View>
   );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { colors } from '../style/globals';
+import MyText from './MyText';
 
 export default function BlackWhiteBlock({ label, amount = 1 }) {
   return (
@@ -11,7 +12,7 @@ export default function BlackWhiteBlock({ label, amount = 1 }) {
         margin: 5,
       }}
     >
-      <Text
+      <MyText
         style={{
           backgroundColor: colors.darker,
           color: colors.white,
@@ -20,8 +21,8 @@ export default function BlackWhiteBlock({ label, amount = 1 }) {
         }}
       >
         {`${label}`}
-      </Text>
-      <Text style={{ padding: 3 }}>{amount.idealDecimalPlaces(3)} </Text>
+      </MyText>
+      <MyText style={{ padding: 3 }}>{amount.idealDecimalPlaces(3)} </MyText>
     </View>
   );
 }

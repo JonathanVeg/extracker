@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import React, { useState, useEffect } from 'react';
-import { Text, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import Coin from '../../../models/Coin';
 import { H1 } from '../../../components/Hs';
 import Order from '../../../models/Order';
@@ -10,6 +10,7 @@ import Item from './Item';
 import AlertsAPI from '../../../controllers/Alerts';
 import { readOneSignalUserId } from '../../../controllers/OneSignal';
 import { useExchange } from '../../../hooks/ExchangeContext';
+import MyText from '../../../components/MyText';
 
 export default function CoinPageOrders(props) {
   const { exchange } = useExchange();
@@ -88,13 +89,13 @@ export default function CoinPageOrders(props) {
   function Header() {
     return (
       <HeaderContainer>
-        <Text style={{ fontWeight: 'bold' }} onPress={() => setShowSumQuantity(!showSumQuantity)}>
+        <MyText style={{ fontWeight: 'bold' }} onPress={() => setShowSumQuantity(!showSumQuantity)}>
           {showSumQuantity ? 'Sum Qnt.' : 'Qnt.'}
-        </Text>
-        <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Rate</Text>
-        <Text style={{ fontWeight: 'bold', paddingRight: 2 }} onPress={() => setShowSumPrice(!showSumPrice)}>
+        </MyText>
+        <MyText style={{ fontWeight: 'bold', textAlign: 'center' }}>Rate</MyText>
+        <MyText style={{ fontWeight: 'bold', paddingRight: 2 }} onPress={() => setShowSumPrice(!showSumPrice)}>
           {showSumPrice ? 'Sum Price' : 'Total Price'}
-        </Text>
+        </MyText>
       </HeaderContainer>
     );
   }

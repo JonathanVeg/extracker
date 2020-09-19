@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import styled from 'styled-components/native';
 import { isAndroid } from '../utils/platform';
+import MyText from './MyText';
 
 export default function Header(props) {
   const { children, navigation, textColor, backgroundColor, rightContent, middleContent, containerStyle = {} } = props;
@@ -26,7 +27,7 @@ export default function Header(props) {
 
       <View style={{ maxWidth: '60%', alignSelf: 'center', flex: 1 }}>
         {middleContent || (
-          <Text
+          <MyText
             fontSize={18}
             color={textColor}
             type="black"
@@ -35,7 +36,7 @@ export default function Header(props) {
             style={{ paddingTop: isAndroid() ? getStatusBarHeight() : 0 }}
           >
             {children}
-          </Text>
+          </MyText>
         )}
       </View>
       <View style={{ position: 'absolute', right: 10 }}>{rightContent}</View>

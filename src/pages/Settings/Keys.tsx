@@ -1,7 +1,7 @@
 import ReactNativeBiometrics from 'react-native-biometrics';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { Text, StyleSheet, Switch, View } from 'react-native';
+import { StyleSheet, Switch, View } from 'react-native';
 import { H1, H2, H3 } from '../../components/Hs';
 import { colors } from '../../style/globals';
 import MyInput from '../../components/MyInput';
@@ -9,6 +9,7 @@ import StorageUtils from '../../utils/StorageUtils';
 import { useKeys } from '../../hooks/KeysContext';
 import { useToast } from '../../hooks/ToastContext';
 import { useExchange } from '../../hooks/ExchangeContext';
+import MyText from '../../components/MyText';
 
 export default function Keys() {
   const { exchange } = useExchange();
@@ -82,13 +83,13 @@ export default function Keys() {
       />
 
       <Button onPress={saveKeys}>
-        <Text>SALVAR</Text>
+        <MyText>SALVAR</MyText>
       </Button>
 
       {isSensorAvailable && (
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
           <Switch value={requireBiometricPrompt} onValueChange={toggleBiometricPrompt} />
-          <Text style={{ marginStart: 10 }}>Require biometric prompt</Text>
+          <MyText style={{ marginStart: 10 }}>Require biometric prompt</MyText>
         </View>
       )}
     </>

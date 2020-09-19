@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 import { default as Icon } from 'react-native-vector-icons/MaterialIcons';
 import { default as MCI } from 'react-native-vector-icons/MaterialCommunityIcons';
 import { default as FA } from 'react-native-vector-icons/FontAwesome';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View, Alert, BackHandler, AlertButton } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, View, Alert, AlertButton } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import BlackWhiteBlock from '../../components/BlackWhiteBlock';
 import Coin from '../../models/Coin';
@@ -25,6 +25,7 @@ import { colors } from '../../style/globals';
 import HomeCoinItemCompact from './HomeCoinItemCompact';
 import CoinPageChart from '../Coin/Chart';
 import { useExchange } from '../../hooks/ExchangeContext';
+import MyText from '../../components/MyText';
 
 export default function Home({ navigation }) {
   const { exchange } = useExchange();
@@ -316,7 +317,7 @@ export default function Home({ navigation }) {
         renderItem={({ item }) => {
           return (
             <TouchableOpacity key={`selectmarket${item}`} style={{ padding: 8 }} onPress={() => setMarket(item)}>
-              <Text style={{ textAlign: 'center', fontWeight: market === item ? 'bold' : 'normal' }}>{item}</Text>
+              <MyText style={{ textAlign: 'center', fontWeight: market === item ? 'bold' : 'normal' }}>{item}</MyText>
             </TouchableOpacity>
           );
         }}
@@ -330,7 +331,7 @@ export default function Home({ navigation }) {
         autoFocus
         style={{
           borderWidth: StyleSheet.hairlineWidth,
-          borderColor: 'black',
+          borderColor: colors.black,
           color: colors.darker,
           padding: 3,
         }}
@@ -348,7 +349,7 @@ export default function Home({ navigation }) {
           StorageUtils.setItem('hideSmall', `${!hideSmall}`);
         }}
       >
-        <Text>{hideSmall ? 'Show small balances' : 'Hide small balances'}</Text>
+        <MyText>{hideSmall ? 'Show small balances' : 'Hide small balances'}</MyText>
       </TouchableOpacity>
     );
 

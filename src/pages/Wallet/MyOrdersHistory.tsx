@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { TouchableWithoutFeedback, View, FlatList, Text, TouchableOpacity, Alert } from 'react-native';
+import { TouchableWithoutFeedback, View, FlatList, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { H1 } from '../../components/Hs';
 import { colors } from '../../style/globals';
@@ -9,6 +9,7 @@ import MyOrder from '../../models/MyOrder';
 import { Container } from '../../components/Generics';
 import { useToast } from '../../hooks/ToastContext';
 import { useExchange } from '../../hooks/ExchangeContext';
+import MyText from '../../components/MyText';
 
 export default function CoinPageMyOrdersHistory(props) {
   const { exchange } = useExchange();
@@ -90,22 +91,22 @@ export default function CoinPageMyOrdersHistory(props) {
     return (
       <TouchableWithoutFeedback onLongPress={() => showDetails(item)}>
         <OrderItemContainer type={order.type}>
-          <Text style={{ flex: 0.8, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
+          <MyText style={{ flex: 0.8, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
             {order.type === 'buy' ? '+ ' : '- '}
             {`${order.coin}/${order.market}`}
-          </Text>
+          </MyText>
 
-          <Text style={{ flex: 1, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
+          <MyText style={{ flex: 1, textAlign: 'left', fontVariant: ['tabular-nums'] }}>
             {order.type === 'buy' ? '+ ' : '- '}
             {showQuantity
               ? `${order.quantity.idealDecimalPlaces()}`
               : showOpened
               ? `${order.quantityRemaining.idealDecimalPlaces()}`
               : `${(order.quantity - order.quantityRemaining).idealDecimalPlaces()}`}
-          </Text>
-          <Text style={{ flex: 1, textAlign: 'right', fontVariant: ['tabular-nums'] }}>
+          </MyText>
+          <MyText style={{ flex: 1, textAlign: 'right', fontVariant: ['tabular-nums'] }}>
             {showUnit ? order.price.idealDecimalPlaces() : order.total.idealDecimalPlaces()}
-          </Text>
+          </MyText>
 
           {showOpened && (
             <TouchableWithoutFeedback style={{ flex: 0.6 }} onPress={() => handleSelectItem(order)}>
@@ -126,20 +127,22 @@ export default function CoinPageMyOrdersHistory(props) {
           paddingHorizontal: 5,
         }}
       >
-        <Text style={{ fontWeight: 'bold', flex: 0.8, textAlign: 'left' }}>Pair</Text>
+        <MyText style={{ fontWeight: 'bold', flex: 0.8, textAlign: 'left' }}>Pair</MyText>
         <TouchableOpacity style={{ flex: 1 }} onPress={() => setShowQuantity(!showQuantity)}>
-          <Text style={{ fontWeight: 'bold', flex: 1, textAlign: 'left' }}>
+          <MyText style={{ fontWeight: 'bold', flex: 1, textAlign: 'left' }}>
             {showQuantity ? 'Quantity' : showOpened ? 'Remaining' : 'Done'}
-          </Text>
+          </MyText>
         </TouchableOpacity>
 
         <TouchableOpacity style={{ flex: 1 }} onPress={() => setShowUnit(!showUnit)}>
-          <Text style={{ fontWeight: 'bold', flex: 1, textAlign: 'right' }}>{showUnit ? 'Unity Price' : 'Total'}</Text>
+          <MyText style={{ fontWeight: 'bold', flex: 1, textAlign: 'right' }}>
+            {showUnit ? 'Unity Price' : 'Total'}
+          </MyText>
         </TouchableOpacity>
 
         {showOpened && (
           <TouchableOpacity style={{ flex: 0.6, alignItems: 'flex-end' }} onPress={handleCancelAllOrders}>
-            <Icon name="trash-alt" size={20} color={selecteds.length === 0 ? 'transparent' : 'black'} />
+            <Icon name="trash-alt" size={20} color={selecteds.length === 0 ? 'transparent' : colors.black} />
           </TouchableOpacity>
         )}
       </View>
@@ -179,11 +182,11 @@ export default function CoinPageMyOrdersHistory(props) {
       </View>
       <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
         <ShowOpenedButton onPress={() => setShowOpened(true)}>
-          <Text style={{ fontWeight: showOpened ? 'bold' : 'normal' }}>OPENED</Text>
+          <MyText style={{ fontWeight: showOpened ? 'bold' : 'normal' }}>OPENED</MyText>
         </ShowOpenedButton>
         <View style={{ width: 4 }} />
         <ShowClosedButton onPress={() => setShowOpened(false)}>
-          <Text style={{ fontWeight: !showOpened ? 'bold' : 'normal' }}>CLOSED</Text>
+          <MyText style={{ fontWeight: !showOpened ? 'bold' : 'normal' }}>CLOSED</MyText>
         </ShowClosedButton>
       </View>
     </Container>
@@ -203,8 +206,8 @@ const MyCheckbox = styled.View`
   border-radius: 10px;
   padding: 5px;
   margin: 5px;
-  border-color: black;
-  background-color: ${({ checked }) => (checked ? 'black' : 'transparent')};
+  border-color: colors.black;
+  background-color: ${({ checked }) => (checked ? colors.black : 'transparent')};
   border-width: 1px;
 `;
 

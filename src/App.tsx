@@ -4,7 +4,7 @@ import { createDrawerNavigator, DrawerItem } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider, useSafeArea } from 'react-native-safe-area-context';
-import { StatusBar, Text, View, StyleSheet, Linking, TouchableOpacity } from 'react-native';
+import { StatusBar, View, StyleSheet, Linking, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { default as Ionicons } from 'react-native-vector-icons/Ionicons';
 import { default as FA } from 'react-native-vector-icons/FontAwesome';
@@ -30,6 +30,7 @@ import ContactPage from './pages/Contact';
 import { useExchange } from './hooks/ExchangeContext';
 import Poloniex from './controllers/exchanges/Poloniex';
 import Bittrex from './controllers/exchanges/Bittrex';
+import MyText from './components/MyText';
 
 declare global {
   interface Number {
@@ -164,7 +165,7 @@ function CustomDrawerContent({ exchange, changeExchange, usingKeys, drawerPositi
       <DivisionLine />
       <View>
         <TouchableOpacity onPress={() => Linking.openURL('https://twitter.com/JonathanVeg2')}>
-          <Text style={{ alignSelf: 'center', color: colors.darker }}>Made by @JonathanVeg</Text>
+          <MyText style={{ alignSelf: 'center', color: colors.darker }}>Made by @JonathanVeg</MyText>
         </TouchableOpacity>
       </View>
     </View>
@@ -200,7 +201,7 @@ const App = () => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
+      <StatusBar barStyle="dark-content" backgroundColor="black" />
       <AppProvider>
         <OneSignalWrapper />
         <SafeAreaProvider>

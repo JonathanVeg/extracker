@@ -1,10 +1,11 @@
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import Coin from '../../models/Coin';
 import { colors } from '../../style/globals';
 import { Row } from '../../components/Generics';
+import MyText from '../../components/MyText';
 
 interface HomeCoinItemCompactProps {
   onToggleFavorite: void;
@@ -20,7 +21,7 @@ const HomeCoinItemCompact: React.FC = (props: HomeCoinItemCompactProps) => {
   return (
     <CoinContainer>
       <CoinName>
-        <Text>{coin.name}</Text>
+        <MyText>{coin.name}</MyText>
         <TouchableOpacity onPress={onToggleFavorite}>
           <Icon name={coin.favorite ? 'heart' : 'hearto'} size={32} color="#000" />
         </TouchableOpacity>
@@ -28,21 +29,21 @@ const HomeCoinItemCompact: React.FC = (props: HomeCoinItemCompactProps) => {
       <CoinData onPress={onClick} onLongPress={onLongClick}>
         <Row>
           <Icon name="pause" size={20} color="#000" style={{ transform: [{ rotate: '90deg' }] }} />
-          <Text>{`${coin.last.idealDecimalPlaces()}`}</Text>
+          <MyText>{`${coin.last.idealDecimalPlaces()}`}</MyText>
         </Row>
         <Row>
           <Icon name="arrowup" size={20} color="#000" />
-          <Text>{`${coin.high.idealDecimalPlaces()}`}</Text>
+          <MyText>{`${coin.high.idealDecimalPlaces()}`}</MyText>
         </Row>
         <Row>
           <Icon name="arrowdown" size={20} color="#000" />
-          <Text>{`${coin.low.idealDecimalPlaces()}`}</Text>
+          <MyText>{`${coin.low.idealDecimalPlaces()}`}</MyText>
         </Row>
       </CoinData>
       <CoinPercent onPress={onClick}>
-        <Text style={{ color: coin.change > 0 ? colors.positive : colors.negative }}>
+        <MyText style={{ color: coin.change > 0 ? colors.positive : colors.negative }}>
           {`${coin.change.toFixed(1)}%`}
-        </Text>
+        </MyText>
       </CoinPercent>
     </CoinContainer>
   );
