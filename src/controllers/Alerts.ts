@@ -5,7 +5,7 @@ import { readOneSignalUserId } from './OneSignal';
 import ExchangeInterface from './exchanges/ExchangeInterface';
 
 const baseURL = 'https://trextracker.jonathanveg.dev/alerts';
-// const baseURL = 'http://192.168.67.107:3333/alerts';
+// const baseURL = 'http://192.168.67.105:3333/alerts';
 
 export default class AlertsAPI {
   static async createAlert(exchange: ExchangeInterface, alert: Alert) {
@@ -18,6 +18,7 @@ export default class AlertsAPI {
     }
 
     const exchangeName = exchange.name.toLowerCase();
+    console.log(exchange);
     await axios.post(`${baseURL}`, { ...alert.toJSON(), uid, exchange: exchangeName });
   }
 

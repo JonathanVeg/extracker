@@ -206,14 +206,13 @@ const MyCheckbox = styled.View`
   border-radius: 10px;
   padding: 5px;
   margin: 5px;
-  border-color: colors.black;
+  border-color: ${colors.black};
   background-color: ${({ checked }) => (checked ? colors.black : 'transparent')};
   border-width: 1px;
 `;
 
 const ShowOpenedButton = styled.TouchableOpacity`
   padding: 3px 0;
-  /* margin: 0 0 0 2px; */
   border-width: 1px;
   flex: 1;
   justify-content: center;
@@ -222,7 +221,6 @@ const ShowOpenedButton = styled.TouchableOpacity`
 
 const ShowClosedButton = styled.TouchableOpacity`
   padding: 3px 0;
-  /* margin: 0 0 2px 0; */
   border-width: 1px;
   flex: 1;
   justify-content: center;
