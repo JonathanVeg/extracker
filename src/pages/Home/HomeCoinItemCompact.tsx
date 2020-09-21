@@ -12,7 +12,6 @@ interface HomeCoinItemCompactProps {
   onClick: void;
   onLongClick: void;
   coin: Coin;
-  market: string;
 }
 
 const HomeCoinItemCompact: React.FC = (props: HomeCoinItemCompactProps) => {

@@ -57,7 +57,7 @@ export default function Fiats() {
       </View>
 
       <Button onPress={saveFiats}>
-        <MyText>SALVAR</MyText>
+        <MyText>SAVE</MyText>
       </Button>
     </>
   );

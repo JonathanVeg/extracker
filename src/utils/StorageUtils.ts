@@ -49,7 +49,7 @@ class StorageUtils {
     await AsyncStorage.removeItem(key);
   }
 
-  static async getItem(key): Promise<string> {
+  static async getItem(key: string): Promise<string> {
     const data = await AsyncStorage.getItem(key);
 
     return data;

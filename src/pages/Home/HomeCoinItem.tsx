@@ -17,10 +17,11 @@ interface HomeCoinItemProps {
   coin: Coin;
   market: string;
   myCoins: MyCoin[];
+  showInHomeScreen: string[];
 }
 
 function HomeCoinItem(props: HomeCoinItemProps) {
-  const { onClick, onLongClick, coin, market, myCoins, onToggleFavorite } = props;
+  const { onClick, onLongClick, coin, market, myCoins, onToggleFavorite, showInHomeScreen } = props;
 
   const myCoin = myCoins.find(it => it.name === coin.name);
   const { usingKeys } = useKeys();
@@ -28,6 +29,36 @@ function HomeCoinItem(props: HomeCoinItemProps) {
   const { allCoinsInBtc } = useSummaries();
 
   if (!coin.last) return <></>;
+
+  const itemsToShow = [];
+
+  if (showInHomeScreen.indexOf('last') !== -1)
+    itemsToShow.push(<MyText>{`Last: ${coin.last.idealDecimalPlaces()}`}</MyText>);
+  if (showInHomeScreen.indexOf('high') !== -1)
+    itemsToShow.push(<MyText>{`High: ${coin.high.idealDecimalPlaces()}`}</MyText>);
+  if (showInHomeScreen.indexOf('low') !== -1)
+    itemsToShow.push(<MyText>{`Low: ${coin.low.idealDecimalPlaces()}`}</MyText>);
+  if (showInHomeScreen.indexOf('vol') !== -1)
+    itemsToShow.push(<MyText>{`Vol: ${coin.volume.idealDecimalPlaces()}`}</MyText>);
+  if (showInHomeScreen.indexOf('basevol') !== -1)
+    itemsToShow.push(<MyText>{`Vol (${market}): ${coin.baseVolume.idealDecimalPlaces()}`}</MyText>);
+
+  let index = 0;
+  fiats.map(fiat => {
+    index++;
+    if (showInHomeScreen.indexOf(`fiat${index}`) !== -1)
+      itemsToShow.push(
+        <MyText key={`fiat${coin.name}${fiat.label}`}>
+          {`${fiat.label}: ${(coin.last * fiat.data.last * allCoinsInBtc[coin.market]).idealDecimalPlaces()}`}
+        </MyText>,
+      );
+  });
+
+  if (usingKeys && myCoin && myCoin.balance !== 0.0) {
+    if (showInHomeScreen.indexOf(`ihave`) !== -1) itemsToShow.push(<MyText>{`I Have: ${myCoin.balance}`}</MyText>);
+    if (showInHomeScreen.indexOf(`ihaveinmarket`) !== -1)
+      itemsToShow.push(<MyText>{`I Have (${market}): ${(myCoin.balance * coin.last).idealDecimalPlaces()}`}</MyText>);
+  }
 
   return (
     <CoinContainer>
@@ -38,22 +69,7 @@ function HomeCoinItem(props: HomeCoinItemProps) {
         </TouchableOpacity>
       </CoinName>
       <CoinData onPress={onClick} onLongPress={onLongClick}>
-        <MyText>{`Last: ${coin.last.idealDecimalPlaces()}`}</MyText>
-        <MyText>{`High: ${coin.high.idealDecimalPlaces()}`}</MyText>
-        <MyText>{`Low: ${coin.low.idealDecimalPlaces()}`}</MyText>
-        <MyText>{`Vol: ${coin.volume.idealDecimalPlaces()}`}</MyText>
-        <MyText>{`Vol (${market}): ${coin.baseVolume.idealDecimalPlaces()}`}</MyText>
-        {fiats.map(fiat => (
-          <MyText key={`fiat${coin.name}${fiat.label}`}>
-            {`${fiat.label}: ${(coin.last * fiat.data.last * allCoinsInBtc[coin.market]).idealDecimalPlaces()}`}
-          </MyText>
-        ))}
-        {usingKeys && myCoin && (
-          <>
-            <MyText>{`I Have: ${myCoin.balance}`}</MyText>
-            <MyText>{`I Have (${market}): ${(myCoin.balance * coin.last).idealDecimalPlaces()}`}</MyText>
-          </>
-        )}
+        {itemsToShow}
       </CoinData>
       <CoinPercent onPress={onClick}>
         <MyText style={{ color: coin.change > 0 ? colors.positive : colors.negative }}>

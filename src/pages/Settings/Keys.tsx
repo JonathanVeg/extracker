@@ -83,7 +83,7 @@ export default function Keys() {
       />
 
       <Button onPress={saveKeys}>
-        <MyText>SALVAR</MyText>
+        <MyText>SAVE</MyText>
       </Button>
 
       {isSensorAvailable && (

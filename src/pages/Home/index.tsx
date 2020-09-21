@@ -31,6 +31,7 @@ export default function Home({ navigation }) {
   const { exchange } = useExchange();
   const { usingKeys, hasKeys } = useKeys();
   const [sortCoinsBy, setSortCoinsBy] = useState('baseVolume');
+  const [showInHomeScreen, setShowInHomeScreen] = useState([]);
 
   navigation.setOptions({
     title: `Extracker (${exchange.name})`,
@@ -81,6 +82,12 @@ export default function Home({ navigation }) {
 
   useEffect(() => {
     async function run() {
+      const loaded = await StorageUtils.getItem(`@extracker@${exchange.name}:showOnHomeScreen`);
+
+      if (loaded) {
+        setShowInHomeScreen(loaded.split(',').map(it => it.trim()));
+      }
+
       let sortCoinsBy = await AsyncStorage.getItem(`@extracker@${exchange.name}:sortCoinsBy`);
       sortCoinsBy = sortCoinsBy || 'baseVolume';
 
@@ -295,17 +302,20 @@ export default function Home({ navigation }) {
       <H1>COINS</H1>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TouchableOpacity onPress={toggleSearch}>
-          <FA name={showSearch ? 'search-minus' : 'search-plus'} size={20} style={{ margin: 3 }} />
+          <FA name={showSearch ? 'search-minus' : 'search-plus'} size={25} style={{ margin: 3 }} />
         </TouchableOpacity>
         <TouchableOpacity onPress={toggleCompactMode}>
-          <FA name={compactMode ? 'list' : 'table'} size={20} style={{ margin: 3 }} />
+          <FA name={compactMode ? 'list' : 'table'} size={25} style={{ margin: 3 }} />
         </TouchableOpacity>
         <TouchableOpacity onPress={changeSortMode}>
-          <FA name="sort" size={20} style={{ margin: 3 }} />
+          <FA name="sort" size={25} style={{ margin: 3 }} />
         </TouchableOpacity>
+        {/* <TouchableOpacity onPress={toggleSettingsBlock}>
+          <Icon name="settings" size={25} style={{ margin: 3 }} />
+        </TouchableOpacity> */}
       </View>
     </Header>
-  );
+  ); //
 
   const MarketSelectorBlock = () => (
     <MarketSelectorBlockContainer>
@@ -406,7 +416,6 @@ export default function Home({ navigation }) {
             data={coinsToShow}
             renderItem={({ item }) => (
               <HomeCoinItemCompact
-                market={market}
                 coin={item}
                 myCoins={myCoins}
                 onToggleFavorite={() => toggleFavorite(item)}
@@ -428,6 +437,7 @@ export default function Home({ navigation }) {
             ItemSeparatorComponent={itemSeparator}
             renderItem={({ item }) => (
               <HomeCoinItem
+                showInHomeScreen={showInHomeScreen}
                 market={market}
                 coin={item}
                 myCoins={myCoins}
