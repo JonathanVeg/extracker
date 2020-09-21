@@ -1,12 +1,10 @@
 /* eslint-disable no-await-in-loop */
-import styled from 'styled-components/native';
 import IconFA from 'react-native-vector-icons/FontAwesome';
 import RNPickerSelect from 'react-native-picker-select';
 import React, { useEffect, useState } from 'react';
 import { Alert as RNAlert, View, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { default as FA } from 'react-native-vector-icons/FontAwesome5';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Row } from '../../components/Generics';
 import HamburgerIcon from '../../components/HamburgerIcon';
 import { H2 } from '../../components/Hs';
@@ -20,6 +18,7 @@ import { useToast } from '../../hooks/ToastContext';
 import CoinSelector from '../../components/CoinSelector';
 import { useExchange } from '../../hooks/ExchangeContext';
 import { colors } from '../../style/globals';
+import MyCheckbox from '../../components/MyCheckbox';
 
 const AlertPage = ({ navigation }) => {
   const [selecteds, setSelecteds] = useState<Alert[]>([]);
@@ -205,9 +204,8 @@ const AlertPage = ({ navigation }) => {
         </MyText>
 
         {/* <Icon name="delete" size={20} /> */}
-        <TouchableWithoutFeedback style={{ flex: 0.6 }} onPress={() => handleSelectItem(alert)}>
-          <MyCheckbox checked={selecteds.indexOf(item) !== -1} />
-        </TouchableWithoutFeedback>
+
+        <MyCheckbox checked={selecteds.indexOf(item) !== -1} onPress={() => handleSelectItem(alert)} />
       </Row>
     );
   };
@@ -219,13 +217,17 @@ const AlertPage = ({ navigation }) => {
       {alerts.length > 0 ? (
         <>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
-            <TouchableWithoutFeedback style={{ flexDirection: 'row', alignItems: 'center' }} onPress={handleSelectAll}>
-              <MyText>Select all</MyText>
-              <MyCheckbox checked={selecteds.length === alerts.length} />
-            </TouchableWithoutFeedback>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginEnd: 5 }}>
+              <MyCheckbox checked={selecteds.length === alerts.length} onPress={handleSelectAll} label="Select all" />
+            </View>
 
             <TouchableOpacity onPress={handleCancelSeveralAlerts}>
-              <FA name="trash-alt" size={20} color={selecteds.length === 0 ? 'transparent' : colors.black} />
+              <FA
+                name="trash-alt"
+                size={20}
+                color={selecteds.length === 0 ? 'transparent' : colors.black}
+                style={{ marginEnd: 5 }}
+              />
             </TouchableOpacity>
           </View>
 
@@ -270,14 +272,3 @@ const pickerStyle = {
     paddingBottom: 10,
   },
 };
-
-const MyCheckbox = styled.View`
-  height: 20px;
-  width: 20px;
-  border-radius: 10px;
-  padding: 5px;
-  margin: 5px;
-  border-color: black;
-  background-color: ${({ checked }) => (checked ? 'black' : 'transparent')};
-  border-width: 1px;
-`;

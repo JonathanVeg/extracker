@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import styled from 'styled-components/native';
-import { Row } from '../../components/Generics';
 import { H1 } from '../../components/Hs';
-import MyText from '../../components/MyText';
 import { useExchange } from '../../hooks/ExchangeContext';
 import StorageUtils from '../../utils/StorageUtils';
 import { useKeys } from '../../hooks/KeysContext';
+import MyCheckbox from '../../components/MyCheckbox';
 
 const HomeScreen: React.FC = () => {
   const { exchange } = useExchange();
@@ -64,7 +61,9 @@ const HomeScreen: React.FC = () => {
       <H1>Show on home screen (list mode)</H1>
       {optionsToHomeScreen.map(it => (
         <View>
-          <TouchableWithoutFeedback
+          <MyCheckbox
+            checked={it.showing}
+            label={it.label}
             onPress={() => {
               const items = [...optionsToHomeScreen];
 
@@ -74,12 +73,7 @@ const HomeScreen: React.FC = () => {
 
               updatePreferences();
             }}
-          >
-            <Row>
-              <MyCheckbox checked={it.showing} />
-              <MyText>{it.label}</MyText>
-            </Row>
-          </TouchableWithoutFeedback>
+          />
         </View>
       ))}
     </>
@@ -87,14 +81,3 @@ const HomeScreen: React.FC = () => {
 };
 
 export default HomeScreen;
-
-const MyCheckbox = styled.View`
-  height: 20px;
-  width: 20px;
-  border-radius: 10px;
-  padding: 5px;
-  margin: 5px;
-  border-color: black;
-  background-color: ${({ checked }) => (checked ? 'black' : 'transparent')};
-  border-width: 1px;
-`;

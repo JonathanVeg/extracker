@@ -10,6 +10,7 @@ import { Container } from '../../components/Generics';
 import { useToast } from '../../hooks/ToastContext';
 import { useExchange } from '../../hooks/ExchangeContext';
 import MyText from '../../components/MyText';
+import MyCheckbox from '../../components/MyCheckbox';
 
 export default function CoinPageMyOrdersHistory(props) {
   const { exchange } = useExchange();
@@ -109,9 +110,9 @@ export default function CoinPageMyOrdersHistory(props) {
           </MyText>
 
           {showOpened && (
-            <TouchableWithoutFeedback style={{ flex: 0.6 }} onPress={() => handleSelectItem(order)}>
-              <MyCheckbox checked={selecteds.indexOf(item) !== -1} />
-            </TouchableWithoutFeedback>
+            <View style={{ flex: 0.6 }}>
+              <MyCheckbox checked={selecteds.indexOf(item) !== -1} onPress={() => handleSelectItem(order)} />
+            </View>
           )}
         </OrderItemContainer>
       </TouchableWithoutFeedback>
@@ -198,17 +199,6 @@ const OrderItemContainer = styled.View`
   align-items: center;
   padding: 5px;
   background-color: ${({ type }) => (type === 'buy' ? colors.buyBackground : colors.sellBackground)};
-`;
-
-const MyCheckbox = styled.View`
-  height: 20px;
-  width: 20px;
-  border-radius: 10px;
-  padding: 5px;
-  margin: 5px;
-  border-color: ${colors.black};
-  background-color: ${({ checked }) => (checked ? colors.black : 'transparent')};
-  border-width: 1px;
 `;
 
 const ShowOpenedButton = styled.TouchableOpacity`
