@@ -64,6 +64,6 @@ struct PriceWidget: Widget {
     ) { entry in
       WidgetEntryView(entry: entry)
     }
-    .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+    .supportedFamilies([.systemSmall, .systemMedium])
   }
 }
