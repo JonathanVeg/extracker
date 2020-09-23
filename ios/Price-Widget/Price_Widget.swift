@@ -8,6 +8,15 @@
 import WidgetKit
 import SwiftUI
 
+
+extension Date {
+  func asString(style: DateFormatter.Style) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = style
+    return dateFormatter.string(from: self)
+  }
+}
+  
 struct PriceEntry: TimelineEntry {
   var date: Date = Date();
   let price: String;
@@ -39,6 +48,7 @@ struct PlaceholderView: View {
   var body: some View {
     VStack {
       Text("BTC PRICE IS \(10444) USD")
+      Text("\(Date().asString(style: .short))").fontWeight(.ultraLight)
     }
   }
 }
@@ -49,6 +59,7 @@ struct WidgetEntryView: View {
   var body: some View {
     VStack {
       Text("BTC PRICE IS \(entry.price) USD")
+      Text("\(Date().asString(style: .short))").fontWeight(.ultraLight)
     }
   }
 }
