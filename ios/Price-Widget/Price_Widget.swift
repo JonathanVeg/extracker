@@ -18,36 +18,36 @@ extension Date {
 }
   
 struct PriceEntry: TimelineEntry {
-  var date: Date = Date();
-  let price: String;
+  var date = Date();
+  let price: WidgetData;
 }
 
 struct Provider: TimelineProvider {  
-  @AppStorage("price", store: UserDefaults(suiteName: "group.com.extracker.data"))
+  @AppStorage("widget_data", store: UserDefaults(suiteName: "group.widget.price.data"))
   var priceData: Data = Data()
   
   func getSnapshot(in context: Context, completion: @escaping (PriceEntry) -> Void) {
-    let price: String? = try? JSONDecoder().decode(String.self, from: priceData)
-    let entry = PriceEntry(price: price ?? "loading...")
+    guard let price = try? JSONDecoder().decode(WidgetData.self, from: priceData) else { return }
+    let entry = PriceEntry(price: price)
     completion(entry)
   }
   
   func getTimeline(in context: Context, completion: @escaping (Timeline<PriceEntry>) -> Void) {
-    let price: String? = try? JSONDecoder().decode(String.self, from: priceData)
-    let entry = PriceEntry(price: price ?? "loading...")
-    let timeline = Timeline(entries: [entry], policy: .never)
+    guard let price = try? JSONDecoder().decode(WidgetData.self, from: priceData) else { return }
+    let entry = PriceEntry(date: Date(), price: price)
+    let timeline = Timeline(entries: [entry], policy: .atEnd)
     completion(timeline)
   }
   
   func placeholder(in context: Context) -> PriceEntry {
-   return PriceEntry(price: "10445.46")
+    return PriceEntry(price: WidgetData(coin: "BTC", price: "loading"))
   }
 }
 
 struct PlaceholderView: View {
   var body: some View {
     VStack {
-      Text("BTC PRICE IS \(10444) USD")
+      Text("BTC is \(10444) USD")
       Text("\(Date().asString(style: .short))").fontWeight(.ultraLight)
     }
   }
@@ -58,8 +58,8 @@ struct WidgetEntryView: View {
   
   var body: some View {
     VStack {
-      Text("BTC PRICE IS \(entry.price) USD")
-      Text("\(Date().asString(style: .short))").fontWeight(.ultraLight)
+      Text("\(entry.price.coin) is \(entry.price.price)")
+      Text("\(Date().asString(style: .medium))").font(.footnote).fontWeight(.ultraLight)
     }
   }
 }

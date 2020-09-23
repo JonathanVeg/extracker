@@ -33,15 +33,15 @@ function HomeCoinItem(props: HomeCoinItemProps) {
   const itemsToShow = [];
 
   if (showInHomeScreen.indexOf('last') !== -1)
-    itemsToShow.push(<MyText>{`Last: ${coin.last.idealDecimalPlaces()}`}</MyText>);
+    itemsToShow.push(<MyText key={'last'}>{`Last: ${coin.last.idealDecimalPlaces()}`}</MyText>);
   if (showInHomeScreen.indexOf('high') !== -1)
-    itemsToShow.push(<MyText>{`High: ${coin.high.idealDecimalPlaces()}`}</MyText>);
+    itemsToShow.push(<MyText key={'high'}>{`High: ${coin.high.idealDecimalPlaces()}`}</MyText>);
   if (showInHomeScreen.indexOf('low') !== -1)
-    itemsToShow.push(<MyText>{`Low: ${coin.low.idealDecimalPlaces()}`}</MyText>);
+    itemsToShow.push(<MyText key={'low'}>{`Low: ${coin.low.idealDecimalPlaces()}`}</MyText>);
   if (showInHomeScreen.indexOf('vol') !== -1)
-    itemsToShow.push(<MyText>{`Vol: ${coin.volume.idealDecimalPlaces()}`}</MyText>);
+    itemsToShow.push(<MyText key={'vol'}>{`Vol: ${coin.volume.idealDecimalPlaces()}`}</MyText>);
   if (showInHomeScreen.indexOf('basevol') !== -1)
-    itemsToShow.push(<MyText>{`Vol (${market}): ${coin.baseVolume.idealDecimalPlaces()}`}</MyText>);
+    itemsToShow.push(<MyText key={'basevol'}>{`Vol (${market}): ${coin.baseVolume.idealDecimalPlaces()}`}</MyText>);
 
   let index = 0;
   fiats.map(fiat => {

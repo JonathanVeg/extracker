@@ -81,10 +81,6 @@ export default function Home({ navigation }) {
   }
 
   useEffect(() => {
-    console.log(NativeModules);
-  }, []);
-
-  useEffect(() => {
     async function run() {
       const loaded = await StorageUtils.getItem(`@extracker@${exchange.name}:showOnHomeScreen`);
 

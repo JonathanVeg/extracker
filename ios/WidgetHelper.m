@@ -1,13 +1,13 @@
-#import "WidgetHelper.h"
-#import <React/RCTLog.h>
+#import <Foundation/Foundation.h>
+#import <React/RCTBridgeModule.h>
 
-@implementation WidgetHelper
+@interface RCT_EXTERN_MODULE(WidgetHelper, NSObject)
+  RCT_EXTERN_METHOD(UpdatePrice:(NSString *)coin price:(NSString *)price)
 
-RCT_EXPORT_MODULE();
-
-RCT_EXPORT_METHOD(addEvent:(NSString *)name location:(NSString *)location)
+// Please add this one
++ (BOOL)requiresMainQueueSetup
 {
-  RCTLogInfo(@"Pretending to create an event %@ at %@", name, location);
+  return NO;
 }
 
 @end
