@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, { createContext, useEffect, useState, useContext } from 'react';
 import { NativeModules } from 'react-native';
 
@@ -27,8 +28,13 @@ const FiatProvider = ({ children }) => {
 
       try {
         if (fiats[i].name === 'BRL') {
-          console.log('Updating widget');
-          NativeModules.WidgetHelper.UpdatePrice('BTC', `${fiats[i].data.last.idealDecimalPlaces()} ${fiats[i].name}`);
+          const when = moment().format('MMM DD - HH:mm');
+
+          NativeModules.WidgetHelper.UpdatePrice(
+            'BTC',
+            `${fiats[i].data.last.idealDecimalPlaces()} ${fiats[i].name}`,
+            when,
+          );
         }
       } catch (err) {
         console.log(err);

@@ -10,6 +10,7 @@ import Foundation
 struct WidgetData: Identifiable, Codable {
   let coin: String
   let price: String
+  let updatedAt: String
     
   var id: String { coin }
 }

@@ -24,6 +24,7 @@
 		82B3A955251BEDF200E61E5F /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B3A954251BEDF200E61E5F /* WidgetData.swift */; };
 		82B3A95C251BEF7E00E61E5F /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B3A954251BEDF200E61E5F /* WidgetData.swift */; };
 		82B3A969251BEF8D00E61E5F /* Price_Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDD203251986A70094FE95 /* Price_Widget.swift */; };
+		82B3A97F251D4BCA00E61E5F /* UITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B3A97E251D4BCA00E61E5F /* UITest.swift */; };
 		ABFDD1FF251986A70094FE95 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFDD1FE251986A70094FE95 /* WidgetKit.framework */; };
 		ABFDD201251986A70094FE95 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFDD200251986A70094FE95 /* SwiftUI.framework */; };
 		ABFDD207251986AA0094FE95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ABFDD206251986AA0094FE95 /* Assets.xcassets */; };
@@ -110,6 +111,7 @@
 		82AEF7DD248D914D0026818A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		82B3A8FC251BE44500E61E5F /* WidgetHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WidgetHelper.m; sourceTree = "<group>"; };
 		82B3A954251BEDF200E61E5F /* WidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetData.swift; sourceTree = "<group>"; };
+		82B3A97E251D4BCA00E61E5F /* UITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITest.swift; sourceTree = "<group>"; };
 		87D4DB09FBF23D672970EF44 /* libPods-extracker-extrackerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-extracker-extrackerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		968A1764068D08A2665704A6 /* Pods-extracker-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-extracker-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-extracker-tvOS/Pods-extracker-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		9AFC04AA5DEFD11C49328FC0 /* libPods-extracker-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-extracker-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -256,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				82B3A954251BEDF200E61E5F /* WidgetData.swift */,
+				82B3A97E251D4BCA00E61E5F /* UITest.swift */,
 				82B3A8FC251BE44500E61E5F /* WidgetHelper.m */,
 				ABFDD221251AD0190094FE95 /* WidgetHelper.swift */,
 				ABFDD21F251ACFDE0094FE95 /* BridgeHeader.m */,
@@ -842,6 +845,7 @@
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				82B3A955251BEDF200E61E5F /* WidgetData.swift in Sources */,
 				82B3A8FD251BE44500E61E5F /* WidgetHelper.m in Sources */,
+				82B3A97F251D4BCA00E61E5F /* UITest.swift in Sources */,
 				ABFDD222251AD0190094FE95 /* WidgetHelper.swift in Sources */,
 				ABFDD220251ACFDE0094FE95 /* BridgeHeader.m in Sources */,
 			);

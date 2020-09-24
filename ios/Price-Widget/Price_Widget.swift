@@ -42,7 +42,7 @@ struct Provider: TimelineProvider {
   }
   
   func placeholder(in context: Context) -> PriceEntry {
-    return PriceEntry(price: WidgetData(coin: "BTC", price: "loading"))
+    return PriceEntry(price: WidgetData(coin: "BTC", price: "loading", updatedAt: "now"))
   }
 }
 
@@ -61,7 +61,7 @@ struct WidgetEntryView: View {
   var body: some View {
     VStack {
       Text("\(entry.price.coin) is \(entry.price.price)")
-      Text("\(Date().asString())").font(.footnote).fontWeight(.ultraLight)
+      Text("\(entry.price.updatedAt)").font(.footnote).fontWeight(.ultraLight)
     }
   }
 }
@@ -79,4 +79,6 @@ struct PriceWidget: Widget {
     }
     .supportedFamilies([.systemSmall, .systemMedium])
   }
+  
+  
 }
