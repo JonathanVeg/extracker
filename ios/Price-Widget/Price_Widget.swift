@@ -36,7 +36,12 @@ struct Provider: TimelineProvider {
   
   func getTimeline(in context: Context, completion: @escaping (Timeline<PriceEntry>) -> Void) {
     guard let price = try? JSONDecoder().decode(WidgetData.self, from: priceData) else { return }
+    
+    let calendar = Calendar.current
+    let date = calendar.date(byAdding: .minute, value: 5, to: Date())
+    
     let entry = PriceEntry(date: Date(), price: price)
+    // let timeline = Timeline(entries: [entry], policy: .after(date!))
     let timeline = Timeline(entries: [entry], policy: .atEnd)
     completion(timeline)
   }

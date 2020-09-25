@@ -7,6 +7,8 @@
 
 import Foundation
 import SwiftUI
+import WidgetKit
+
 
 @available(iOS 14.0, *)
 @objc(WidgetHelper)
@@ -30,5 +32,7 @@ class WidgetHelper: NSObject, RCTBridgeModule {
     guard let priceData = try? JSONEncoder().encode(widgetData) else { return }
     
     self.priceData = priceData
+      
+    WidgetCenter.shared.reloadAllTimelines()
   }
 }
