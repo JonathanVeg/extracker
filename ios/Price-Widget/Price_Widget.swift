@@ -21,7 +21,7 @@ extension Date {
   
 struct PriceEntry: TimelineEntry {
   var date = Date();
-  let price: WidgetData;
+  let data: WidgetData;
 }
 
 struct Provider: TimelineProvider {  
@@ -29,25 +29,25 @@ struct Provider: TimelineProvider {
   var priceData: Data = Data()
   
   func getSnapshot(in context: Context, completion: @escaping (PriceEntry) -> Void) {
-    guard let price = try? JSONDecoder().decode(WidgetData.self, from: priceData) else { return }
-    let entry = PriceEntry(price: price)
+    guard let data = try? JSONDecoder().decode(WidgetData.self, from: priceData) else { return }
+    let entry = PriceEntry(data: data)
     completion(entry)
   }
   
   func getTimeline(in context: Context, completion: @escaping (Timeline<PriceEntry>) -> Void) {
-    guard let price = try? JSONDecoder().decode(WidgetData.self, from: priceData) else { return }
+    guard let data = try? JSONDecoder().decode(WidgetData.self, from: priceData) else { return }
     
     let calendar = Calendar.current
     let date = calendar.date(byAdding: .minute, value: 5, to: Date())
     
-    let entry = PriceEntry(date: Date(), price: price)
+    let entry = PriceEntry(date: Date(), data: data)
     // let timeline = Timeline(entries: [entry], policy: .after(date!))
     let timeline = Timeline(entries: [entry], policy: .atEnd)
     completion(timeline)
   }
   
   func placeholder(in context: Context) -> PriceEntry {
-    return PriceEntry(price: WidgetData(coin: "BTC", price: "loading", updatedAt: "now"))
+    return PriceEntry(data: WidgetData(coin: "BTC", price: "loading", base: "BRL", updatedAt: "now"))
   }
 }
 
@@ -65,9 +65,19 @@ struct WidgetEntryView: View {
   
   var body: some View {
     VStack {
-      Text("\(entry.price.coin) is \(entry.price.price)")
-      Text("\(entry.price.updatedAt)").font(.footnote).fontWeight(.ultraLight)
-    }
+      HStack {
+        Text(entry.data.coin).bold().font(.callout).padding([.horizontal])
+        Spacer()
+      }
+      HStack{
+        Text(entry.data.price).bold().font(.callout)
+        Text(entry.data.base).font(.footnote)
+      }.padding()
+      HStack {
+        Spacer()
+        Text(entry.data.updatedAt).foregroundColor(.gray).font(.caption).fontWeight(.ultraLight).padding([.horizontal])
+      }
+    }.padding(5)
   }
 }
 

@@ -26,8 +26,8 @@ class WidgetHelper: NSObject, RCTBridgeModule {
    
   
   @objc
-  func UpdatePrice(_ coin:NSString, price:NSString, updatedAt: NSString) -> Void {
-    let widgetData = WidgetData(coin: coin as String, price: price as String, updatedAt: updatedAt as String)
+  func UpdatePrice(_ coin:NSString, price:NSString, base:NSString, updatedAt: NSString) -> Void {
+    let widgetData = WidgetData(coin: coin as String, price: price as String, base: base as String, updatedAt: updatedAt as String)
     
     guard let priceData = try? JSONEncoder().encode(widgetData) else { return }
     

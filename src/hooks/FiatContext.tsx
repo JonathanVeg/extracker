@@ -32,7 +32,8 @@ const FiatProvider = ({ children }) => {
 
           NativeModules.WidgetHelper.UpdatePrice(
             'BTC',
-            `${fiats[i].data.last.idealDecimalPlaces()} ${fiats[i].name}`,
+            `${fiats[i].data.last.idealDecimalPlaces()}`,
+            `${fiats[i].name}`,
             when,
           );
         }
