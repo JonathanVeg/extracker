@@ -14,30 +14,30 @@ struct UITest: View {
   }
 }
 
-struct PriceEntry {
+struct PriceEntryTest {
   var date = Date();
-  let data: WidgetData;
+  let data: CoinData;
 }
 
 struct UITest_Previews: PreviewProvider {
   @available(iOS 13.0.0, *)
   static var previews: some View {
-    let data: WidgetData = WidgetData(coin: "BTC", price: "59561.78", base: "BRL", updatedAt: "Sep 25 - 12:25")
+    let data: CoinData = CoinData(MarketName: "AAA", High: 0.0, Low: 0.0, Volume: 0.0, Last: 0.0, BaseVolume: 0.0, TimeStamp: "AAA", Bid: 0.0, Ask: 0.0, OpenBuyOrders: 1, OpenSellOrders: 1, PrevDay: 0.0, Created: "AAA")
     let entry = PriceEntry(date: Date(), data: data)
     let size: CGFloat = 169.0
 
     VStack {
       HStack {
-        Text(entry.data.coin).bold().font(.callout).padding([.horizontal])
+        Text("sdas").bold().font(.callout).padding([.horizontal])
         Spacer()
       }
       HStack{
-        Text(entry.data.price).bold().font(.callout)
-        Text(entry.data.base).font(.footnote)
+        Text("TESTE").bold().font(.callout)
+        Text("teste").font(.footnote)
       }.padding()
       HStack {
         Spacer()
-        Text(entry.data.updatedAt).foregroundColor(.gray).font(.caption).fontWeight(.ultraLight).padding([.horizontal])
+        Text("---").foregroundColor(.gray).font(.caption).fontWeight(.ultraLight).padding([.horizontal])
       }
     }.padding(5).border(Color.black, width: 1).frame(minWidth: size, idealWidth: size, maxWidth: size, minHeight: size, idealHeight: size, maxHeight: size, alignment: .center)
   }

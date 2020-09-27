@@ -1,8 +1,8 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import ExchangeInterface from './../controllers/exchanges/ExchangeInterface';
+import AsyncStorage from '@react-native-community/async-storage';
+import ExchangeInterface from '../controllers/exchanges/ExchangeInterface';
 import Bittrex from '../controllers/exchanges/Bittrex';
 import Poloniex from '../controllers/exchanges/Poloniex';
-import AsyncStorage from '@react-native-community/async-storage';
 
 interface ExchangeContextProps {
   exchange: ExchangeInterface;

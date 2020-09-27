@@ -24,7 +24,6 @@
 		82B3A955251BEDF200E61E5F /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B3A954251BEDF200E61E5F /* WidgetData.swift */; };
 		82B3A95C251BEF7E00E61E5F /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B3A954251BEDF200E61E5F /* WidgetData.swift */; };
 		82B3A969251BEF8D00E61E5F /* Price_Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDD203251986A70094FE95 /* Price_Widget.swift */; };
-		82B3A97F251D4BCA00E61E5F /* UITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B3A97E251D4BCA00E61E5F /* UITest.swift */; };
 		ABFDD1FF251986A70094FE95 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFDD1FE251986A70094FE95 /* WidgetKit.framework */; };
 		ABFDD201251986A70094FE95 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFDD200251986A70094FE95 /* SwiftUI.framework */; };
 		ABFDD207251986AA0094FE95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ABFDD206251986AA0094FE95 /* Assets.xcassets */; };
@@ -33,6 +32,11 @@
 		ABFDD20D251986AA0094FE95 /* Price-WidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = ABFDD1FD251986A70094FE95 /* Price-WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		ABFDD220251ACFDE0094FE95 /* BridgeHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = ABFDD21F251ACFDE0094FE95 /* BridgeHeader.m */; };
 		ABFDD222251AD0190094FE95 /* WidgetHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDD221251AD0190094FE95 /* WidgetHelper.swift */; };
+		ABFDD22B252036620094FE95 /* BittrexService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDD22A252036620094FE95 /* BittrexService.swift */; };
+		ABFDD22C252036620094FE95 /* BittrexService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDD22A252036620094FE95 /* BittrexService.swift */; };
+		ABFDD22E252048020094FE95 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDD22D252048020094FE95 /* Date+Extensions.swift */; };
+		ABFDD22F252048020094FE95 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDD22D252048020094FE95 /* Date+Extensions.swift */; };
+		ABFDD2302520F1280094FE95 /* UITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B3A97E251D4BCA00E61E5F /* UITest.swift */; };
 		B16CFF9C85204CD24C06FE2C /* libPods-extracker-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A452A932A839479CA045708E /* libPods-extracker-tvOS.a */; };
 		EE5C810CFC442CE10C3265C7 /* libPods-extracker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73041A084435FEFD72AFC110 /* libPods-extracker.a */; };
 		FC2BDA8DFD8078BABCAB5040 /* libPods-extracker-extrackerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 87D4DB09FBF23D672970EF44 /* libPods-extracker-extrackerTests.a */; };
@@ -127,6 +131,8 @@
 		ABFDD211251988500094FE95 /* Price-WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Price-WidgetExtension.entitlements"; sourceTree = "<group>"; };
 		ABFDD21F251ACFDE0094FE95 /* BridgeHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BridgeHeader.m; sourceTree = "<group>"; };
 		ABFDD221251AD0190094FE95 /* WidgetHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetHelper.swift; sourceTree = "<group>"; };
+		ABFDD22A252036620094FE95 /* BittrexService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BittrexService.swift; sourceTree = "<group>"; };
+		ABFDD22D252048020094FE95 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		B23CD933CC3EA4C8E1034ABC /* Pods-extracker-extrackerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-extracker-extrackerTests.release.xcconfig"; path = "Target Support Files/Pods-extracker-extrackerTests/Pods-extracker-extrackerTests.release.xcconfig"; sourceTree = "<group>"; };
 		B3AA367A4C2DAD1AC17E4F02 /* Pods-extracker-extrackerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-extracker-extrackerTests.debug.xcconfig"; path = "Target Support Files/Pods-extracker-extrackerTests/Pods-extracker-extrackerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B91675D8DFF0E0394116199C /* Pods-extracker-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-extracker-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-extracker-tvOSTests/Pods-extracker-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -257,6 +263,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				ABFDD22D252048020094FE95 /* Date+Extensions.swift */,
 				82B3A954251BEDF200E61E5F /* WidgetData.swift */,
 				82B3A97E251D4BCA00E61E5F /* UITest.swift */,
 				82B3A8FC251BE44500E61E5F /* WidgetHelper.m */,
@@ -264,6 +271,7 @@
 				ABFDD21F251ACFDE0094FE95 /* BridgeHeader.m */,
 				ABFDD211251988500094FE95 /* Price-WidgetExtension.entitlements */,
 				13B07FAE1A68108700A75B9A /* extracker */,
+				ABFDD229252036550094FE95 /* Services */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* extrackerTests */,
 				82AEF7DA248D914D0026818A /* OneSignalNotificationServiceExtension */,
@@ -300,6 +308,14 @@
 				ABFDD208251986AA0094FE95 /* Info.plist */,
 			);
 			path = "Price-Widget";
+			sourceTree = "<group>";
+		};
+		ABFDD229252036550094FE95 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				ABFDD22A252036620094FE95 /* BittrexService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		CEF57A3124917B4CABEC05D9 /* Pods */ = {
@@ -843,10 +859,11 @@
 				ABFDD20A251986AA0094FE95 /* Price_Widget.intentdefinition in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				ABFDD22E252048020094FE95 /* Date+Extensions.swift in Sources */,
 				82B3A955251BEDF200E61E5F /* WidgetData.swift in Sources */,
 				82B3A8FD251BE44500E61E5F /* WidgetHelper.m in Sources */,
-				82B3A97F251D4BCA00E61E5F /* UITest.swift in Sources */,
 				ABFDD222251AD0190094FE95 /* WidgetHelper.swift in Sources */,
+				ABFDD22B252036620094FE95 /* BittrexService.swift in Sources */,
 				ABFDD220251ACFDE0094FE95 /* BridgeHeader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -882,6 +899,9 @@
 			files = (
 				ABFDD209251986AA0094FE95 /* Price_Widget.intentdefinition in Sources */,
 				82B3A95C251BEF7E00E61E5F /* WidgetData.swift in Sources */,
+				ABFDD22C252036620094FE95 /* BittrexService.swift in Sources */,
+				ABFDD2302520F1280094FE95 /* UITest.swift in Sources */,
+				ABFDD22F252048020094FE95 /* Date+Extensions.swift in Sources */,
 				82B3A969251BEF8D00E61E5F /* Price_Widget.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
