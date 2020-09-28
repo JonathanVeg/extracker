@@ -50,6 +50,9 @@ struct ViewToRender: View {
   let changes: Double
   let changesColor: Color
   
+  var fontColor: UIColor = .white
+  var bgColor: UIColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0)
+  
   init(entry: PriceEntry) {
     self.entry = entry;
     
@@ -58,35 +61,49 @@ struct ViewToRender: View {
     changes = entry.data.changes()
     
     if changes >= 0 {
-      changesColor = .green
+      changesColor = .green // .init(red: 20.0, green: 140.0, blue: 20.0)
     } else {
       changesColor = .red
     }
+    
+    // self.fontColor = colorScheme == .dark ? .white : .black
+    // self.bgColor = colorScheme == .dark ? .black : .white
   }
   
   var body: some View {
-    VStack {
-      HStack {
-        Text("\(entry.data.coin())").font(.headline).font(.system(.title3))
-        Spacer()
-        Text("\(entry.data.market())").font(.headline).font(.system(.title3))
-      }
-      
-      HStack{
-        VStack(alignment: .leading) {
-          Text("=: \(String(format: "%.8f", entry.data.Last))").font(.system(.caption))
-          Text("H: \(String(format: "%.8f", entry.data.High))").font(.system(.caption))
-          Text("L: \(String(format: "%.8f", entry.data.Low))").font(.system(.caption))
+    ZStack {
+      Color(bgColor).ignoresSafeArea(.all)
+      // LinearGradient(gradient: Gradient(colors: [.white, .gray]), startPoint: .top, endPoint: .bottom).ignoresSafeArea(.all)
+
+      VStack {
+        HStack {
+          Text("\(entry.data.coin())").font(.headline).font(.system(.title3))
+          Spacer()
+          Text("\(entry.data.market())").font(.headline).font(.system(.title3))
         }
         
-        Text("\(String(format: "%.1f", entry.data.changes()))%").foregroundColor(changesColor).font(.system(.caption))
+        Spacer()
         
-      }.padding([.top], 5)
-      
-      Spacer()
-      Text(timestampUTC).foregroundColor(.gray).font(.footnote)
+        HStack{
+          VStack(alignment: .leading) {
+            Text("$ \(String(format: "%.8f", entry.data.Last))").font(.system(.caption))
+            Text("↑ \(String(format: "%.8f", entry.data.High))").font(.system(.caption))
+            Text("↓ \(String(format: "%.8f", entry.data.Low))").font(.system(.caption))
+          }
+          // .overlay(Rectangle().frame(width: 1, height: nil, alignment: .leading).foregroundColor(Color.red), alignment: .leading)
+          
+          Spacer()
+          
+          Text("\(String(format: "%.1f", entry.data.changes()))%").foregroundColor(changesColor).font(.system(.caption))
+        }.padding([.top], 5)
+        
+        Spacer()
+        
+        Text(timestampUTC).foregroundColor(.gray).font(.footnote)
+      }
+      .foregroundColor(Color(fontColor))
+      .padding([.all], 7)
     }
-    .padding([.top, .bottom, .leading])
   }
 }
 
