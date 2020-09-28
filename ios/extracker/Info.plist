@@ -45,6 +45,10 @@
 	<string>Location is used to deliver notification with localization destination. Its required by an extension, but never used (even do not ask for permission) </string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location is used to deliver notification with localization destination. Its required by an extension, but never used (even do not ask for permission) </string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>WidgetDataItentIntent</string>
+	</array>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

@@ -11,28 +11,19 @@ import SwiftUI
 struct PriceEntry: TimelineEntry {
   var date = Date();
   let data: CoinData;
-
-  
-//  var relevance: TimelineEntryRelevance? {
-//    return TimelineEntryRelevance(score: 90)
-//  }
 }
   
-struct Provider: TimelineProvider {  
-//  @AppStorage("widget_data", store: UserDefaults(suiteName: "group.widget.price.data"))
-//  var priceData: Data = Data()
-  
-  func getSnapshot(in context: Context, completion: @escaping (PriceEntry) -> Void) {
-    // guard let data = try? JSONDecoder().decode(WidgetData.self, from: priceData) else { return }
+struct Provider: IntentTimelineProvider {
+  typealias Intent = WidgetDataItentIntent
+      
+  func getSnapshot(for configuration: WidgetDataItentIntent, in context: Context, completion: @escaping (PriceEntry) -> Void) {
     let fakeData = CoinData(MarketName: "DCR-BTC", High: 1.0, Low: 1.0, Volume: 1.0, Last: 1.0, BaseVolume: 1.0, TimeStamp: "NOW", Bid: 1.0, Ask: 1.0, OpenBuyOrders: 100, OpenSellOrders: 100, PrevDay: 0.9, Created: "NOW")
     let entry = PriceEntry(data: fakeData)
     completion(entry)
   }
   
-  func getTimeline(in context: Context, completion: @escaping (Timeline<PriceEntry>) -> Void) {
-    // guard let data = try? JSONDecoder().decode(WidgetData.self, from: priceData) else { return }
-    
-    BittrexService(coin: "dcr", market: "btc").getData { (result) in
+  func getTimeline(for configuration: WidgetDataItentIntent, in context: Context, completion: @escaping (Timeline<PriceEntry>) -> Void) {
+    BittrexService(coin: configuration.coin!, market: configuration.market!).getData { (result) in
       let data: CoinData
       
       if case .success(let fetchedData) = result {
@@ -42,7 +33,7 @@ struct Provider: TimelineProvider {
       }
       
       let entry = PriceEntry(date: Date(), data: data)
-      let timeline = Timeline(entries: [entry], policy: .after(Date().addMinutes(minutes: 2)))
+      let timeline = Timeline(entries: [entry], policy: .after(Date().addMinutes(minutes: 15)))
       
       completion(timeline)
     }
@@ -93,13 +84,9 @@ struct ViewToRender: View {
       }.padding([.top], 5)
       
       Spacer()
-      // Text(Date().addMinutes(minutes: 2).asString()).font(.footnote)
       Text(timestampUTC).foregroundColor(.gray).font(.footnote)
     }
     .padding([.top, .bottom, .leading])
-    // .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .leading)
-    // .background(LinearGradient(gradient: Gradient(colors: [.black, Color(red: 61, green: 61, blue: 61, opacity: 1)]), startPoint: .top, endPoint: .bottom))
-
   }
 }
 
@@ -116,8 +103,9 @@ struct PriceWidget: Widget {
   private let kind = "Price_Widget"
   
   var body: some WidgetConfiguration {
-    StaticConfiguration(
+    IntentConfiguration (
       kind: kind,
+      intent: WidgetDataItentIntent.self,
       provider: Provider()
     ) { entry in
       WidgetEntryView(entry: entry)
