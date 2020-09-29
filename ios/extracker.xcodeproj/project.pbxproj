@@ -18,6 +18,8 @@
 		2DCD954D1E0B4F2C00145EB5 /* extrackerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* extrackerTests.m */; };
 		34EB0C54D21083A5EADF5F4F /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E40C5CF55EEB4F4596B2D9 /* libPods-OneSignalNotificationServiceExtension.a */; };
 		540810DFFD85C66B27841E5A /* libPods-extracker-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AFC04AA5DEFD11C49328FC0 /* libPods-extracker-tvOSTests.a */; };
+		82ADB5D025237F3400DA377E /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82ADB5CF25237F3400DA377E /* Double+Extensions.swift */; };
+		82ADB5D125237F3400DA377E /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82ADB5CF25237F3400DA377E /* Double+Extensions.swift */; };
 		82AEF7DC248D914D0026818A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AEF7DB248D914D0026818A /* NotificationService.swift */; };
 		82AEF7E0248D914D0026818A /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 82AEF7D9248D914D0026818A /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		82B3A8FD251BE44500E61E5F /* WidgetHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B3A8FC251BE44500E61E5F /* WidgetHelper.m */; };
@@ -109,6 +111,7 @@
 		73041A084435FEFD72AFC110 /* libPods-extracker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-extracker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C3E0F43B8F363E733B91FC5 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		8264CE4B246279E4009C4BB5 /* extracker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "extracker-Bridging-Header.h"; sourceTree = "<group>"; };
+		82ADB5CF25237F3400DA377E /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		82AEF7C4248D8FDF0026818A /* extracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = extracker.entitlements; path = extracker/extracker.entitlements; sourceTree = "<group>"; };
 		82AEF7D9248D914D0026818A /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		82AEF7DB248D914D0026818A /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -263,6 +266,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				82ADB5CF25237F3400DA377E /* Double+Extensions.swift */,
 				ABFDD22D252048020094FE95 /* Date+Extensions.swift */,
 				82B3A954251BEDF200E61E5F /* WidgetData.swift */,
 				82B3A97E251D4BCA00E61E5F /* UITest.swift */,
@@ -860,6 +864,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				ABFDD22E252048020094FE95 /* Date+Extensions.swift in Sources */,
+				82ADB5D025237F3400DA377E /* Double+Extensions.swift in Sources */,
 				82B3A955251BEDF200E61E5F /* WidgetData.swift in Sources */,
 				82B3A8FD251BE44500E61E5F /* WidgetHelper.m in Sources */,
 				ABFDD222251AD0190094FE95 /* WidgetHelper.swift in Sources */,
@@ -899,6 +904,7 @@
 			files = (
 				82B3A95C251BEF7E00E61E5F /* WidgetData.swift in Sources */,
 				ABFDD22C252036620094FE95 /* BittrexService.swift in Sources */,
+				82ADB5D125237F3400DA377E /* Double+Extensions.swift in Sources */,
 				ABFDD2322521751D0094FE95 /* WidgetDataIntent.intentdefinition in Sources */,
 				ABFDD2302520F1280094FE95 /* UITest.swift in Sources */,
 				ABFDD22F252048020094FE95 /* Date+Extensions.swift in Sources */,
