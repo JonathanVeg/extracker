@@ -9,6 +9,7 @@ import { useFiats } from '../../hooks/FiatContext';
 import { useSummaries } from '../../hooks/SummaryContext';
 import { useKeys } from '../../hooks/KeysContext';
 import MyText from '../../components/MyText';
+import { ALL_HOME_SCREEN_OPTIONS } from '../Settings/HomeScreen';
 
 interface HomeCoinItemProps {
   onToggleFavorite: void;
@@ -21,7 +22,10 @@ interface HomeCoinItemProps {
 }
 
 function HomeCoinItem(props: HomeCoinItemProps) {
-  const { onClick, onLongClick, coin, market, myCoins, onToggleFavorite, showInHomeScreen } = props;
+  const { onClick, onLongClick, coin, market, myCoins, onToggleFavorite } = props;
+  let { showInHomeScreen } = props;
+
+  if (showInHomeScreen.length === 0) showInHomeScreen = [...ALL_HOME_SCREEN_OPTIONS];
 
   const myCoin = myCoins.find(it => it.name === coin.name);
   const { usingKeys } = useKeys();
@@ -33,15 +37,15 @@ function HomeCoinItem(props: HomeCoinItemProps) {
   const itemsToShow = [];
 
   if (showInHomeScreen.indexOf('last') !== -1)
-    itemsToShow.push(<MyText key={'last'}>{`Last: ${coin.last.idealDecimalPlaces()}`}</MyText>);
+    itemsToShow.push(<MyText key="last">{`Last: ${coin.last.idealDecimalPlaces()}`}</MyText>);
   if (showInHomeScreen.indexOf('high') !== -1)
-    itemsToShow.push(<MyText key={'high'}>{`High: ${coin.high.idealDecimalPlaces()}`}</MyText>);
+    itemsToShow.push(<MyText key="high">{`High: ${coin.high.idealDecimalPlaces()}`}</MyText>);
   if (showInHomeScreen.indexOf('low') !== -1)
-    itemsToShow.push(<MyText key={'low'}>{`Low: ${coin.low.idealDecimalPlaces()}`}</MyText>);
+    itemsToShow.push(<MyText key="low">{`Low: ${coin.low.idealDecimalPlaces()}`}</MyText>);
   if (showInHomeScreen.indexOf('vol') !== -1)
-    itemsToShow.push(<MyText key={'vol'}>{`Vol: ${coin.volume.idealDecimalPlaces()}`}</MyText>);
+    itemsToShow.push(<MyText key="vol">{`Vol: ${coin.volume.idealDecimalPlaces()}`}</MyText>);
   if (showInHomeScreen.indexOf('basevol') !== -1)
-    itemsToShow.push(<MyText key={'basevol'}>{`Vol (${market}): ${coin.baseVolume.idealDecimalPlaces()}`}</MyText>);
+    itemsToShow.push(<MyText key="basevol">{`Vol (${market}): ${coin.baseVolume.idealDecimalPlaces()}`}</MyText>);
 
   let index = 0;
   fiats.map(fiat => {

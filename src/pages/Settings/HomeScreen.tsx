@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
-import { H1 } from '../../components/Hs';
+import { H1, H3 } from '../../components/Hs';
 import { useExchange } from '../../hooks/ExchangeContext';
 import StorageUtils from '../../utils/StorageUtils';
 import { useKeys } from '../../hooks/KeysContext';
@@ -59,6 +59,7 @@ const HomeScreen: React.FC = () => {
   return (
     <>
       <H1>Show on home screen (list mode)</H1>
+      <H3>(restart the app to see the changes)</H3>
       {optionsToHomeScreen.map(it => (
         <View>
           <MyCheckbox
@@ -80,4 +81,15 @@ const HomeScreen: React.FC = () => {
   );
 };
 
+export const ALL_HOME_SCREEN_OPTIONS = [
+  'last',
+  'high',
+  'low',
+  'vol',
+  'basevol',
+  'fiat1',
+  'fiat2',
+  'ihave',
+  'ihaveinmarket',
+];
 export default HomeScreen;
