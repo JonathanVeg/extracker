@@ -51,7 +51,7 @@ struct ViewToRender: View {
   let changesColor: Color
   
   var fontColor: UIColor = .white
-  var bgColor: UIColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0)
+  var bgColor: UIColor = UIColor(red: 15/255, green: 15/255, blue: 15/255, alpha: 1.0)
   
   init(entry: PriceEntry) {
     self.entry = entry;

@@ -26,7 +26,7 @@ const colors2 = {
   darker: '#FFF',
   dark: '#FFF',
   light: '#C0C0C0',
-  lighter: '#eee',
+  lighter: '#CCC',
   white: '#000',
   red: 'red',
 
