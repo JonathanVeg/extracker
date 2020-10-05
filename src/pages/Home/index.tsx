@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 import { default as Icon } from 'react-native-vector-icons/MaterialIcons';
 import { default as MCI } from 'react-native-vector-icons/MaterialCommunityIcons';
 import { default as FA } from 'react-native-vector-icons/FontAwesome';
-import { FlatList, StyleSheet, TouchableOpacity, View, Alert, AlertButton, NativeModules } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, View, Alert, AlertButton } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import BlackWhiteBlock from '../../components/BlackWhiteBlock';
 import Coin from '../../models/Coin';
@@ -28,7 +28,7 @@ import { useExchange } from '../../hooks/ExchangeContext';
 import MyText from '../../components/MyText';
 
 export default function Home({ navigation }) {
-  const { exchange } = useExchange();
+  const { exchange, changeExchange, nextExchange } = useExchange();
   const { usingKeys, hasKeys } = useKeys();
   const [sortCoinsBy, setSortCoinsBy] = useState('baseVolume');
   const [showInHomeScreen, setShowInHomeScreen] = useState([]);
@@ -40,11 +40,30 @@ export default function Home({ navigation }) {
   });
 
   const gotoWallets = () => navigation.navigate('Wallets');
+  const toggleExchange = () => {
+    Alert.alert(
+      'Change exchange',
+      `Toggle exchange to ${nextExchange().name}`,
+      [
+        { text: 'No', style: 'cancel' },
+        {
+          text: 'Yes',
+          onPress: () => changeExchange(),
+        },
+      ],
+      { cancelable: false },
+    );
+  };
 
-  const headerRight = usingKeys && (
+  const headerRight = (
     <View style={{ marginStart: 5, flexDirection: 'row' }}>
-      <TouchableOpacity onPress={gotoWallets}>
-        <MCI name="wallet" size={25} style={{ marginEnd: 15 }} />
+      {usingKeys && (
+        <TouchableOpacity onPress={gotoWallets}>
+          <MCI name="wallet" size={25} style={{ marginEnd: 15 }} />
+        </TouchableOpacity>
+      )}
+      <TouchableOpacity onPress={toggleExchange}>
+        <FA name="exchange" size={25} style={{ marginEnd: 15 }} />
       </TouchableOpacity>
     </View>
   );

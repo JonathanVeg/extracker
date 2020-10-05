@@ -30,6 +30,7 @@
     "querystring": "^0.2.0",
     "react": "16.11.0",
     "react-native": "0.62.2",
+    "react-native-amplitude-analytics": "^0.2.9",
     "react-native-biometrics": "^2.1.4",
     "react-native-charts-wrapper": "^0.5.7",
     "react-native-code-push": "^6.3.0",

@@ -53,6 +53,9 @@ struct ViewToRender: View {
   var fontColor: UIColor = .white
   var bgColor: UIColor = UIColor(red: 15/255, green: 15/255, blue: 15/255, alpha: 1.0)
   
+  var bgColor1: UIColor = UIColor(red: 60/255, green: 0/255, blue: 0/255, alpha: 1.0)
+  var bgColor2: UIColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1.0)
+  
   init(entry: PriceEntry) {
     self.entry = entry;
     
@@ -62,6 +65,7 @@ struct ViewToRender: View {
     
     if changes >= 0 {
       changesColor = .green // .init(red: 20.0, green: 140.0, blue: 20.0)
+      bgColor1 = UIColor(red: 0/255, green: 60/255, blue: 0/255, alpha: 1.0)
     } else {
       changesColor = .red
     }
@@ -72,8 +76,8 @@ struct ViewToRender: View {
   
   var body: some View {
     ZStack {
-      Color(bgColor).ignoresSafeArea(.all)
-      // LinearGradient(gradient: Gradient(colors: [.white, .gray]), startPoint: .top, endPoint: .bottom).ignoresSafeArea(.all)
+      // Color(bgColor).ignoresSafeArea(.all)
+      LinearGradient(gradient: Gradient(colors: [Color(bgColor1), Color(bgColor2)]), startPoint: .top, endPoint: .bottom).ignoresSafeArea(.all)
 
       VStack {
         HStack {

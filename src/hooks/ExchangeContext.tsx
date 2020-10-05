@@ -6,6 +6,7 @@ import Poloniex from '../controllers/exchanges/Poloniex';
 
 interface ExchangeContextProps {
   exchange: ExchangeInterface;
+  nextExchange(): ExchangeInterface;
   changeExchange(to: ExchangeInterface | null): void | null;
 }
 
@@ -30,9 +31,13 @@ const ExchangeProvider = ({ children }) => {
     load();
   }, []);
 
-  async function changeExchange(to: ExchangeInterface) {
+  function nextExchange() {
+    return exchange === Bittrex ? Poloniex : Bittrex;
+  }
+
+  async function changeExchange(to: ExchangeInterface | null = null) {
     let next: ExchangeInterface;
-    if (next) {
+    if (to) {
       next = to;
     } else {
       next = exchange === Bittrex ? Poloniex : Bittrex;
@@ -45,7 +50,9 @@ const ExchangeProvider = ({ children }) => {
 
   if (!exchange) return null;
 
-  return <ExchangeContext.Provider value={{ exchange, changeExchange }}>{children}</ExchangeContext.Provider>;
+  return (
+    <ExchangeContext.Provider value={{ exchange, changeExchange, nextExchange }}>{children}</ExchangeContext.Provider>
+  );
 };
 
 function useExchange(): ExchangeContextProps {
