@@ -33,7 +33,6 @@ def add_flipper_pods!(versions = {})
   pod 'FlipperKit/FlipperKitHighlightOverlay', versions['Flipper'], :configuration => 'Debug'
   pod 'FlipperKit/FlipperKitLayoutTextSearchable', versions['Flipper'], :configuration => 'Debug'
   pod 'FlipperKit/FlipperKitNetworkPlugin', versions['Flipper'], :configuration => 'Debug'
-
 end
 
 # Post Install processing for Flipper
@@ -85,8 +84,6 @@ target 'extracker' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-
-
 
   pod 'react-native-onesignal', :path => '../node_modules/react-native-onesignal'
 

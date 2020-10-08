@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import OneSignal from 'react-native-onesignal';
 import { ONE_SIGNAL_KEY2 } from 'react-native-dotenv';
-import { useToast } from '../hooks/ToastContext';
 import StorageUtils from '../utils/StorageUtils';
 import { Alert } from 'react-native';
+import Tracker from '../services/Tracker';
 
 const OneSignalWrapper: React.FC = () => {
-  const { showToast } = useToast();
-
   useEffect(() => {
     OneSignal.init(ONE_SIGNAL_KEY2);
 
@@ -20,14 +18,12 @@ const OneSignalWrapper: React.FC = () => {
     OneSignal.addEventListener('ids', onIds);
   }, []);
 
-  function onReceived(notification) {
+  function onReceived() {
     // showToast(`Notification received: ${notification}`);
   }
 
   function onOpened(openResult) {
     try {
-      const { isAppInFocus } = openResult.notification;
-      const { coin, market, price } = openResult.notification.payload.additionalData;
     } catch (err) {
       console.error(err);
     }
@@ -36,13 +32,17 @@ const OneSignalWrapper: React.FC = () => {
   function onIds(device) {
     const uid = device.userId;
 
-    StorageUtils.setItem('@extracker:OneSignalUserId', uid);
+    async function run() {
+      await StorageUtils.setItem('@extracker:OneSignalUserId', uid);
+
+      await Tracker.identifyUser();
+    }
+
+    run();
   }
 
   function myiOSPromptCallback(permission: boolean) {
-    if (!permission) {
-      Alert.alert('For using the alerts you need accept notifications. Consider changing in settings.');
-    }
+    if (!permission) Alert.alert('For using the alerts you need accept notifications. Consider changing in settings.');
   }
 
   return <></>;

@@ -345,6 +345,8 @@ PODS:
     - SwiftyJSON (= 5.0)
   - RNCMaskedView (0.1.10):
     - React
+  - RNDeviceInfo (6.2.0):
+    - React-Core
   - RNGestureHandler (1.8.0):
     - React
   - RNKeychain (6.1.1):
@@ -424,6 +426,7 @@ DEPENDENCIES:
   - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
   - RNCharts (from `../node_modules/react-native-charts-wrapper`)
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -531,6 +534,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-charts-wrapper"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNKeychain:
@@ -602,6 +607,7 @@ SPEC CHECKSUMS:
   RNCClipboard: 48eaf27bea3de7c9a265529725434268d47a2ee9
   RNCharts: d364ca2085e24edb9ee0390d3fb7209257daa44c
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNDeviceInfo: eb63f95c93ff1aae15353d113c130aebc6127915
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNKeychain: db956c02a018f7dd3a0ea8a6cf3087bc1894bf2b
   RNReanimated: 89f5e0a04d1dd52fbf27e7e7030d8f80a646a3fc
@@ -613,6 +619,6 @@ SPEC CHECKSUMS:
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 1a8d6163bc9eae037789dc4a1667bd54d7b4890b
+PODFILE CHECKSUM: 0d7a677318531051c798ee91b1457d662b5af95f
 
 COCOAPODS: 1.9.3

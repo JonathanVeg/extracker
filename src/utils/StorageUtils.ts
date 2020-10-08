@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import * as Keychain from 'react-native-keychain';
 import ExchangeInterface from '../controllers/exchanges/ExchangeInterface';
+import Tracker from '../services/Tracker';
 
 interface KeysInterface {
   key: string;
@@ -18,6 +19,8 @@ class StorageUtils {
     const r = await Keychain.setGenericPassword('@extracker:keys', `${key} ${secret}`, {
       service: `@extracker:@${exchange.name}`,
     });
+
+    Tracker.track('saveKeys');
 
     return r;
   }

@@ -26,6 +26,7 @@ import HomeCoinItemCompact from './HomeCoinItemCompact';
 import CoinPageChart from '../Coin/Chart';
 import { useExchange } from '../../hooks/ExchangeContext';
 import MyText from '../../components/MyText';
+import Tracker from '../../services/Tracker';
 
 export default function Home({ navigation }) {
   const { exchange, changeExchange, nextExchange } = useExchange();
@@ -165,6 +166,8 @@ export default function Home({ navigation }) {
       await AsyncStorage.setItem(`@extracker@${exchange.name}:favs`, JSON.stringify(Array.from(favs)));
 
       setCoins(cc);
+
+      Tracker.track('toggleFavorite');
 
       return true;
     } catch (err) {
