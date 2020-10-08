@@ -35,7 +35,7 @@ export default class Tracker {
     }
   }
 
-  static track(eventName, properties = {}) {
+  static trackEvent(eventName, properties = {}) {
     try {
       if (!this.amplitude) this.amplitude = new RNAmplitute(AMPLITUDE_KEY);
 

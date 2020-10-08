@@ -20,7 +20,7 @@ class StorageUtils {
       service: `@extracker:@${exchange.name}`,
     });
 
-    Tracker.track('saveKeys');
+    Tracker.trackEvent('saveKeys');
 
     return r;
   }

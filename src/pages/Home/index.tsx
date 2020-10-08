@@ -167,7 +167,7 @@ export default function Home({ navigation }) {
 
       setCoins(cc);
 
-      Tracker.track('toggleFavorite');
+      Tracker.trackEvent('toggleFavorite');
 
       return true;
     } catch (err) {
