@@ -58,7 +58,6 @@ export default function CoinPageCalculator(props) {
       <View>
         <H2>{`Value in ${coin.name}`}</H2>
         <MyInput
-          autoSave
           autoSaveKey={`@extracker@${exchange.name}:${coin.name}CalculatorValueIn${coin.name}`}
           value={valInCoin}
           onChangeText={text => {
@@ -81,7 +80,6 @@ export default function CoinPageCalculator(props) {
       <View>
         <H2>{`Value in ${coin.market}`}</H2>
         <MyInput
-          autoSave={true}
           autoSaveKey={`@extracker@${exchange.name}:${coin.name}CalculatorValueIn${coin.market}`}
           value={valInMarket}
           onChangeText={text => {
@@ -97,7 +95,6 @@ export default function CoinPageCalculator(props) {
         <View key={`calcfiat${fiat.name}`}>
           <H2>{`Value in ${fiat.name}`}</H2>
           <MyInput
-            autoSave={true}
             autoSaveKey={`@extracker@${exchange.name}:${coin.name}CalculatorValueIn${fiat.name}`}
             value={valInFiats[index]}
             onChangeText={text => {
