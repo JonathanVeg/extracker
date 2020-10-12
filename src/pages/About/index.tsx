@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 import React from 'react';
-import { Linking } from 'react-native';
+import { Linking, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { default as FA } from 'react-native-vector-icons/FontAwesome';
 import {
@@ -29,7 +29,7 @@ const AboutPage = ({ navigation }) => {
     [
       { icon: 'logo-twitter', label: 'Twitter', url: 'https://twitter.com/jonathanveg2' },
       { icon: 'logo-github', label: 'GitHub', url: 'https://github.com/jonathanveg' },
-      { icon: 'md-at', label: 'Gmail', url: 'mailto:jonathan.jgs@gmail.com' },
+      { icon: 'md-at', label: 'E-mail', url: 'mailto:jonathan.jgs@gmail.com' },
     ],
     [
       { icon: 'ios-code', label: 'Code', url: 'https://github.com/JonathanVeg/extracker' },
@@ -40,10 +40,11 @@ const AboutPage = ({ navigation }) => {
   return (
     <Container>
       <Header>
-        <Logo source={require('../../../trexlogo.jpg')} />
-        <TopText> This app was developed by Jonathan Silva</TopText>
-        <TopText> Logo by Abunagaya Aceh</TopText>
-        <TopText> UX/UI by Fagner Marques</TopText>
+        {/* <Image source={require('../../../trexlogo.jpg')} /> */}
+        {/* <Logo source={require('../../../logo180.png')} /> */}
+        <TopText> App developed by Jonathan Silva</TopText>
+        {/* <TopText> Logo by Abunagaya Aceh</TopText> */}
+        <TopText> UX/UI/Logo by Fagner Marques</TopText>
         <DivisionLine />
       </Header>
 
@@ -79,7 +80,8 @@ const AboutPage = ({ navigation }) => {
       <Space />
       <Disclaimer>
         <DivisionLine />
-        <SmallText>Disclaimer: this app is not official app developed by Bittrex!</SmallText>
+        <SmallText>Disclaimer: this app is not official app developed</SmallText>
+        <SmallText>by Bittrex or Poloniex!</SmallText>
       </Disclaimer>
     </Container>
   );

@@ -61,4 +61,5 @@ export const Logo = styled.Image`
 export const SmallText = styled.Text`
   font-weight: bold;
   font-size: 11px;
+  text-align: center;
 `;

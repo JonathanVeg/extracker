@@ -144,11 +144,11 @@ function CustomDrawerContent({ exchange, changeExchange, usingKeys, drawerPositi
           label="Alert"
           onPress={() => navigation.navigate('Alert')}
         />
-        <DrawerItem
+        {/* <DrawerItem
           icon={() => <FA name="money" size={20} />}
           label="Donate"
           onPress={() => navigation.navigate('Donate')}
-        />
+        /> */}
         <DrawerItem
           icon={() => <Icon name="information" size={20} />}
           label="About"
