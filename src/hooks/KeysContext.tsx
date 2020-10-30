@@ -16,7 +16,7 @@ const initialValue = { usingKeys: false, key: '', secret: '', hasKeys: false, re
 const KeysContext = createContext<KeysContextProps>(initialValue);
 
 const KeysProvider = ({ children }) => {
-  const usingIosKeys = false;
+  const usingIosKeys = true;
   const { exchange } = useExchange();
   const usingKeys = Platform.OS !== 'ios' || usingIosKeys;
   const [key, setKey] = useState('');
