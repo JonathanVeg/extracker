@@ -18,7 +18,6 @@
 		2DCD954D1E0B4F2C00145EB5 /* extrackerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* extrackerTests.m */; };
 		34EB0C54D21083A5EADF5F4F /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E40C5CF55EEB4F4596B2D9 /* libPods-OneSignalNotificationServiceExtension.a */; };
 		540810DFFD85C66B27841E5A /* libPods-extracker-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AFC04AA5DEFD11C49328FC0 /* libPods-extracker-tvOSTests.a */; };
-		829F8204254C85B00004521D /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829F8203254C85B00004521D /* IntentHandler.swift */; };
 		82ADB5D025237F3400DA377E /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82ADB5CF25237F3400DA377E /* Double+Extensions.swift */; };
 		82ADB5D125237F3400DA377E /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82ADB5CF25237F3400DA377E /* Double+Extensions.swift */; };
 		82AEF7DC248D914D0026818A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82AEF7DB248D914D0026818A /* NotificationService.swift */; };
@@ -112,7 +111,6 @@
 		73041A084435FEFD72AFC110 /* libPods-extracker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-extracker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C3E0F43B8F363E733B91FC5 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		8264CE4B246279E4009C4BB5 /* extracker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "extracker-Bridging-Header.h"; sourceTree = "<group>"; };
-		829F8201254C85B00004521D /* ExtrackerWatch.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ExtrackerWatch.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		829F8203254C85B00004521D /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
 		829F8205254C85B00004521D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		82ADB5CF25237F3400DA377E /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
@@ -180,13 +178,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				540810DFFD85C66B27841E5A /* libPods-extracker-tvOSTests.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		829F81FE254C85B00004521D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,7 +311,6 @@
 				2D02E4901E0B4A5D006451C7 /* extracker-tvOSTests.xctest */,
 				82AEF7D9248D914D0026818A /* OneSignalNotificationServiceExtension.appex */,
 				ABFDD1FD251986A70094FE95 /* Price-WidgetExtension.appex */,
-				829F8201254C85B00004521D /* ExtrackerWatch.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -449,23 +439,6 @@
 			productReference = 2D02E4901E0B4A5D006451C7 /* extracker-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		829F8200254C85B00004521D /* ExtrackerWatch */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 829F8208254C85B00004521D /* Build configuration list for PBXNativeTarget "ExtrackerWatch" */;
-			buildPhases = (
-				829F81FD254C85B00004521D /* Sources */,
-				829F81FE254C85B00004521D /* Frameworks */,
-				829F81FF254C85B00004521D /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = ExtrackerWatch;
-			productName = ExtrackerWatch;
-			productReference = 829F8201254C85B00004521D /* ExtrackerWatch.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 		82AEF7D8248D914D0026818A /* OneSignalNotificationServiceExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 82AEF7E1248D914D0026818A /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
@@ -527,11 +500,6 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 2D02E47A1E0B4A5D006451C7;
 					};
-					829F8200254C85B00004521D = {
-						CreatedOnToolsVersion = 12.1;
-						DevelopmentTeam = R4U6H5V8R8;
-						ProvisioningStyle = Automatic;
-					};
 					82AEF7D8248D914D0026818A = {
 						CreatedOnToolsVersion = 11.5;
 						DevelopmentTeam = R4U6H5V8R8;
@@ -563,7 +531,6 @@
 				2D02E48F1E0B4A5D006451C7 /* extracker-tvOSTests */,
 				82AEF7D8248D914D0026818A /* OneSignalNotificationServiceExtension */,
 				ABFDD1FC251986A70094FE95 /* Price-WidgetExtension */,
-				829F8200254C85B00004521D /* ExtrackerWatch */,
 			);
 		};
 /* End PBXProject section */
@@ -594,13 +561,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		2D02E48E1E0B4A5D006451C7 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		829F81FF254C85B00004521D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -958,14 +918,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		829F81FD254C85B00004521D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				829F8204254C85B00004521D /* IntentHandler.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		82AEF7D5248D914D0026818A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1238,65 +1190,6 @@
 				SDKROOT = appletvos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/extracker-tvOS.app/extracker-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
-			};
-			name = Release;
-		};
-		829F8206254C85B00004521D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = R4U6H5V8R8;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = ExtrackerWatch/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks @executable_path/../../../../Frameworks";
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = veg.jonathan.ExtrackerWatch;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 7.0;
-			};
-			name = Debug;
-		};
-		829F8207254C85B00004521D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = R4U6H5V8R8;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = ExtrackerWatch/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks @executable_path/../../../../Frameworks";
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = veg.jonathan.ExtrackerWatch;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 7.0;
 			};
 			name = Release;
 		};
@@ -1574,15 +1467,6 @@
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
 				2D02E49A1E0B4A5E006451C7 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		829F8208254C85B00004521D /* Build configuration list for PBXNativeTarget "ExtrackerWatch" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				829F8206254C85B00004521D /* Debug */,
-				829F8207254C85B00004521D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

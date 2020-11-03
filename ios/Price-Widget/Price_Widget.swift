@@ -93,6 +93,7 @@ struct ViewToRender: View {
             Text("$ \(entry.data.Last.idealDecimalPlaces())").font(.system(.caption))
             Text("↑ \(entry.data.High.idealDecimalPlaces())").font(.system(.caption))
             Text("↓ \(entry.data.Low.idealDecimalPlaces())").font(.system(.caption))
+            Text("V \(String(format: "%.2f", entry.data.BaseVolume)) \(entry.data.market())").font(.system(.caption))
           }
           // .overlay(Rectangle().frame(width: 1, height: nil, alignment: .leading).foregroundColor(Color.red), alignment: .leading)
           
