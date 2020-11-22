@@ -38,6 +38,7 @@ const CoinSelector: React.FC = ({ sMarket, setSMarket, sCoin, setSCoin }) => {
 
     loadDataFromLocalStorage();
   }, []);
+
   return (
     <MarketPickersContainer>
       <View style={{ flex: 1 }}>

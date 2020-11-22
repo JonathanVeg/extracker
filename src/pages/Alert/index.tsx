@@ -20,13 +20,18 @@ import { useExchange } from '../../hooks/ExchangeContext';
 import { colors } from '../../style/globals';
 import MyCheckbox from '../../components/MyCheckbox';
 
-const AlertPage = ({ navigation }) => {
+const AlertPage = ({ navigation, coinDefault, marketDefault }) => {
   const [selecteds, setSelecteds] = useState<Alert[]>([]);
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [saving, setSaving] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const { showToast } = useToast();
   const { exchange } = useExchange();
+
+  const [price, setPrice] = useState<string>('0.0');
+  const [coin, setCoin] = useState<string>(coinDefault || 'DCR');
+  const [market, setMarket] = useState<string>(marketDefault || 'BTC');
+  const [when, setWhen] = useState<string>('GT');
 
   navigation?.setOptions({
     title: 'Alerts',
@@ -148,10 +153,6 @@ const AlertPage = ({ navigation }) => {
     readAlerts();
   }, []);
 
-  const [price, setPrice] = useState<string>('0.0');
-  const [coin, setCoin] = useState<string>('DCR');
-  const [market, setMarket] = useState<string>('BTC');
-  const [when, setWhen] = useState<string>('GT');
 
   const inputs = (
     <View>
@@ -212,7 +213,7 @@ const AlertPage = ({ navigation }) => {
 
   return (
     <View style={{ paddingHorizontal: 10, flex: 1 }}>
-      <CoinSelector sMarket="BTC" sCoin="DCR" setSMarket={setMarket} setSCoin={setCoin} />
+      <CoinSelector sMarket={market} sCoin={coin} setSMarket={setMarket} setSCoin={setCoin} />
       {inputs}
       {alerts.length > 0 ? (
         <>

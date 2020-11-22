@@ -81,7 +81,7 @@ const CoinPage: React.FC = ({ route, navigation }) => {
     if (currentPage.icon === 'history') return <CoinPageOrdersHistory coin={coin} />;
     if (currentPage.icon === 'line-chart') return <CoinPageChart coin={coin} />;
     if (currentPage.icon === 'exchange') return <CoinPageMyOrdersHistory coin={coin} />;
-    if (currentPage.icon === 'bell') return <AlertPage coin={coin} />;
+    if (currentPage.icon === 'bell') return <AlertPage navigation={null} coinDefault={coin.name} marketDefault={coin.market} />;
     // if (currentPage.icon === 'calculator')
     return <CoinPageCalculator coin={coin} />;
   };
