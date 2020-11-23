@@ -188,18 +188,14 @@ class Poloniex implements ExchangeInterface {
 
     const ret: MyCoin[] = [];
 
-    console.log("before", params);
-
     try {
       const { data } = await Axios.post(url, querystring.stringify(params), options).catch(error => { 
-        console.log("====")
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-        console.log("====")
+        console.error("====")
+        console.error(error.response.data);
+        console.error(error.response.status);
+        console.error(error.response.headers);
+        console.error("====")
       });
-
-      console.log(data);
 
       const dataToReturn = includeZeros
         ? data
@@ -221,8 +217,7 @@ class Poloniex implements ExchangeInterface {
       }
       return ret;
     } catch (err) {
-      console.log("error", err)
-      console.log("error", err.response)
+      console.error("error", err.response)
       return [];
     }
   }

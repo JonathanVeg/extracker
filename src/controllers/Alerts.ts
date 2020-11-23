@@ -18,7 +18,6 @@ export default class AlertsAPI {
     }
 
     const exchangeName = exchange.name.toLowerCase();
-    console.log(exchange);
     await axios.post(`${baseURL}`, { ...alert.toJSON(), uid, exchange: exchangeName });
   }
 
