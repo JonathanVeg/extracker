@@ -286,9 +286,8 @@ export default function Home({ navigation }) {
 
     coinsToShow = sortArrayByKey(coinsToShow, sortCoinsBy, sortCoinsBy !== 'name');
 
-    if (hideSmall) {
-      coinsToShow = coinsToShow.filter(it => myCoins.find(i => i.name === it.name));
-    }
+    if (hideSmall)
+      coinsToShow = coinsToShow.filter(it => myCoins.filter(i => i.balance > 0.0000001).find(i => i.name === it.name));
 
     coinsToShow = [
       ...coinsToShow.filter(it => myCoins.find(myIt => myIt.name === it.name)).filter(it => it.favorite),

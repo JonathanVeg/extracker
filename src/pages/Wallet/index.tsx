@@ -84,7 +84,13 @@ export default function WalletPage({ navigation }) {
   }
 
   const refresh = async () => {
-    if (hasKeys) load();
+    if (hasKeys) {
+      load();
+
+      fiats.map(it => {
+        it.load();
+      });
+    }
   };
 
   async function load() {

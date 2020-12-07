@@ -38,6 +38,8 @@ export default class Fiat {
 
   async load() {
     try {
+      console.log(`Loading ${this.url}`);
+
       const response = await Axios.get(this.url);
       const { data } = response;
 
