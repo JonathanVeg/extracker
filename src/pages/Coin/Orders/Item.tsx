@@ -35,7 +35,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
 
       showToast('Alert created');
 
-      refresh();
+      refresh(false);
     } catch (err) {
       showToast({ text: `Error while creating alert\n\n${err}`, type: 'error' });
     }
@@ -50,7 +50,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
 
       showToast('Alert cancelled');
     } finally {
-      refresh();
+      refresh(false);
     }
   }
 
