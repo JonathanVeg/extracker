@@ -20,6 +20,8 @@ export default function CoinPageMyOrdersHistory(props) {
   const [showOpened, setShowOpened] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [orders, setOrders] = useState<MyOrder[]>([]);
+  const [totalBuy, setTotalBuy] = useState(0.0);
+  const [totalSell, setTotalSell] = useState(0.0);
   const [showUnit, setShowUnit] = useState(true);
   const [showQuantity, setShowQuantity] = useState(true);
 
@@ -63,6 +65,11 @@ export default function CoinPageMyOrdersHistory(props) {
   useEffect(() => {
     refresh(true);
   }, [showOpened]);
+
+  useEffect(() => {
+    setTotalBuy(orders.filter(it => it.isBuy()).reduce((a, order) => a + order.total, 0));
+    setTotalSell(orders.filter(it => !it.isBuy()).reduce((a, order) => a + order.total, 0));
+  }, [orders]);
 
   const showDetails = (item: MyOrder) => {
     Alert.alert('Resume', item.toResumeString());
@@ -181,6 +188,26 @@ export default function CoinPageMyOrdersHistory(props) {
           renderItem={renderItem}
         />
       </View>
+
+      {coin && (
+        <>
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+            <MyText style={{ fontWeight: 'bold' }}>Total buy: </MyText>
+            <MyText style={{ fontWeight: 'normal' }}>{`${totalBuy.idealDecimalPlaces()} ${coin.market}`}</MyText>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+            <MyText style={{ fontWeight: 'bold' }}>Total sell: </MyText>
+            <MyText style={{ fontWeight: 'normal' }}>{`${totalSell.idealDecimalPlaces()} ${coin.market}`}</MyText>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+            <MyText style={{ fontWeight: 'bold' }}>Total traded: </MyText>
+            <MyText style={{ fontWeight: 'normal' }}>
+              {`${(totalBuy + totalSell).idealDecimalPlaces()} ${coin.market}`}
+            </MyText>
+          </View>
+        </>
+      )}
+
       <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
         <ShowOpenedButton onPress={() => setShowOpened(true)}>
           <MyText style={{ fontWeight: showOpened ? 'bold' : 'normal' }}>OPENED</MyText>
