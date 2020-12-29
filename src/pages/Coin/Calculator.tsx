@@ -14,7 +14,7 @@ import MyText from '../../components/MyText';
 
 export default function CoinPageCalculator(props) {
   const { exchange } = useExchange();
-  const { allCoinsInBtc } = useSummaries();
+  const { allCoinsInBtc , reloadSummary} = useSummaries();
   const { fiats } = useFiats();
 
   const [coin, setCoin] = useState<Coin>(props.coin || new Coin('DCR', 'BTC'));
@@ -25,7 +25,8 @@ export default function CoinPageCalculator(props) {
 
   async function loadData() {
     await loadFiats();
-    exchange.loadSummary(coin).then(setCoin);
+    await exchange.loadSummary(coin).then(setCoin);
+    reloadSummary()
   }
 
   useEffect(() => {
