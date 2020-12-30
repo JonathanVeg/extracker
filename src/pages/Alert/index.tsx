@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { default as FA } from 'react-native-vector-icons/FontAwesome5';
 import { Row } from '../../components/Generics';
 import HamburgerIcon from '../../components/HamburgerIcon';
-import { H2 } from '../../components/Hs';
+import { H1, H2 } from '../../components/Hs';
 import { Spacer } from '../../components/Spacer';
 import Alert from '../../models/Alert';
 import MyInput from '../../components/MyInput';
@@ -19,6 +19,9 @@ import CoinSelector from '../../components/CoinSelector';
 import { useExchange } from '../../hooks/ExchangeContext';
 import { colors } from '../../style/globals';
 import MyCheckbox from '../../components/MyCheckbox';
+import LabelValueBlock from '../../components/LabelValueBlock';
+import Coin from '../../models/Coin';
+import { useSummaries } from '../../hooks/SummaryContext';
 
 const AlertPage = ({ navigation, coinDefault, marketDefault }) => {
   const [selecteds, setSelecteds] = useState<Alert[]>([]);
@@ -33,6 +36,23 @@ const AlertPage = ({ navigation, coinDefault, marketDefault }) => {
   const [market, setMarket] = useState<string>(marketDefault || 'BTC');
   const [when, setWhen] = useState<string>('GT');
 
+  const [coinObject, setCoinObject] = useState<Coin>(new Coin("DCR", "BTC"));
+
+  async function load() {
+    try {
+      const newCoin = new Coin(coin, market);
+      await exchange.loadSummary(newCoin);
+
+      setCoinObject(newCoin);
+    } finally {
+      setRefreshing(false);
+    }
+  }
+
+  useEffect(() => {
+    load();
+  }, [coin, market]);
+  
   navigation?.setOptions({
     title: 'Alerts',
     headerLeft: () => <HamburgerIcon navigationProps={navigation} />,
@@ -153,6 +173,41 @@ const AlertPage = ({ navigation, coinDefault, marketDefault }) => {
     readAlerts();
   }, []);
 
+  const summaryBlock = (
+    <>
+      <H1>
+        {`SUMMARY - ${coinObject.name}/${coinObject.market}`}
+        {refreshing ? '(loading...)' : ''}
+        {!coinObject.pairAvailable && ' (Pair unavailable)'}
+      </H1>
+      <Spacer margin={2} />
+      <TouchableOpacity onPress={() => setPrice(coinObject.last.idealDecimalPlaces())}>
+        <LabelValueBlock style={{ paddingBottom: 4, paddingTop: 4 }} label="Last" value={coinObject.last} adjustDecimals />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => setPrice(coinObject.bid.idealDecimalPlaces())}>
+        <LabelValueBlock style={{ paddingBottom: 4, paddingTop: 4 }} label="Bid" value={coinObject.bid} adjustDecimals />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => setPrice(coinObject.ask.idealDecimalPlaces())}>
+        <LabelValueBlock style={{ paddingBottom: 4, paddingTop: 4 }} label="Ask" value={coinObject.ask} adjustDecimals />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => setPrice(coinObject.high.idealDecimalPlaces())}>
+        <LabelValueBlock
+          style={{ paddingBottom: 4, paddingTop: 4 }}
+          label="24h highest"
+          value={coinObject.high}
+          adjustDecimals
+        />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => setPrice(coinObject.low.idealDecimalPlaces())}>
+        <LabelValueBlock
+          style={{ paddingBottom: 4, paddingTop: 4 }}
+          label="24h lowest"
+          value={coinObject.low}
+          adjustDecimals
+        />
+      </TouchableOpacity>
+    </>
+  );
 
   const inputs = (
     <View>
@@ -204,8 +259,6 @@ const AlertPage = ({ navigation, coinDefault, marketDefault }) => {
           {parseFloat(alert.price).idealDecimalPlaces()}
         </MyText>
 
-        {/* <Icon name="delete" size={20} /> */}
-
         <MyCheckbox checked={selecteds.indexOf(item) !== -1} onPress={() => handleSelectItem(alert)} />
       </Row>
     );
@@ -214,6 +267,7 @@ const AlertPage = ({ navigation, coinDefault, marketDefault }) => {
   return (
     <View style={{ paddingHorizontal: 10, flex: 1 }}>
       <CoinSelector sMarket={market} sCoin={coin} setSMarket={setMarket} setSCoin={setCoin} />
+      {summaryBlock}
       {inputs}
       {alerts.length > 0 ? (
         <>
