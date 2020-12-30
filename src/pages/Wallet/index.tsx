@@ -49,8 +49,8 @@ export default function WalletPage({ navigation }) {
 
   navigation.setOptions({ title: 'Wallets', headerLeft, headerRight });
 
-  const { fiats } = useFiats();
-  const { allCoinsInBtc } = useSummaries();
+  const { fiats, reloadFiats } = useFiats();
+  const { allCoinsInBtc, reloadSummary } = useSummaries();
   const [listItems, setListItems] = useState<WalletListItem[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [myCoins, setMyCoins] = useState<MyCoin[]>([]);
@@ -59,7 +59,7 @@ export default function WalletPage({ navigation }) {
   useEffect(() => {
     refresh();
   }, [hasKeys]);
-
+  
   async function deleteKeys() {
     async function deleteIt() {
       await StorageUtils.saveKeys(exchange, '', '');
@@ -85,11 +85,14 @@ export default function WalletPage({ navigation }) {
 
   const refresh = async () => {
     if (hasKeys) {
+      // load balances
       load();
 
-      fiats.map(it => {
-        it.load();
-      });
+      // reload fiats
+      reloadFiats();
+
+      // reload summary
+      reloadSummary();
     }
   };
 
@@ -97,8 +100,8 @@ export default function WalletPage({ navigation }) {
     try {
       setRefreshing(true);
 
+      // reload balances
       const data = await exchange.loadBalances();
-
       setMyCoins(data);
     } finally {
       setRefreshing(false);
