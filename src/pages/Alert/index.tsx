@@ -206,6 +206,9 @@ const AlertPage = ({ navigation, coinDefault, marketDefault }) => {
           adjustDecimals
         />
       </TouchableOpacity>
+
+      <Text>+10</Text>
+      <Text>+20</Text>
     </>
   );
 
