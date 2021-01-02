@@ -21,7 +21,6 @@ import { colors } from '../../style/globals';
 import MyCheckbox from '../../components/MyCheckbox';
 import LabelValueBlock from '../../components/LabelValueBlock';
 import Coin from '../../models/Coin';
-import { useSummaries } from '../../hooks/SummaryContext';
 
 const AlertPage = ({ navigation, coinDefault, marketDefault }) => {
   const [selecteds, setSelecteds] = useState<Alert[]>([]);
@@ -36,7 +35,7 @@ const AlertPage = ({ navigation, coinDefault, marketDefault }) => {
   const [market, setMarket] = useState<string>(marketDefault || 'BTC');
   const [when, setWhen] = useState<string>('GT');
 
-  const [coinObject, setCoinObject] = useState<Coin>(new Coin("DCR", "BTC"));
+  const [coinObject, setCoinObject] = useState<Coin>(new Coin('DCR', 'BTC'));
 
   async function load() {
     try {
@@ -52,7 +51,7 @@ const AlertPage = ({ navigation, coinDefault, marketDefault }) => {
   useEffect(() => {
     load();
   }, [coin, market]);
-  
+
   navigation?.setOptions({
     title: 'Alerts',
     headerLeft: () => <HamburgerIcon navigationProps={navigation} />,
@@ -182,13 +181,28 @@ const AlertPage = ({ navigation, coinDefault, marketDefault }) => {
       </H1>
       <Spacer margin={2} />
       <TouchableOpacity onPress={() => setPrice(coinObject.last.idealDecimalPlaces())}>
-        <LabelValueBlock style={{ paddingBottom: 4, paddingTop: 4 }} label="Last" value={coinObject.last} adjustDecimals />
+        <LabelValueBlock
+          style={{ paddingBottom: 4, paddingTop: 4 }}
+          label="Last"
+          value={coinObject.last}
+          adjustDecimals
+        />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setPrice(coinObject.bid.idealDecimalPlaces())}>
-        <LabelValueBlock style={{ paddingBottom: 4, paddingTop: 4 }} label="Bid" value={coinObject.bid} adjustDecimals />
+        <LabelValueBlock
+          style={{ paddingBottom: 4, paddingTop: 4 }}
+          label="Bid"
+          value={coinObject.bid}
+          adjustDecimals
+        />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setPrice(coinObject.ask.idealDecimalPlaces())}>
-        <LabelValueBlock style={{ paddingBottom: 4, paddingTop: 4 }} label="Ask" value={coinObject.ask} adjustDecimals />
+        <LabelValueBlock
+          style={{ paddingBottom: 4, paddingTop: 4 }}
+          label="Ask"
+          value={coinObject.ask}
+          adjustDecimals
+        />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setPrice(coinObject.high.idealDecimalPlaces())}>
         <LabelValueBlock
@@ -206,9 +220,6 @@ const AlertPage = ({ navigation, coinDefault, marketDefault }) => {
           adjustDecimals
         />
       </TouchableOpacity>
-
-      <Text>+10</Text>
-      <Text>+20</Text>
     </>
   );
 

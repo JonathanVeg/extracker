@@ -39,6 +39,7 @@
     "no-console": "off",
     "no-plusplus": "off",
     "array-callback-return": "off",
+    "radix": "off",
     "react/destructuring-assignment": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "no-multiple-empty-lines": [1, { "max": 1 }],

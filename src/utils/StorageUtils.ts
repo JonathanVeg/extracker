@@ -54,7 +54,6 @@ class StorageUtils {
 
   static async getItem(key: string): Promise<string> {
     const data = await AsyncStorage.getItem(key);
-
     return data;
   }
 }

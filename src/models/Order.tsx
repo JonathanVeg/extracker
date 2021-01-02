@@ -6,6 +6,8 @@ export default class Order {
   myOrder: MyOrder | null = null;
   alerts: Alert[] = [];
 
+  percentFromBase = 100;
+
   constructor(
     public coin: string,
     public market: string,

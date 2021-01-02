@@ -11,6 +11,12 @@ import AlertsAPI from '../../../controllers/Alerts';
 import { readOneSignalUserId } from '../../../controllers/OneSignal';
 import { useExchange } from '../../../hooks/ExchangeContext';
 import MyText from '../../../components/MyText';
+import StorageUtils from '../../../utils/StorageUtils';
+
+const PRICE = 0;
+const SUM_PRICE = 1;
+const PERCENTAGE_FROM_FIRST = 2;
+export const LastColumn = { PRICE, SUM_PRICE, PERCENTAGE_FROM_FIRST };
 
 export default function CoinPageOrders(props) {
   const { exchange } = useExchange();
@@ -18,11 +24,31 @@ export default function CoinPageOrders(props) {
 
   const coin = props.coin || new Coin('DCR', 'BTC');
 
+  const [lastColumn, setLastColumn] = useState(LastColumn.PERCENTAGE_FROM_FIRST);
+
   const [refreshing, setRefreshing] = useState(false);
   const [myOrders, setMyOrders] = useState<MyOrder[]>([]);
-  const [showSumPrice, setShowSumPrice] = useState(true);
+
   const [showSumQuantity, setShowSumQuantity] = useState(true);
   const [orders, setOrders] = useState<Order[]>([]);
+
+  function changeLastColumn() {
+    const newLastColumn = lastColumn === PRICE ? SUM_PRICE : lastColumn === SUM_PRICE ? PERCENTAGE_FROM_FIRST : PRICE;
+    setLastColumn(newLastColumn);
+  }
+
+  useEffect(() => {
+    async function loadLastColumn() {
+      const lastColumn = await StorageUtils.getItem('ordersLastColumn');
+      setLastColumn(parseInt(lastColumn || '0'));
+    }
+
+    loadLastColumn();
+  }, []);
+
+  useEffect(() => {
+    StorageUtils.setItem('ordersLastColumn', lastColumn.toString());
+  }, [lastColumn]);
 
   async function loadOrders(changeRefreshing = true) {
     try {
@@ -33,6 +59,8 @@ export default function CoinPageOrders(props) {
 
       const orders = await exchange.loadOrderBook(coin, type);
 
+      const percentBase = orders[0].rate;
+
       orders.map(order => {
         order.alerts = alerts.filter(it => {
           return (
@@ -41,6 +69,8 @@ export default function CoinPageOrders(props) {
             parseFloat(it.price.toString()) === parseFloat(order.rate.toString())
           );
         });
+
+        order.percentFromBase = (order.rate / percentBase) * 100 - 100;
       });
 
       setOrders(orders);
@@ -93,8 +123,10 @@ export default function CoinPageOrders(props) {
           {showSumQuantity ? 'Sum Qnt.' : 'Qnt.'}
         </MyText>
         <MyText style={{ fontWeight: 'bold', textAlign: 'center' }}>Rate</MyText>
-        <MyText style={{ fontWeight: 'bold', paddingRight: 2 }} onPress={() => setShowSumPrice(!showSumPrice)}>
-          {showSumPrice ? 'Sum Price' : 'Total Price'}
+        <MyText style={{ fontWeight: 'bold', paddingRight: 2 }} onPress={changeLastColumn}>
+          {lastColumn === PRICE && 'Total Price'}
+          {lastColumn === SUM_PRICE && 'Sum Price'}
+          {lastColumn === PERCENTAGE_FROM_FIRST && '% from first '}
         </MyText>
       </HeaderContainer>
     );
@@ -118,8 +150,8 @@ export default function CoinPageOrders(props) {
         data={orders}
         renderItem={({ index, item }) => (
           <Item
+            lastColumn={lastColumn}
             index={index}
-            showSumPrice={showSumPrice}
             showSumQuantity={showSumQuantity}
             item={item}
             coin={coin}

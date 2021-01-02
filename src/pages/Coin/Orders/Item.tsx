@@ -13,8 +13,9 @@ import AlertsAPI from '../../../controllers/Alerts';
 import { readOneSignalUserId } from '../../../controllers/OneSignal';
 import { useExchange } from '../../../hooks/ExchangeContext';
 import MyText from '../../../components/MyText';
+import { LastColumn } from '.';
 
-const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, refresh }) => {
+const Item = ({ index, item, showSumQuantity, lastColumn, coin, gotoNewOrder, refresh }) => {
   const order: Order = item;
 
   const { showToast } = useToast();
@@ -127,7 +128,7 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
     <TouchableOpacity onLongPress={offerOptions}>
       <RowContainer backgroundColor={backgroundColor}>
         {item.isMine ? (
-          <Icon name="star" size={13} style={{ margin: 2 }} color={'black'} />
+          <Icon name="star" size={13} style={{ margin: 2 }} color="black" />
         ) : (
           <MaterialCommunityIcons
             name="bell"
@@ -166,7 +167,9 @@ const Item = ({ index, item, showSumPrice, showSumQuantity, coin, gotoNewOrder, 
             paddingRight: 2,
           }}
         >
-          {(showSumPrice ? order.totalTotal : order.total).idealDecimalPlaces()}
+          {lastColumn === LastColumn.PRICE && order.total.idealDecimalPlaces()}
+          {lastColumn === LastColumn.SUM_PRICE && order.totalTotal.idealDecimalPlaces()}
+          {lastColumn === LastColumn.PERCENTAGE_FROM_FIRST && `${order.percentFromBase.toFixed(2)}%`}
         </MyText>
       </RowContainer>
     </TouchableOpacity>
