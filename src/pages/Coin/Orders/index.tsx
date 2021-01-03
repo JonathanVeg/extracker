@@ -92,7 +92,8 @@ export default function CoinPageOrders(props) {
       loadOrders(changeRefreshing).finally(() => {
         loadMOrders();
       });
-    } finally {
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -119,14 +120,14 @@ export default function CoinPageOrders(props) {
   function Header() {
     return (
       <HeaderContainer>
-        <MyText style={{ fontWeight: 'bold' }} onPress={() => setShowSumQuantity(!showSumQuantity)}>
+        <MyText style={{ fontWeight: 'bold', flex: 1 }} onPress={() => setShowSumQuantity(!showSumQuantity)}>
           {showSumQuantity ? 'Sum Qnt.' : 'Qnt.'}
         </MyText>
-        <MyText style={{ fontWeight: 'bold', textAlign: 'center' }}>Rate</MyText>
-        <MyText style={{ fontWeight: 'bold', paddingRight: 2 }} onPress={changeLastColumn}>
+        <MyText style={{ fontWeight: 'bold', flex: 1, textAlign: 'center' }}>Rate</MyText>
+        <MyText style={{ fontWeight: 'bold', flex: 1, textAlign: 'right', paddingRight: 2 }} onPress={changeLastColumn}>
           {lastColumn === PRICE && 'Total Price'}
           {lastColumn === SUM_PRICE && 'Sum Price'}
-          {lastColumn === PERCENTAGE_FROM_FIRST && '% from first '}
+          {lastColumn === PERCENTAGE_FROM_FIRST && 'Sum (% 1st)'}
         </MyText>
       </HeaderContainer>
     );

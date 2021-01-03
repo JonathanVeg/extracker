@@ -169,7 +169,12 @@ const Item = ({ index, item, showSumQuantity, lastColumn, coin, gotoNewOrder, re
         >
           {lastColumn === LastColumn.PRICE && order.total.idealDecimalPlaces()}
           {lastColumn === LastColumn.SUM_PRICE && order.totalTotal.idealDecimalPlaces()}
-          {lastColumn === LastColumn.PERCENTAGE_FROM_FIRST && `${order.percentFromBase.toFixed(2)}%`}
+          {lastColumn === LastColumn.PERCENTAGE_FROM_FIRST &&
+            order.percentFromBase < 0 &&
+            `${order.totalTotal.toFixed(3)} (${order.percentFromBase.toFixed(1)}%)`}
+          {lastColumn === LastColumn.PERCENTAGE_FROM_FIRST &&
+            order.percentFromBase >= 0 &&
+            `${order.totalTotal.toFixed(3)} (+${order.percentFromBase.toFixed(1)}%)`}
         </MyText>
       </RowContainer>
     </TouchableOpacity>

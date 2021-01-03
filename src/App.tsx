@@ -7,7 +7,6 @@ import { SafeAreaProvider, useSafeArea } from 'react-native-safe-area-context';
 import { StatusBar, View, StyleSheet, Linking, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { default as Ionicons } from 'react-native-vector-icons/Ionicons';
-import { default as FA } from 'react-native-vector-icons/FontAwesome';
 import styled from 'styled-components/native';
 import AboutPage from './pages/About';
 import CoinPage from './pages/Coin';
@@ -114,7 +113,10 @@ function CustomDrawerContent({ exchange, changeExchange, usingKeys, drawerPositi
     >
       <View style={{ flex: 1 }}>
         <H1 center>EXTRACKER</H1>
-        <H3 center>({exchange.name})</H3>
+        <H3 center>
+          ({exchange.name}
+          )
+</H3>
 
         <DrawerItem
           icon={() => <Icon name="home" size={20} />}
@@ -160,7 +162,10 @@ function CustomDrawerContent({ exchange, changeExchange, usingKeys, drawerPositi
           changeExchange(exchange === Bittrex ? Poloniex : Bittrex);
         }}
       >
-        <H3 center>Change exchange to {exchange === Bittrex ? 'Poloniex' : 'Bittrex'} </H3>
+        <H3 center>
+          Change exchange to
+          {exchange === Bittrex ? 'Poloniex' : 'Bittrex'}{' '}
+        </H3>
       </TouchableOpacity>
       <DivisionLine />
       <View>
