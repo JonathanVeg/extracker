@@ -164,7 +164,7 @@ function CustomDrawerContent({ exchange, changeExchange, usingKeys, drawerPositi
       >
         <H3 center>
           Change exchange to
-          {exchange === Bittrex ? 'Poloniex' : 'Bittrex'}{' '}
+          {exchange === Bittrex ? 'Poloniex' : 'Bittrex'}
         </H3>
       </TouchableOpacity>
       <DivisionLine />

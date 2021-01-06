@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import moment from 'moment';
 import React, { createContext, useEffect, useState, useContext } from 'react';
 import { NativeModules } from 'react-native';
@@ -7,7 +8,7 @@ import listFiats from '../controllers/fiats/FiatsHelper';
 
 interface FiatContextProps {
   fiats: Fiat[];
-  reloadFiats(): void | null;
+  reloadFiats(): Promise<void | null>;
 }
 
 const initialValue = { fiats: [], reloadFiats: null };

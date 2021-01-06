@@ -18,7 +18,7 @@ interface CoinPageSummaryInterface {
 
 export default function CoinPageSummary(props: CoinPageSummaryInterface) {
   const { exchange } = useExchange();
-  const { fiats } = useFiats();
+  const { fiats, reloadFiats } = useFiats();
   const { allCoinsInBtc } = useSummaries();
 
   const { usingKeys } = useKeys();
@@ -37,6 +37,8 @@ export default function CoinPageSummary(props: CoinPageSummaryInterface) {
       setRefreshing(true);
 
       await exchange.loadSummary(coin);
+
+      await reloadFiats();
 
       const clone = Object.assign(Object.create(Object.getPrototypeOf(coin)), coin);
 
