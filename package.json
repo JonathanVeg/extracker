@@ -23,7 +23,7 @@
     "appcenter": "^3.1.1",
     "appcenter-analytics": "^3.1.1",
     "appcenter-crashes": "^3.1.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-plugin-root-import": "^6.5.0",
     "js-sha512": "^0.8.0",
     "moment": "^2.26.0",
