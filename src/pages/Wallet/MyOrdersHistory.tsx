@@ -11,10 +11,13 @@ import { useToast } from '../../hooks/ToastContext';
 import { useExchange } from '../../hooks/ExchangeContext';
 import MyText from '../../components/MyText';
 import MyCheckbox from '../../components/MyCheckbox';
+import { useSummaries } from '../../hooks/SummaryContext';
 
 export default function CoinPageMyOrdersHistory(props) {
   const { exchange } = useExchange();
   const { coin } = props;
+
+  const { allCoinsInBtc, reloadSummary } = useSummaries();
 
   const [selecteds, setSelecteds] = useState<MyOrder[]>([]);
   const [showOpened, setShowOpened] = useState(true);
@@ -64,6 +67,8 @@ export default function CoinPageMyOrdersHistory(props) {
 
   useEffect(() => {
     refresh(true);
+
+    reloadSummary();
   }, [showOpened]);
 
   useEffect(() => {
@@ -117,9 +122,14 @@ export default function CoinPageMyOrdersHistory(props) {
           </MyText>
 
           {showOpened && (
-            <View style={{ flex: 0.6 }}>
-              <MyCheckbox checked={selecteds.indexOf(item) !== -1} onPress={() => handleSelectItem(order)} />
-            </View>
+            <>
+              <MyText style={{ flex: 0.6, textAlign: 'center', fontVariant: ['tabular-nums'] }}>
+                {`${((order.price / allCoinsInBtc[order.coin] * 100) - 100).toFixed(1)}%`}
+              </MyText>
+              <View style={{ flex: 0.3 }}>
+                <MyCheckbox checked={selecteds.indexOf(item) !== -1} onPress={() => handleSelectItem(order)} />
+              </View>
+            </>
           )}
         </OrderItemContainer>
       </TouchableWithoutFeedback>
@@ -147,11 +157,16 @@ export default function CoinPageMyOrdersHistory(props) {
             {showUnit ? 'Unity Price' : 'Total'}
           </MyText>
         </TouchableOpacity>
-
+     
         {showOpened && (
-          <TouchableOpacity style={{ flex: 0.6, alignItems: 'flex-end' }} onPress={handleCancelAllOrders}>
-            <Icon name="trash-alt" size={20} color={selecteds.length === 0 ? 'transparent' : colors.black} />
-          </TouchableOpacity>
+          <>
+            <MyText style={{ fontWeight: 'bold', flex: 0.6, textAlign: 'center' }}>
+              {'Δ last'}
+            </MyText>
+            <TouchableOpacity style={{ flex: 0.3, alignItems: 'flex-end' }} onPress={handleCancelAllOrders}>
+              <Icon name="trash-alt" size={20} color={selecteds.length === 0 ? 'transparent' : colors.black} />
+            </TouchableOpacity>
+          </>
         )}
       </View>
     );
