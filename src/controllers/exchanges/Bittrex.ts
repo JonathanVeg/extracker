@@ -293,6 +293,8 @@ class Bittrex implements ExchangeInterface {
 
     const url = `${this.baseURL}/Api/v2.0/pub/market/GetTicks?marketName=${coin.market}-${coin.name}&tickInterval=${tickInterval}`;
 
+    console.log(url)
+
     const response = await axios.get(url);
 
     let { data } = response;
